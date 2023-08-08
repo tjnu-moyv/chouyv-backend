@@ -4,3 +4,24 @@ spring:
     url: jdbc:mysql://localhost:3306/chouyv
     username: root
     password: root
+  application:
+    name: chouyv
+
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: flag
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+logging:
+  level:
+    com.example: debug
+  pattern:
+    dateformat: yyyy-MM-ddTHH:mm:ss.SSS(XXX)
+  file:
+    name: logs/${spring.application.name}.log
