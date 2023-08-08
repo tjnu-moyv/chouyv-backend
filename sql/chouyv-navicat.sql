@@ -11,12 +11,54 @@
  Target Server Version : 80033 (8.0.33)
  File Encoding         : 65001
 
- Date: 08/08/2023 14:23:14
+ Date: 08/08/2023 14:54:53
 */
 
 SET NAMES utf8mb4;
-SET
-FOREIGN_KEY_CHECKS = 0;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for order
+-- ----------------------------
+DROP TABLE IF EXISTS `order`;
+CREATE TABLE `order`
+(
+    `id`          bigint     NOT NULL AUTO_INCREMENT COMMENT '订单主键',
+    `student_id`  bigint     NOT NULL COMMENT '学生外键',
+    `run_id`      bigint     NULL     DEFAULT NULL COMMENT '学生外键',
+    `shop_id`     bigint     NOT NULL COMMENT '商家外键',
+    `total_price` int        NOT NULL COMMENT '商品总价',
+    `status`      tinyint    NOT NULL DEFAULT 0 COMMENT '订单状态 0-备餐中 1-等待跑腿的取 2-配送中 3-商品已到达',
+    `type`        tinyint    NOT NULL DEFAULT 0 COMMENT '订单的状态 0-堂食(用户取 食堂吃 不外带) 1-带走(打包, 需配送费) 2-找跑腿(run_id不可空)',
+    `target_time` datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '预约时间',
+    `created_at`  datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at`  datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `is_deleted`  tinyint(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单表'
+  ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for order_shop_products_item
+-- ----------------------------
+DROP TABLE IF EXISTS `order_shop_products_item`;
+CREATE TABLE `order_shop_products_item`
+(
+    `id`               bigint                                                        NOT NULL AUTO_INCREMENT COMMENT '订单商品主键',
+    `order_id`         bigint                                                        NOT NULL COMMENT '订单外键',
+    `shop_products_id` bigint                                                        NOT NULL COMMENT '商品外键',
+    `count`            tinyint                                                       NOT NULL DEFAULT 1 COMMENT '该商品的数量',
+    `description`      varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '该商品的备注',
+    `created_at`       datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at`       datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `is_deleted`       tinyint(1)                                                    NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单商品表'
+  ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for shop
@@ -32,9 +74,34 @@ CREATE TABLE `shop`
     `phone`      varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商家联系电话',
     `created_at` datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_at` datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
+    `is_deleted` tinyint(1)                                                    NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商家表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT = '商家表'
+  ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for shop_products
+-- ----------------------------
+DROP TABLE IF EXISTS `shop_products`;
+CREATE TABLE `shop_products`
+(
+    `id`          bigint                                                        NOT NULL AUTO_INCREMENT COMMENT '商品主键',
+    `shop_id`     bigint                                                        NOT NULL COMMENT '商品外键',
+    `name`        varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品名',
+    `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL     DEFAULT NULL COMMENT '商品详细描述',
+    `img_url`     varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL     DEFAULT NULL COMMENT '图片地址',
+    `count`       int                                                           NOT NULL DEFAULT 0 COMMENT '剩余货量',
+    `price`       int                                                           NOT NULL COMMENT '商品价格',
+    `created_at`  datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at`  datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `is_deleted`  tinyint(1)                                                    NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品信息表'
+  ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for shopping_info
@@ -49,9 +116,12 @@ CREATE TABLE `shopping_info`
     `phone`      varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci  NOT NULL COMMENT '联系电话',
     `created_at` datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_at` datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
+    `is_deleted` tinyint(1)                                                    NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户的收货地址信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户的收货地址信息表'
+  ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for student
@@ -65,9 +135,11 @@ CREATE TABLE `student`
     `role`       tinyint                                                       NOT NULL DEFAULT 0 COMMENT '用户角色 0-学生(正常消费者) 1-消费者and跑腿',
     `created_at` datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_at` datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
+    `is_deleted` tinyint(1)                                                    NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户信息表'
+  ROW_FORMAT = DYNAMIC;
 
-SET
-FOREIGN_KEY_CHECKS = 1;
+SET FOREIGN_KEY_CHECKS = 1;
