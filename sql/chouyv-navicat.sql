@@ -11,11 +11,50 @@
  Target Server Version : 80033 (8.0.33)
  File Encoding         : 65001
 
- Date: 08/08/2023 14:54:53
+ Date: 08/08/2023 15:35:01
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for money
+-- ----------------------------
+DROP TABLE IF EXISTS `money`;
+CREATE TABLE `money`
+(
+    `id`          bigint     NOT NULL AUTO_INCREMENT COMMENT '钱包主键',
+    `uid`         bigint     NOT NULL COMMENT '用户(学生 跑腿 商家等)id',
+    `cny`         bigint     NOT NULL DEFAULT 0 COMMENT '人民币余额',
+    `deposit_cny` int        NOT NULL DEFAULT 0 COMMENT '人民币押金',
+    `created_at`  datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at`  datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `is_deleted`  tinyint(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户钱包表'
+  ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for money_bill
+-- ----------------------------
+DROP TABLE IF EXISTS `money_bill`;
+CREATE TABLE `money_bill`
+(
+    `id`         bigint     NOT NULL AUTO_INCREMENT COMMENT '账单主键',
+    `from_id`    bigint     NOT NULL COMMENT '转出账户',
+    `to_id`      bigint     NOT NULL COMMENT '转入账户',
+    `money`      int        NOT NULL COMMENT '账单操作金额',
+    `type`       tinyint    NOT NULL DEFAULT 0 COMMENT '转账类型 0-默认内部转账 1-充值(from_id = -1) 2-提现(to_id = -1)',
+    `created_at` datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT = '账单表'
+  ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for order
@@ -130,8 +169,8 @@ DROP TABLE IF EXISTS `student`;
 CREATE TABLE `student`
 (
     `id`         bigint                                                        NOT NULL AUTO_INCREMENT COMMENT '学生主键',
-    `username`   varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '学生登陆账号',
-    `password`   varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '学生登陆密码',
+    `username`   varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '学生登陆账号',
+    `password`   varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '学生登陆密码',
     `role`       tinyint                                                       NOT NULL DEFAULT 0 COMMENT '用户角色 0-学生(正常消费者) 1-消费者and跑腿',
     `created_at` datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_at` datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
