@@ -47,17 +47,6 @@ public class BaseResponse<T> {
     /**
      * 错误返回体
      *
-     * @param e    错误异常
-     * @param data 错误信息
-     * @return 返回体
-     */
-    public static <T> BaseResponse<T> fail(ChouYvException e, T data) {
-        return new BaseResponse<>(e.getCode(), data, e.getMessage(), e.getDescription());
-    }
-
-    /**
-     * 错误返回体
-     *
      * @param e 错误异常
      * @return 返回体
      */
