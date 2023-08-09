@@ -96,122 +96,112 @@
 
 # 丑鱼外卖数据库文档
 
-## 用户表 (User)
+## 数据库表总结
 
-* 用户ID (UserID)
-* 用户名 (Username)
-* 密码 (Password)
-* 头像 (Avatar)
-* 角色 (Role)
-* 创建时间 (created_at)
-* 修改时间 (updated_at)
-* 是否删除 (is_deleted)
+### `money` - 用户钱包表
 
-## 学生用户表 (StudentUser)
+| 字段名         | 类型         | 描述                |
+|-------------|------------|-------------------|
+| id          | bigint     | 钱包主键              |
+| uid         | bigint     | 用户（学生、跑腿、商家等）ID   |
+| cny         | bigint     | 人民币余额             |
+| deposit_cny | int        | 人民币押金             |
+| created_at  | datetime   | 创建时间              |
+| updated_at  | datetime   | 更新时间              |
+| is_deleted  | tinyint(1) | 逻辑删除（0-未删除，1-已删除） |
 
-* 学生用户ID (StudentUserID)
-* 用户ID (User.ID)
-* 学生姓名 (StudentName)
-* 学生学号 (StudentID)
-* 学生地址 (StudentAddress)
-* 手机号码 (PhoneNumber)
-* 创建时间 (created_at)
-* 修改时间 (updated_at)
-* 是否删除 (is_deleted)
+### `money_bill` - 账单表
 
-# 配送员表 (DeliveryStaff)
+| 字段名        | 类型         | 描述                       |
+|------------|------------|--------------------------|
+| id         | bigint     | 账单主键                     |
+| from_id    | bigint     | 转出账户                     |
+| to_id      | bigint     | 转入账户                     |
+| money      | int        | 账单操作金额                   |
+| type       | tinyint    | 转账类型（0-默认内部转账，1-充值，2-提现） |
+| created_at | datetime   | 创建时间                     |
+| updated_at | datetime   | 更新时间                     |
+| is_deleted | tinyint(1) | 逻辑删除（0-未删除，1-已删除）        |
 
-* 配送员ID (DeliveryStaffID)
-* 用户ID (User.ID)
-* 配送员姓名 (DeliveryStaffName)
-* 押金 (Deposit)
-* 创建时间 (created_at)
-* 修改时间 (updated_at)
-* 是否删除 (is_deleted)
+### `order` - 订单表
 
-# 商家表 (Merchant)
+| 字段名         | 类型         | 描述                                |
+|-------------|------------|-----------------------------------|
+| id          | bigint     | 订单主键                              |
+| student_id  | bigint     | 学生外键                              |
+| run_id      | bigint     | 跑腿外键                              |
+| shop_id     | bigint     | 商家外键                              |
+| total_price | int        | 商品总价                              |
+| status      | tinyint    | 订单状态（0-备餐中，1-等待跑腿取，2-配送中，3-商品已到达） |
+| type        | tinyint    | 订单类型（0-堂食，1-带走，2-找跑腿）             |
+| target_time | datetime   | 预约时间                              |
+| created_at  | datetime   | 创建时间                              |
+| updated_at  | datetime   | 更新时间                              |
+| is_deleted  | tinyint(1) | 逻辑删除（0-未删除，1-已删除）                 |
 
-* 商家ID (MerchantID)
-* 用户名 (Username)
-* 密码 (Password)
-* 商家名称 (MerchantName)
-* 商家地址 (MerchantAddress)
-* 商家电话 (MerchantPhoneNumber)
-* 创建时间 (created_at)
-* 修改时间 (updated_at)
-* 是否删除 (is_deleted)
+### `order_shop_products_item` - 订单商品表
 
-# 菜品表 (Dish)
+| 字段名              | 类型           | 描述                |
+|------------------|--------------|-------------------|
+| id               | bigint       | 订单商品主键            |
+| order_id         | bigint       | 订单外键              |
+| shop_products_id | bigint       | 商品外键              |
+| count            | tinyint      | 商品数量              |
+| description      | varchar(256) | 商品备注              |
+| created_at       | datetime     | 创建时间              |
+| updated_at       | datetime     | 更新时间              |
+| is_deleted       | tinyint(1)   | 逻辑删除（0-未删除，1-已删除） |
 
-* 菜品ID (DishID)
-* 商家ID (Merchant.ID)
-* 菜品名称 (DishName)
-* 菜品价格 (Price)
-* 菜品描述 (Description)
-* 菜品图片 (Image)
-* 创建时间 (created_at)
-* 修改时间 (updated_at)
-* 是否删除 (is_deleted)
+### `shop` - 商家表
 
-# 订单表 (Order)
+| 字段名        | 类型           | 描述                |
+|------------|--------------|-------------------|
+| id         | bigint       | 商家主键              |
+| username   | varchar(256) | 商家登陆账号            |
+| password   | varchar(512) | 商家登陆密码            |
+| nickname   | varchar(256) | 商家名称              |
+| address    | varchar(256) | 商家地址              |
+| phone      | varchar(256) | 商家联系电话            |
+| created_at | datetime     | 创建时间              |
+| updated_at | datetime     | 更新时间              |
+| is_deleted | tinyint(1)   | 逻辑删除（0-未删除，1-已删除） |
 
-* 订单ID (OrderID)
-* 订单时间 (OrderTime)
-* 订单金额 (TotalAmount)
-* 支付状态 (PaymentStatus)
-* 支付时间 (PaymentTime)
-* 配送地址 (DeliveryAddress)
-* 就餐地址 (DiningAddress)
-* 配送员ID (DeliveryStaffID)
-* 学生用户ID (StudentUserID)
-* 商家ID (MerchantID)
-* 创建时间 (created_at)
-* 修改时间 (updated_at)
-* 是否删除 (is_deleted)
+### `shop_products` - 商品信息表
 
-# 订单菜品表 (OrderDish)
+| 字段名         | 类型           | 描述                |
+|-------------|--------------|-------------------|
+| id          | bigint       | 商品主键              |
+| shop_id     | bigint       | 商家外键              |
+| name        | varchar(256) | 商品名               |
+| description | varchar(512) | 商品详细描述            |
+| img_url     | varchar(256) | 图片地址              |
+| count       | int          | 剩余货量              |
+| price       | int          | 商品价格              |
+| created_at  | datetime     | 创建时间              |
+| updated_at  | datetime     | 更新时间              |
+| is_deleted  | tinyint(1)   | 逻辑删除（0-未删除，1-已删除） |
 
-* 订单ID (OrderID)
-* 菜品ID (DishID)
-* 菜品数量 (Quantity)
-* 创建时间 (created_at)
-* 修改时间 (updated_at)
-* 是否删除 (is_deleted)
+### `shopping_info` - 用户的收货地址信息表
 
-# 管理员表 (Admin)
+| 字段名        | 类型           | 描述                |
+|------------|--------------|-------------------|
+| id         | bigint       | 收货信息主键            |
+| uid        | bigint       | 用户主键              |
+| name       | varchar(64)  | 收货姓名              |
+| location   | varchar(256) | 收货地址              |
+| phone      | varchar(32)  | 联系电话              |
+| created_at | datetime     | 创建时间              |
+| updated_at | datetime     | 更新时间              |
+| is_deleted | tinyint(1)   | 逻辑删除（0-未删除，1-已删除） |
 
-* 管理员ID (AdminID)
-* 用户名 (Username)
-* 密码 (Password)
-* 创建时间 (created_at)
-* 修改时间 (updated_at)
-* 是否删除 (is_deleted)
+### `student` - 用户信息表
 
-# 支付信息表 (PaymentInfo)
-
-* 支付信息ID (PaymentInfoID)
-* 用户ID (UserID)
-* 支付密码 (PaymentPassword)
-* 创建时间 (created_at)
-* 修改时间 (updated_at)
-* 是否删除 (is_deleted)
-
-# 付款记录表 (PaymentRecord)
-
-* 付款记录ID (PaymentRecordID)
-* 订单ID (OrderID)
-* 付款金额 (PaymentAmount)
-* 付款时间 (PaymentTime)
-* 创建时间 (created_at)
-* 修改时间 (updated_at)
-* 是否删除 (is_deleted)
-
-# 退款记录表 (RefundRecord)
-
-* 退款记录ID (RefundRecordID)
-* 订单ID (OrderID)
-* 退款金额 (RefundAmount)
-* 退款时间 (RefundTime)
-* 创建时间 (created_at)
-* 修改时间 (updated_at)
-* 是否删除 (is_deleted)
+| 字段名        | 类型           | 描述                  |
+|------------|--------------|---------------------|
+| id         | bigint       | 学生主键                |
+| username   | varchar(256) | 学生登陆账号              |
+| password   | varchar(256) | 学生登陆密码              |
+| role       | tinyint      | 用户角色（0-学生，1-消费者和跑腿） |
+| created_at | datetime     | 创建时间                |
+| updated_at | datetime     | 更新时间                |
+| is_deleted | tinyint(1)   | 逻辑删除（0-未删除，1-已删除）   |
