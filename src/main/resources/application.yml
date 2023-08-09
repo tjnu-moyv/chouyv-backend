@@ -9,6 +9,9 @@ spring:
   devtools:
     restart:
       enabled: true
+  mvc:
+    servlet:
+      path: /api
 
 mybatis-plus:
   global-config:
@@ -28,3 +31,5 @@ logging:
     dateformat: yyyy-MM-ddTHH:mm:ss.SSS(XXX)
   file:
     name: logs/${spring.application.name}.log
+server:
+  port: 9000
