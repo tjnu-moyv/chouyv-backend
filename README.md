@@ -93,3 +93,125 @@
 
 * 可以添加商家，点击添加商家输入商家用户名和密码
 * 也可以搜索商家查看商家的菜品内容，可以点击菜品内容进行提醒违规发送给商家让其修改
+
+# 丑鱼外卖数据库文档
+
+## 用户表 (User)
+
+* 用户ID (UserID)
+* 用户名 (Username)
+* 密码 (Password)
+* 头像 (Avatar)
+* 角色 (Role)
+* 创建时间 (created_at)
+* 修改时间 (updated_at)
+* 是否删除 (is_deleted)
+
+## 学生用户表 (StudentUser)
+
+* 学生用户ID (StudentUserID)
+* 用户ID (User.ID)
+* 学生姓名 (StudentName)
+* 学生学号 (StudentID)
+* 学生地址 (StudentAddress)
+* 手机号码 (PhoneNumber)
+* 创建时间 (created_at)
+* 修改时间 (updated_at)
+* 是否删除 (is_deleted)
+
+# 配送员表 (DeliveryStaff)
+
+* 配送员ID (DeliveryStaffID)
+* 用户ID (User.ID)
+* 配送员姓名 (DeliveryStaffName)
+* 押金 (Deposit)
+* 创建时间 (created_at)
+* 修改时间 (updated_at)
+* 是否删除 (is_deleted)
+
+# 商家表 (Merchant)
+
+* 商家ID (MerchantID)
+* 用户名 (Username)
+* 密码 (Password)
+* 商家名称 (MerchantName)
+* 商家地址 (MerchantAddress)
+* 商家电话 (MerchantPhoneNumber)
+* 创建时间 (created_at)
+* 修改时间 (updated_at)
+* 是否删除 (is_deleted)
+
+# 菜品表 (Dish)
+
+* 菜品ID (DishID)
+* 商家ID (Merchant.ID)
+* 菜品名称 (DishName)
+* 菜品价格 (Price)
+* 菜品描述 (Description)
+* 菜品图片 (Image)
+* 创建时间 (created_at)
+* 修改时间 (updated_at)
+* 是否删除 (is_deleted)
+
+# 订单表 (Order)
+
+* 订单ID (OrderID)
+* 订单时间 (OrderTime)
+* 订单金额 (TotalAmount)
+* 支付状态 (PaymentStatus)
+* 支付时间 (PaymentTime)
+* 配送地址 (DeliveryAddress)
+* 就餐地址 (DiningAddress)
+* 配送员ID (DeliveryStaffID)
+* 学生用户ID (StudentUserID)
+* 商家ID (MerchantID)
+* 创建时间 (created_at)
+* 修改时间 (updated_at)
+* 是否删除 (is_deleted)
+
+# 订单菜品表 (OrderDish)
+
+* 订单ID (OrderID)
+* 菜品ID (DishID)
+* 菜品数量 (Quantity)
+* 创建时间 (created_at)
+* 修改时间 (updated_at)
+* 是否删除 (is_deleted)
+
+# 管理员表 (Admin)
+
+* 管理员ID (AdminID)
+* 用户名 (Username)
+* 密码 (Password)
+* 创建时间 (created_at)
+* 修改时间 (updated_at)
+* 是否删除 (is_deleted)
+
+# 支付信息表 (PaymentInfo)
+
+* 支付信息ID (PaymentInfoID)
+* 用户ID (UserID)
+* 支付密码 (PaymentPassword)
+* 创建时间 (created_at)
+* 修改时间 (updated_at)
+* 是否删除 (is_deleted)
+
+# 付款记录表 (PaymentRecord)
+
+* 付款记录ID (PaymentRecordID)
+* 订单ID (OrderID)
+* 付款金额 (PaymentAmount)
+* 付款时间 (PaymentTime)
+* 创建时间 (created_at)
+* 修改时间 (updated_at)
+* 是否删除 (is_deleted)
+
+# 退款记录表 (RefundRecord)
+
+* 退款记录ID (RefundRecordID)
+* 订单ID (OrderID)
+* 退款金额 (RefundAmount)
+* 退款时间 (RefundTime)
+* 创建时间 (created_at)
+* 修改时间 (updated_at)
+* 是否删除 (is_deleted)
