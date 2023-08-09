@@ -1,6 +1,7 @@
 package cn.chouyv.common;
 
 import cn.chouyv.exception.ChouYvException;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.Data;
 
 /**
@@ -16,7 +17,7 @@ public class BaseResponse<T> {
     private String message;
     private String description;
 
-    private BaseResponse(int code, T data, String message, String description) {
+    public BaseResponse(int code, T data, String message, String description) {
         this.code = code;
         this.data = data;
         this.message = message;
@@ -61,7 +62,20 @@ public class BaseResponse<T> {
      * @param <T>  返回数据的类型
      * @return 返回体
      */
-    public static <T> BaseResponse<T> success(T data) {
+    public <T> BaseResponse<T> success(T data) {
         return new BaseResponse<>(0, data, null, null);
+    }
+
+
+    /**
+     * 成功（指定code）
+     *
+     * @param code 代码
+     * @param data 数据
+     * @return {@link BaseResponse}<{@link T}>
+     */
+
+    public   BaseResponse<T> success(Integer code,T data){
+        return new BaseResponse(code,data,null,null);
     }
 }
