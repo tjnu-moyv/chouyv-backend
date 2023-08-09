@@ -6,6 +6,9 @@ spring:
     password: root
   application:
     name: chouyv
+  devtools:
+    restart:
+      enabled: true
 
 mybatis-plus:
   global-config:
