@@ -30,7 +30,3 @@ logging:
     name: logs/${spring.application.name}.log
 server:
   port: 9000
-
-cn:
-  chouyv:
-    machine-id: 1
