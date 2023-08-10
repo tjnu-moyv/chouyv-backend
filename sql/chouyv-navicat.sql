@@ -168,13 +168,14 @@ CREATE TABLE `shopping_info`
 DROP TABLE IF EXISTS `student`;
 CREATE TABLE `student`
 (
-    `id`         bigint                                                        NOT NULL AUTO_INCREMENT COMMENT '学生主键',
-    `username`   varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '学生登陆账号',
-    `password`   varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '学生登陆密码',
-    `role`       tinyint                                                       NOT NULL DEFAULT 0 COMMENT '用户角色 0-学生(正常消费者) 1-消费者and跑腿',
-    `created_at` datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `updated_at` datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    `is_deleted` tinyint(1)                                                    NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
+    `id`               bigint                                                        NOT NULL AUTO_INCREMENT COMMENT '学生主键',
+    `username`         varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '学生登陆账号',
+    `password`         varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '学生登陆密码',
+    `role`             tinyint                                                       NOT NULL DEFAULT 0 COMMENT '用户角色 0-学生(正常消费者) 1-消费者and跑腿',
+    `shopping_info_id` bigint                                                        NOT NULL COMMENT '收货地址外键',
+    `created_at`       datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at`       datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `is_deleted`       tinyint(1)                                                    NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
