@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.annotation.*;
 import java.io.Serializable;
 import java.util.Date;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 用户信息表
@@ -13,12 +15,33 @@ import lombok.Data;
  * @author SurKaa
  * @TableName student
  */
-@TableName(value = "student")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@TableName(value = "student")
 public class Student implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 2359052728423062590L;
+
+    public Student(Long id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
+
+    public static Student safe(Student student) {
+        Student res = new Student();
+        res.id = student.id;
+        res.username = student.username;
+        // res.password = student.password;
+        res.role = student.role;
+        res.shoppingInfoId = student.shoppingInfoId;
+        res.createdAt = student.createdAt;
+        res.updatedAt = student.updatedAt;
+        res.isDeleted = student.isDeleted;
+        return res;
+    }
 
     /**
      * 学生主键

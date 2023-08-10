@@ -20,4 +20,7 @@
         role,shopping_info_id,created_at,
         updated_at,is_deleted
     </sql>
+    <select id="selectOneByUsername" resultType="cn.chouyv.domain.Student">
+        SELECT * FROM student WHERE username = #{username} AND is_deleted = 0
+    </select>
 </mapper>

@@ -1,6 +1,6 @@
 package cn.chouyv.controller;
 
-import cn.chouyv.common.BaseResponse;
+import cn.chouyv.common.response.BaseResponse;
 import cn.chouyv.common.shop.ShopResponse;
 import cn.chouyv.domain.Shop;
 import cn.chouyv.service.ShopService;

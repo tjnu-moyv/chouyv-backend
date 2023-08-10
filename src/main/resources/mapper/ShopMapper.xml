@@ -22,6 +22,6 @@
         created_at,updated_at,is_deleted
     </sql>
     <select id="selectOneByIdShop" resultType="cn.chouyv.domain.Shop">
-        SELECT * FROM shop where id = #{id}
+        SELECT * FROM shop where id = #{id} AND is_deleted = 0
     </select>
 </mapper>
