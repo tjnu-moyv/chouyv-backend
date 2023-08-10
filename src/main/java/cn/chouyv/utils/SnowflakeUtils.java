@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class SnowflakeUtils {
 
     @Value("${cn.chouyv.machine-id}")
-    private Integer machineId;
+    private Integer machineId = 0;
 
     private volatile Snowflake snowflakeOfStudent;
     private volatile Snowflake snowflakeOfShop;
