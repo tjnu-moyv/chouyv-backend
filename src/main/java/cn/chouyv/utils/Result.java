@@ -1,6 +1,6 @@
 package cn.chouyv.utils;
 
-import cn.chouyv.common.BaseResponse;
+import cn.chouyv.common.response.BaseResponse;
 import cn.chouyv.exception.ChouYvException;
 
 /**
