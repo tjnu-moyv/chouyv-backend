@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class SnowflakeUtils {
 
-    @Value("${cn.chouyv.machine-id}")
-    private Integer machineId = 0;
+    @Value("${cn.chouyv.machine-id:0}")
+    private Integer machineId;
 
     private volatile Snowflake snowflakeOfStudent;
     private volatile Snowflake snowflakeOfShop;
