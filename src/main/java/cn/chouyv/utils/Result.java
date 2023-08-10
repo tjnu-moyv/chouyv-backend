@@ -1,27 +1,14 @@
-package cn.chouyv.common;
+package cn.chouyv.utils;
 
+import cn.chouyv.common.response.BaseResponse;
 import cn.chouyv.exception.ChouYvException;
-import lombok.Data;
 
 /**
- * 统一的返回体
- *
  * @author SurKaa
  */
-@Data
-public class BaseResponse<T> {
+public class Result {
 
-    private int code;
-    private T data;
-    private String message;
-    private String description;
-
-    private BaseResponse(int code, T data, String message, String description) {
-        this.code = code;
-        this.data = data;
-        this.message = message;
-        this.description = description;
-    }
+    public static final int SUCCESS_CODE = 0;
 
     /**
      * 错误返回体
@@ -62,6 +49,7 @@ public class BaseResponse<T> {
      * @return 返回体
      */
     public static <T> BaseResponse<T> success(T data) {
-        return new BaseResponse<>(0, data, null, null);
+        return new BaseResponse<>(SUCCESS_CODE, data, null, null);
     }
+
 }
