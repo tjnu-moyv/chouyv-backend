@@ -1,15 +1,20 @@
 package cn.chouyv.controller;
 
-import cn.chouyv.common.BaseResponse;
+import cn.chouyv.common.request.StudentLoginRequest;
+import cn.chouyv.common.request.StudentRegisterRequest;
+import cn.chouyv.common.response.AuthResponse;
+import cn.chouyv.common.response.BaseResponse;
 import cn.chouyv.service.StudentService;
 import cn.chouyv.utils.Result;
-import org.springframework.web.bind.annotation.GetMapping;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author SurKaa
  */
+@Slf4j
 @RestController
 @RequestMapping("/students")
 public class StudentController {
@@ -20,8 +25,21 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping
-    public BaseResponse<Integer> test() {
-        return Result.success(1);
+    @PostMapping("/register")
+    public BaseResponse<AuthResponse> register(
+            StudentRegisterRequest registerRequest
+    ) {
+        log.info("Register: {}", registerRequest);
+        AuthResponse response = studentService.registerStudent(registerRequest);
+        return Result.success(response);
+    }
+
+    @PostMapping("/login")
+    public BaseResponse<AuthResponse> login(
+            StudentLoginRequest loginRequest
+    ) {
+        log.info("Login: {}", loginRequest);
+        AuthResponse response = studentService.loginStudent(loginRequest);
+        return Result.success(response);
     }
 }
