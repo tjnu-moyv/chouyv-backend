@@ -1,6 +1,9 @@
 package cn.chouyv.controller;
 
+import cn.chouyv.common.BaseResponse;
 import cn.chouyv.service.StudentService;
+import cn.chouyv.utils.Result;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,5 +18,10 @@ public class StudentController {
 
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
+    }
+
+    @GetMapping
+    public BaseResponse<Integer> test() {
+        return Result.success(1);
     }
 }

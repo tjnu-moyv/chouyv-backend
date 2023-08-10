@@ -1,10 +1,15 @@
 package cn.chouyv.utils;
 
-import cn.chouyv.common.response.BaseResponse;
+import cn.chouyv.common.BaseResponse;
 import cn.chouyv.exception.ChouYvException;
 
 /**
  * @author SurKaa
+ * Created with IntelliJ IDEA.
+ *
+ * @Author: wang
+ * @Date: 2023/08/09/17:19
+ * @Description:
  */
 public class Result {
 
@@ -50,6 +55,17 @@ public class Result {
      */
     public static <T> BaseResponse<T> success(T data) {
         return new BaseResponse<>(SUCCESS_CODE, data, null, null);
+    }
+
+    /**
+     * 成功（指定code）
+     *
+     * @param code 代码
+     * @param data 数据
+     * @return {@link BaseResponse}<{@link T}>
+     */
+    public static <T> BaseResponse<T> success(Integer code, T data) {
+        return new BaseResponse<>(code, data, null, null);
     }
 
 }
