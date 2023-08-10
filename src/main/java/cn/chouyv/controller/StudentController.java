@@ -7,9 +7,7 @@ import cn.chouyv.common.response.BaseResponse;
 import cn.chouyv.service.StudentService;
 import cn.chouyv.utils.Result;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author SurKaa
@@ -27,7 +25,7 @@ public class StudentController {
 
     @PostMapping("/register")
     public BaseResponse<AuthResponse> register(
-            StudentRegisterRequest registerRequest
+            @RequestBody StudentRegisterRequest registerRequest
     ) {
         log.info("Register: {}", registerRequest);
         AuthResponse response = studentService.registerStudent(registerRequest);
@@ -36,7 +34,7 @@ public class StudentController {
 
     @PostMapping("/login")
     public BaseResponse<AuthResponse> login(
-            StudentLoginRequest loginRequest
+            @RequestBody StudentLoginRequest loginRequest
     ) {
         log.info("Login: {}", loginRequest);
         AuthResponse response = studentService.loginStudent(loginRequest);
