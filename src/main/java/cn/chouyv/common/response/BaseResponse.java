@@ -1,8 +1,6 @@
-package cn.chouyv.common;
+package cn.chouyv.common.response;
 
 import lombok.Data;
-
-import java.io.Serializable;
 
 /**
  * 统一的返回体
@@ -10,7 +8,7 @@ import java.io.Serializable;
  * @author SurKaa
  */
 @Data
-public class BaseResponse<T> implements Serializable {
+public class BaseResponse<T> {
 
     private int code;
     private T data;
@@ -23,5 +21,4 @@ public class BaseResponse<T> implements Serializable {
         this.message = message;
         this.description = description;
     }
-
 }

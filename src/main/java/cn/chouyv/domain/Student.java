@@ -18,7 +18,7 @@ import lombok.Data;
 public class Student implements Serializable {
 
     @TableField(exist = false)
-    private static final long serialVersionUID = -611689391808861586L;
+    private static final long serialVersionUID = 2359052728423062590L;
 
     /**
      * 学生主键
@@ -40,6 +40,11 @@ public class Student implements Serializable {
      * 用户角色 0-学生(正常消费者) 1-消费者and跑腿
      */
     private Integer role;
+
+    /**
+     * 收货地址外键
+     */
+    private Long shoppingInfoId;
 
     /**
      * 创建时间

@@ -4,6 +4,7 @@ import cn.chouyv.common.BaseResponse;
 import cn.chouyv.exception.ChouYvException;
 
 /**
+ * @author SurKaa
  * Created with IntelliJ IDEA.
  *
  * @Author: wang
@@ -11,6 +12,8 @@ import cn.chouyv.exception.ChouYvException;
  * @Description:
  */
 public class Result {
+
+    public static final int SUCCESS_CODE = 0;
 
     /**
      * 错误返回体
@@ -51,9 +54,8 @@ public class Result {
      * @return 返回体
      */
     public static <T> BaseResponse<T> success(T data) {
-        return new BaseResponse<>(0, data, null, null);
+        return new BaseResponse<>(SUCCESS_CODE, data, null, null);
     }
-
 
     /**
      * 成功（指定code）
@@ -62,9 +64,8 @@ public class Result {
      * @param data 数据
      * @return {@link BaseResponse}<{@link T}>
      */
-
     public static <T> BaseResponse<T> success(Integer code, T data) {
-        return new BaseResponse(code, data, null, null);
+        return new BaseResponse<>(code, data, null, null);
     }
 
 }
