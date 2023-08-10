@@ -106,7 +106,7 @@ POST /shops/login
 
 ## POST 学生登录
 
-POST /student/login
+POST /students/login
 
 > Body 请求参数
 
@@ -160,7 +160,7 @@ POST /student/login
 
 ## POST 学生注册
 
-POST /student/register
+POST /students/register
 
 > Body 请求参数
 
@@ -216,7 +216,7 @@ POST /student/register
 
 ## GET 获取学生信息
 
-GET /student
+GET /students
 
 ### 请求参数
 
