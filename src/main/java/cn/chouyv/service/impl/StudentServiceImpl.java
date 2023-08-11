@@ -29,7 +29,6 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
 
     private final JwtHandle jwtHandle;
     private final SnowflakeUtils snowflake;
-    private static final int HOUR_OF_EXPERIENCE = 1;
 
     public StudentServiceImpl(JwtHandle jwtHandle, SnowflakeUtils snowflake) {
         this.jwtHandle = jwtHandle;
@@ -87,7 +86,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
             // 注册失败
             throw RegisterException.error("注册失败");
         }
-        String token = jwtHandle.generateToken(id, username, HOUR_OF_EXPERIENCE);
+        String token = jwtHandle.generateToken(id, username);
         log.debug("注册成功 token: {}", token);
         return new AuthResponse(id, username, token);
     }
@@ -133,7 +132,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
 
         Student safe = Student.safe(byUsername);
         String token = jwtHandle.generateToken(
-                safe.getId(), safe.getUsername(), HOUR_OF_EXPERIENCE);
+                safe.getId(), safe.getUsername());
         log.debug("登录成功 token: {}", token);
         return new AuthResponse(safe.getId(), safe.getUsername(), token);
     }
