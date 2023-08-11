@@ -1,12 +1,13 @@
 package cn.chouyv.utils;
 
+import cn.chouyv.exception.TokenException;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Date;
 import java.util.Objects;
 
 import static cn.hutool.jwt.RegisteredPayload.*;
@@ -23,71 +24,50 @@ public class JwtHandle {
     @Value("${cn.chouyv.jwt.secrets-key}")
     private String secretKey;
 
-    // 过期时间(两个小时)
-    private static final long EXPIRATION_TIME = 3600_000L;
-
+    // 默认过期时间(单位 秒)
+    private static final int EXPIRATION_MINUTE = 120 * 60;
 
     /**
      * 生成JWT token
      *
      * @param id       用户主键
      * @param username 用户名
-     * @param hours    过期小时数
      * @return token
      */
-    public String generateToken(long id, String username, int hours) {
-        Map<String, Object> payload = new HashMap<>();
-        long exp = System.currentTimeMillis() + EXPIRATION_TIME * hours;
-        payload.put(ISSUER, id);
-        payload.put(SUBJECT, username);
-        payload.put(EXPIRES_AT, exp);
-        return JWTUtil.createToken(payload, secretKey.getBytes());
+    public String generateToken(long id, String username) {
+        return this.generateToken(id, username, EXPIRATION_MINUTE);
     }
 
     /**
-     * 验证token的合法性
+     * 生成JWT token
+     *
+     * @param id       用户主键
+     * @param username 用户名
+     * @param second   过期秒数
+     * @return token
+     */
+    public String generateToken(long id, String username, int second) {
+        return new JWT()
+                .setIssuer(String.valueOf(id))
+                .setSubject(username)
+                .setExpiresAt(DateUtil.offsetSecond(new Date(), second))
+                .setKey(secretKey.getBytes())
+                .sign();
+    }
+
+    /**
+     * 验证token的合法性 包括检验了过期时间
      *
      * @param token token
-     * @return 是否合法
+     * @return JWT token
+     * @throws TokenException jwt不合法 过期 或者异常
      */
-    public boolean validate(String token) {
-        return this.validate(token, null, null);
+    public JWT validate(String token) throws TokenException {
+        JWT jwt = JWT.of(token);
+        if (jwt.setKey(secretKey.getBytes()).validate(5)) {
+            return jwt;
+        }
+        throw TokenException.error("非法token或者过期token");
     }
-
-    /**
-     * 验证token的合法性
-     *
-     * @param token    token
-     * @param id       id
-     * @param username username
-     * @return 是否合法
-     */
-    public boolean validate(String token, Long id, String username) {
-        if (!JWTUtil.verify(token, secretKey.getBytes())) {
-            return false;
-        }
-        // 解析 token
-        final JWT jwt = JWTUtil.parseToken(token);
-
-        // 检验id
-        String idStr = (String) jwt.getPayload(ISSUER);
-        Long idLong = Long.parseLong(idStr);
-        if (id != null && !Objects.equals(idLong, id)) {
-            return false;
-        }
-
-        // 检验用户名
-        if (username != null) {
-            String usernameStr = (String) jwt.getPayload(SUBJECT);
-            if (usernameStr.length() > 0
-                    && Objects.equals(usernameStr, username)) {
-                return false;
-            }
-        }
-
-        // 检验过期时间
-        return jwt.validate(5);
-    }
-
 
 }
