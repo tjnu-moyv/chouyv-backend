@@ -1,6 +1,7 @@
 package cn.chouyv.service;
 
 import cn.chouyv.common.request.StudentLoginRequest;
+
 import cn.chouyv.common.request.StudentRegisterRequest;
 import cn.chouyv.common.response.AuthResponse;
 import cn.chouyv.domain.Student;

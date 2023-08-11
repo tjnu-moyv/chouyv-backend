@@ -1,10 +1,16 @@
 package cn.chouyv.service.impl;
 
+import cn.chouyv.common.response.ShopListInfoResponse;
+import cn.chouyv.common.response.ShopListResponse;
+import cn.chouyv.common.response.ShoppingInfoResponse;
 import cn.chouyv.domain.Shop;
+import cn.chouyv.exception.ShopInfoException;
 import cn.chouyv.mapper.ShopMapper;
 import cn.chouyv.service.ShopService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author SurKaa
@@ -16,8 +22,17 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
         implements ShopService {
 
     @Override
-    public Shop getShopInfoByid(Integer id) {
+    public Shop getShopInfoByid(long id) {
+        if (getBaseMapper().selectById(id) == null) {
+            throw ShopInfoException.error("id错误");
+        }
         return getBaseMapper().selectById(id);
+    }
+
+    @Override
+    public ShopListResponse getAllShopsInfo(){
+        ShopListResponse shopListResponse=ShopListResponse.toShopListResponse(getBaseMapper().getAllShopsInfo());
+        return shopListResponse;
     }
 }
 

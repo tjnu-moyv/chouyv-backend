@@ -1,8 +1,12 @@
 package cn.chouyv.mapper;
 
+import cn.chouyv.common.response.ShopListInfoResponse;
+import cn.chouyv.common.response.ShoppingInfoResponse;
 import cn.chouyv.domain.Shop;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * @author SurKaa
@@ -20,6 +24,8 @@ public interface ShopMapper extends BaseMapper<Shop> {
      * @return {@link Shop}
      */
     Shop selectOneByIdShop(long id);
+
+    List<ShopListInfoResponse> getAllShopsInfo();
 
 }
 
