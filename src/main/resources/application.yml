@@ -23,7 +23,7 @@ mybatis:
 
 logging:
   level:
-    com.example: debug
+    cn.chouyv: debug
   pattern:
     dateformat: yyyy-MM-ddTHH:mm:ss.SSS(XXX)
   file:

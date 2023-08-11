@@ -3,18 +3,26 @@ package cn.chouyv.service.impl;
 import cn.chouyv.common.request.StudentLoginRequest;
 import cn.chouyv.common.request.StudentRegisterRequest;
 import cn.chouyv.common.response.AuthResponse;
+import cn.chouyv.common.response.StudentInfoResponse;
+import cn.chouyv.domain.ShoppingInfo;
 import cn.chouyv.domain.Student;
 import cn.chouyv.exception.LoginException;
 import cn.chouyv.exception.RegisterException;
+import cn.chouyv.exception.TokenException;
+import cn.chouyv.mapper.ShoppingInfoMapper;
 import cn.chouyv.mapper.StudentMapper;
 import cn.chouyv.service.StudentService;
 import cn.chouyv.utils.JwtHandle;
 import cn.chouyv.utils.SnowflakeUtils;
+import cn.hutool.jwt.JWT;
+import cn.hutool.jwt.JWTPayload;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -27,11 +35,16 @@ import java.util.Objects;
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         implements StudentService {
 
+    private final ShoppingInfoMapper shoppingInfoMapper;
     private final JwtHandle jwtHandle;
     private final SnowflakeUtils snowflake;
-    private static final int HOUR_OF_EXPERIENCE = 1;
 
-    public StudentServiceImpl(JwtHandle jwtHandle, SnowflakeUtils snowflake) {
+    public StudentServiceImpl(
+            ShoppingInfoMapper shoppingInfoMapper,
+            JwtHandle jwtHandle,
+            SnowflakeUtils snowflake
+    ) {
+        this.shoppingInfoMapper = shoppingInfoMapper;
         this.jwtHandle = jwtHandle;
         this.snowflake = snowflake;
     }
@@ -87,7 +100,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
             // 注册失败
             throw RegisterException.error("注册失败");
         }
-        String token = jwtHandle.generateToken(id, username, HOUR_OF_EXPERIENCE);
+        String token = jwtHandle.generateToken(id, username);
         log.debug("注册成功 token: {}", token);
         return new AuthResponse(id, username, token);
     }
@@ -133,9 +146,43 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
 
         Student safe = Student.safe(byUsername);
         String token = jwtHandle.generateToken(
-                safe.getId(), safe.getUsername(), HOUR_OF_EXPERIENCE);
+                safe.getId(), safe.getUsername());
         log.debug("登录成功 token: {}", token);
         return new AuthResponse(safe.getId(), safe.getUsername(), token);
+    }
+
+    @Override
+    public StudentInfoResponse infoStudent(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        log.debug("info token: {}", token);
+        JWT jwt = jwtHandle.validate(token);
+        try {
+            String idStr = (String) jwt.getPayload(JWTPayload.ISSUER);
+            long id = Long.parseLong(idStr);
+            log.debug("idStr: {}", id);
+            Student byId = getBaseMapper().selectOneById(id);
+            if (null == byId) {
+                throw TokenException.error("异常token");
+            }
+            log.debug("byId: {}", byId);
+            String username = (String) jwt.getPayload(JWTPayload.SUBJECT);
+            log.debug("username: {}", username);
+            if (!Objects.equals(username, byId.getUsername())) {
+                throw TokenException.error("异常token");
+            }
+
+            log.debug("开始获取收货地址信息");
+            List<ShoppingInfo> shoppingInfos
+                    = shoppingInfoMapper.selectAllByUid(id);
+
+            return new StudentInfoResponse(byId, shoppingInfos);
+        } catch (ClassCastException e) {
+            // String idObj = `(String)` jwt.getPayload(JWTPayload.ISSUER);
+            throw TokenException.error("非法token");
+        } catch (NumberFormatException e) {
+            // long id = Long.`parseLong`(idObj);
+            throw TokenException.error("异常token");
+        }
     }
 
     private static boolean checkCharInAuthString(String authString) {

@@ -20,6 +20,14 @@ public interface StudentMapper extends BaseMapper<Student> {
      * @return 学生
      */
     Student selectOneByUsername(String username);
+
+    /**
+     * 通过id获取学生
+     *
+     * @param id 学生id(long)
+     * @return 学生
+     */
+    Student selectOneById(long id);
 }
 
 

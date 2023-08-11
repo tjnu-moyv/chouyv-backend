@@ -4,8 +4,11 @@ import cn.chouyv.common.request.StudentLoginRequest;
 
 import cn.chouyv.common.request.StudentRegisterRequest;
 import cn.chouyv.common.response.AuthResponse;
+import cn.chouyv.common.response.StudentInfoResponse;
 import cn.chouyv.domain.Student;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author SurKaa
@@ -29,5 +32,7 @@ public interface StudentService extends IService<Student> {
      * @return 登录返回体
      */
     AuthResponse loginStudent(StudentLoginRequest loginRequest);
+
+    StudentInfoResponse infoStudent(HttpServletRequest request);
 
 }
