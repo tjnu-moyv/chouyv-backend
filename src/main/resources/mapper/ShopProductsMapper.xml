@@ -23,4 +23,7 @@
         price,created_at,updated_at,
         is_deleted
     </sql>
+    <select id="selectAllByShopIdList" resultType="cn.chouyv.domain.ShopProducts">
+        SELECT * FROM shop_products where shop_id = #{shopId}
+    </select>
 </mapper>
