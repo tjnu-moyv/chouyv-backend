@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * @author SurKaa
  */
 @Slf4j
+@CrossOrigin
 @RestController
 @RequestMapping("/students")
 public class StudentController {
