@@ -1,8 +1,8 @@
 package cn.chouyv.utils;
 
+import cn.chouyv.config.ChouYvProperties;
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,11 +13,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class SnowflakeUtils {
 
-    @Value("${cn.chouyv.machine-id:0}")
-    private Integer machineId;
+    private final ChouYvProperties properties;
 
     private volatile Snowflake snowflakeOfStudent;
     private volatile Snowflake snowflakeOfShop;
+
+    public SnowflakeUtils(ChouYvProperties properties) {
+        this.properties = properties;
+    }
 
     /**
      * 雪花算法分布式生成唯一id
@@ -28,7 +31,10 @@ public class SnowflakeUtils {
         if (snowflakeOfStudent == null) {
             synchronized (SnowflakeUtils.class) {
                 if (snowflakeOfStudent == null) {
-                    snowflakeOfStudent = IdUtil.getSnowflake(machineId, 1);
+                    snowflakeOfStudent = IdUtil.getSnowflake(
+                            properties.getMachineId(),
+                            1
+                    );
                 }
             }
         }
@@ -44,7 +50,10 @@ public class SnowflakeUtils {
         if (snowflakeOfShop == null) {
             synchronized (SnowflakeUtils.class) {
                 if (snowflakeOfShop == null) {
-                    snowflakeOfShop = IdUtil.getSnowflake(machineId, 2);
+                    snowflakeOfShop = IdUtil.getSnowflake(
+                            properties.getMachineId(),
+                            2
+                    );
                 }
             }
         }
