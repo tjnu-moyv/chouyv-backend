@@ -1,16 +1,12 @@
 package cn.chouyv.utils;
 
+import cn.chouyv.config.ChouYvProperties;
 import cn.chouyv.exception.TokenException;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.jwt.JWT;
-import cn.hutool.jwt.JWTUtil;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.Objects;
-
-import static cn.hutool.jwt.RegisteredPayload.*;
 
 /**
  * Jwt生成token以及鉴权
@@ -20,12 +16,14 @@ import static cn.hutool.jwt.RegisteredPayload.*;
 @Component
 public class JwtHandle {
 
-    // 读取密钥
-    @Value("${cn.chouyv.jwt.secrets-key}")
-    private String secretKey;
+    private final ChouYvProperties properties;
 
     // 默认过期时间(单位 秒)
     private static final int EXPIRATION_MINUTE = 120 * 60;
+
+    public JwtHandle(ChouYvProperties properties) {
+        this.properties = properties;
+    }
 
     /**
      * 生成JWT token
@@ -51,7 +49,7 @@ public class JwtHandle {
                 .setIssuer(String.valueOf(id))
                 .setSubject(username)
                 .setExpiresAt(DateUtil.offsetSecond(new Date(), second))
-                .setKey(secretKey.getBytes())
+                .setKey(properties.getJwtSecretKey())
                 .sign();
     }
 
@@ -64,7 +62,7 @@ public class JwtHandle {
      */
     public JWT validate(String token) throws TokenException {
         JWT jwt = JWT.of(token);
-        if (jwt.setKey(secretKey.getBytes()).validate(5)) {
+        if (jwt.setKey(properties.getJwtSecretKey()).validate(5)) {
             return jwt;
         }
         throw TokenException.error("非法token或者过期token");
