@@ -155,17 +155,15 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     public StudentInfoResponse infoStudent(HttpServletRequest request) {
         String token = request.getHeader("token");
         log.debug("info token: {}", token);
-        JWT jwt = jwtHandle.validate(token);
         try {
-            String idStr = (String) jwt.getPayload(JWTPayload.ISSUER);
-            long id = Long.parseLong(idStr);
+            long id = Long.parseLong((String) request.getAttribute("id"));
             log.debug("idStr: {}", id);
             Student byId = getBaseMapper().selectOneById(id);
             if (null == byId) {
                 throw TokenException.error("异常token");
             }
             log.debug("byId: {}", byId);
-            String username = (String) jwt.getPayload(JWTPayload.SUBJECT);
+            String username = (String) request.getAttribute("username");
             log.debug("username: {}", username);
             if (!Objects.equals(username, byId.getUsername())) {
                 throw TokenException.error("异常token");
