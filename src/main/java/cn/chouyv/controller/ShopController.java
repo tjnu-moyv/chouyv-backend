@@ -14,10 +14,7 @@ import cn.chouyv.service.ShopProductsService;
 import cn.chouyv.service.ShopService;
 import cn.chouyv.utils.Result;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,15 +42,15 @@ public class ShopController {
     }
 
 
-    @GetMapping("/shop")
-    public BaseResponse<ShopResponse> getShopInfoById(@RequestParam Integer id) {
-        log.info("收到请求 参数id={}", id);
-        Shop shopInfoById = shopService.getShopInfoByid(id);
-        ShopResponse shopResponse = ShopResponse.toShopResponse(shopInfoById);
-        return Result.success(200, shopResponse);
-    }
+//    @GetMapping
+//    public BaseResponse<ShopResponse> getShopInfoById(@RequestParam Integer id) {
+//        log.info("收到请求 参数id={}", id);
+//        Shop shopInfoById = shopService.getShopInfoByid(id);
+//        ShopResponse shopResponse = ShopResponse.toShopResponse(shopInfoById);
+//        return Result.success(200, shopResponse);
+//    }
 
-    @GetMapping("shop_and_product")
+    @GetMapping
     public BaseResponse<ShopAndProductResponse> getShopAndProductResponse(@RequestParam long id) {
         Shop shopInfoByid = shopService.getShopInfoByid(id);
         ShopResponse shopResponse = ShopResponse.toShopResponse(shopInfoByid);
@@ -61,7 +58,7 @@ public class ShopController {
         return Result.success(SUCCESS.getCode(), shopAndProductResponse);
     }
 
-    @GetMapping("shoplist")
+    @PostMapping
     public BaseResponse<ShopListResponse> getAllShopsInfo(){
             ShopListResponse shopListResponse=shopService.getAllShopsInfo();
             return Result.success(SUCCESS.getCode(),shopListResponse);
