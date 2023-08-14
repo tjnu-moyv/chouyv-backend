@@ -33,7 +33,6 @@ public class StudentInfoResponse implements Serializable {
         this.username = student.getUsername();
         this.role = student.getRole();
         this.createdAt = student.getCreatedAt().getTime();
-        this.shoppingInfoId = student.getShoppingInfoId();
         this.arrayOfShoppingInfo = shoppingInfos;
     }
 
