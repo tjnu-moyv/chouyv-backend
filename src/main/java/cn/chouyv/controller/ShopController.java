@@ -1,25 +1,15 @@
 package cn.chouyv.controller;
 
 import cn.chouyv.common.response.BaseResponse;
-import cn.chouyv.common.response.ShopListInfoResponse;
 import cn.chouyv.common.response.ShopListResponse;
-import cn.chouyv.common.response.ShoppingInfoResponse;
 import cn.chouyv.common.shop.ShopAndProductResponse;
 import cn.chouyv.common.shop.ShopResponse;
 import cn.chouyv.domain.Shop;
-import cn.chouyv.domain.ShopProducts;
-import cn.chouyv.domain.ShoppingInfo;
-import cn.chouyv.exception.ShopInfoException;
 import cn.chouyv.service.ShopProductsService;
 import cn.chouyv.service.ShopService;
 import cn.chouyv.utils.Result;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 import static cn.chouyv.exception.ChouYvError.SUCCESS;
 
@@ -45,26 +35,28 @@ public class ShopController {
     }
 
 
-    @GetMapping("/shop")
-    public BaseResponse<ShopResponse> getShopInfoById(@RequestParam Integer id) {
-        log.info("收到请求 参数id={}", id);
-        Shop shopInfoById = shopService.getShopInfoByid(id);
-        ShopResponse shopResponse = ShopResponse.toShopResponse(shopInfoById);
-        return Result.success(200, shopResponse);
-    }
+//    @GetMapping
+//    public BaseResponse<ShopResponse> getShopInfoById(@RequestParam Integer id) {
+//        log.info("收到请求 参数id={}", id);
+//        Shop shopInfoById = shopService.getShopInfoByid(id);
+//        ShopResponse shopResponse = ShopResponse.toShopResponse(shopInfoById);
+//        return Result.success(200, shopResponse);
+//    }
 
-    @GetMapping("shop_and_product")
+    @GetMapping
     public BaseResponse<ShopAndProductResponse> getShopAndProductResponse(@RequestParam long id) {
-        Shop shopInfoByid = shopService.getShopInfoByid(id);
-        ShopResponse shopResponse = ShopResponse.toShopResponse(shopInfoByid);
-        ShopAndProductResponse shopAndProductResponse = ShopAndProductResponse.toShopAndProductResponse(shopResponse, shopProductsService.getShopProductsById(id));
+        Shop shopInfoById = shopService.getShopInfoById(id);
+        ShopResponse shopResponse = ShopResponse.toShopResponse(shopInfoById);
+        ShopAndProductResponse shopAndProductResponse = new ShopAndProductResponse(shopResponse, shopProductsService.getShopProductsById(id));
         return Result.success(SUCCESS.getCode(), shopAndProductResponse);
     }
 
-    @GetMapping("shoplist")
-    public BaseResponse<ShopListResponse> getAllShopsInfo(){
-            ShopListResponse shopListResponse=shopService.getAllShopsInfo();
-            return Result.success(SUCCESS.getCode(),shopListResponse);
+    @PostMapping
+    public BaseResponse<ShopListResponse> getAllShopsInfo(
+    ) {
+
+        ShopListResponse shopListResponse = shopService.getAllShopsInfo();
+        return Result.success(SUCCESS.getCode(), shopListResponse);
     }
 
 }

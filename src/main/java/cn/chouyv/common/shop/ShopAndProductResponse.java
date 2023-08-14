@@ -24,9 +24,4 @@ public class ShopAndProductResponse {
     private ShopResponse shopResponse;
     private List<ShopProducts> shopProducts;
 
-
-    public static ShopAndProductResponse toShopAndProductResponse(ShopResponse shopResponse, List<ShopProducts> shopProducts) {
-        return new ShopAndProductResponse(shopResponse, shopProducts);
-    }
-
 }

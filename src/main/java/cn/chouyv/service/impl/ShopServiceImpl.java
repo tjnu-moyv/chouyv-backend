@@ -22,7 +22,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
         implements ShopService {
 
     @Override
-    public Shop getShopInfoByid(long id) {
+    public Shop getShopInfoById(long id) {
         if (getBaseMapper().selectById(id) == null) {
             throw ShopInfoException.error("id错误");
         }

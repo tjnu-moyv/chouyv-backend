@@ -1,12 +1,8 @@
 package cn.chouyv.service;
 
-import cn.chouyv.common.response.ShopListInfoResponse;
 import cn.chouyv.common.response.ShopListResponse;
-import cn.chouyv.common.response.ShoppingInfoResponse;
 import cn.chouyv.domain.Shop;
 import com.baomidou.mybatisplus.extension.service.IService;
-
-import java.util.List;
 
 /**
  * @author SurKaa
@@ -15,7 +11,7 @@ import java.util.List;
  */
 public interface ShopService extends IService<Shop> {
 
-    Shop getShopInfoByid(long id);
+    Shop getShopInfoById(long id);
 
     ShopListResponse getAllShopsInfo();
 }
