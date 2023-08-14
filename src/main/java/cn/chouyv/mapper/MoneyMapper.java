@@ -11,6 +11,14 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface MoneyMapper extends BaseMapper<Money> {
 
+    /**
+     * 通过uid选择一个
+     *
+     * @param uid uid
+     * @return {@link Money}
+     */
+    Money selectOneByUid(long uid);
+
 }
 
 

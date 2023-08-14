@@ -69,12 +69,12 @@ CREATE TABLE `order`
     `total_price` int        NOT NULL COMMENT '商品总价',
     `status`      tinyint    NOT NULL DEFAULT 0 COMMENT '订单状态
                                                            -1 - 异常(支付时间过期, 订单取消)
-                                                            0 - 待支付
-                                                            1 - 已支付(没人接单)
-                                                            2 - 备餐中(有人接单才能通知商家备餐)
-                                                            3 - 等待跑腿的取(备餐已完成)
-                                                            4 - 配送中
-                                                            5 - 商品已到达',
+                                                            1 - 待支付
+                                                            2 - 已支付(没人接单)
+                                                            3 - 备餐中(有人接单才能通知商家备餐)
+                                                            4 - 等待跑腿的取(备餐已完成)
+                                                            5 - 配送中
+                                                            6 - 商品已到达',
     `type`        tinyint    NOT NULL DEFAULT 0 COMMENT '订单的状态 0-堂食(用户取 食堂吃 不外带) 1-带走(打包, 需配送费) 2-找跑腿(run_id不可空)',
     `target_time` datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '预约时间',
     `created_at`  datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -175,14 +175,13 @@ CREATE TABLE `shopping_info`
 DROP TABLE IF EXISTS `student`;
 CREATE TABLE `student`
 (
-    `id`               bigint                                                        NOT NULL AUTO_INCREMENT COMMENT '学生主键',
-    `username`         varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '学生登陆账号',
-    `password`         varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '学生登陆密码',
-    `role`             tinyint                                                       NOT NULL DEFAULT 0 COMMENT '用户角色 0-学生(正常消费者) 1-消费者and跑腿',
-    `shopping_info_id` bigint                                                        NOT NULL COMMENT '收货地址外键',
-    `created_at`       datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `updated_at`       datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    `is_deleted`       tinyint(1)                                                    NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
+    `id`         bigint                                                        NOT NULL AUTO_INCREMENT COMMENT '学生主键',
+    `username`   varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '学生登陆账号',
+    `password`   varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '学生登陆密码',
+    `role`       tinyint                                                       NOT NULL DEFAULT 0 COMMENT '用户角色 0-学生(正常消费者) 1-消费者and跑腿',
+    `created_at` datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `is_deleted` tinyint(1)                                                    NOT NULL DEFAULT 0 COMMENT '逻辑删除 0-未删除 1-已删除',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4

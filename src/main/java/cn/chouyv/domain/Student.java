@@ -65,11 +65,6 @@ public class Student implements Serializable {
     private Integer role;
 
     /**
-     * 收货地址外键
-     */
-    private Long shoppingInfoId;
-
-    /**
      * 创建时间
      */
     private Date createdAt;

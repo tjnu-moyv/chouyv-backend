@@ -19,4 +19,10 @@
         deposit_cny,created_at,updated_at,
         is_deleted
     </sql>
+    <select id="selectOneByUid" resultType="cn.chouyv.domain.Money">
+        SELECT *
+        FROM money
+        WHERE uid = #{uid}
+          AND is_deleted != 1
+    </select>
 </mapper>

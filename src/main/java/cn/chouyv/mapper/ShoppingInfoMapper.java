@@ -2,6 +2,7 @@ package cn.chouyv.mapper;
 
 import cn.chouyv.domain.ShoppingInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @createDate 2023-08-08 15:42:54
  * @Entity cn.chouyv.domain.ShoppingInfo
  */
+@Mapper
 public interface ShoppingInfoMapper extends BaseMapper<ShoppingInfo> {
 
     /**
