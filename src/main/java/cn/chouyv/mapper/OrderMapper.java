@@ -2,6 +2,7 @@ package cn.chouyv.mapper;
 
 import cn.chouyv.domain.Order;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author SurKaa
@@ -9,8 +10,18 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @createDate 2023-08-08 15:42:54
  * @Entity cn.chouyv.domain.Order
  */
+@Mapper
 public interface OrderMapper extends BaseMapper<Order> {
+    /**
+     * 通过id获取订单信息
+     * 不包含产品
+     *
+     * @param id        id
+     * @param studentId 学生主键
+     * @return {@link Order}
+     */
 
+    public Order getOrderInfoById(long id, long studentId);
 }
 
 

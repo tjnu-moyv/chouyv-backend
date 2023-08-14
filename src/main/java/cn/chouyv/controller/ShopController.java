@@ -1,15 +1,23 @@
 package cn.chouyv.controller;
 
 import cn.chouyv.common.response.BaseResponse;
+import cn.chouyv.common.response.OrderResponse;
 import cn.chouyv.common.response.ShopListResponse;
 import cn.chouyv.common.shop.ShopAndProductResponse;
 import cn.chouyv.common.shop.ShopResponse;
+import cn.chouyv.domain.Order;
+import cn.chouyv.domain.OrderShopProductsItem;
 import cn.chouyv.domain.Shop;
+import cn.chouyv.service.OrderService;
+import cn.chouyv.service.OrderShopProductsItemService;
 import cn.chouyv.service.ShopProductsService;
 import cn.chouyv.service.ShopService;
 import cn.chouyv.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 import static cn.chouyv.exception.ChouYvError.SUCCESS;
 
@@ -28,10 +36,14 @@ public class ShopController {
     private final ShopService shopService;
 
     private final ShopProductsService shopProductsService;
+    private final OrderService orderService;
+    private final OrderShopProductsItemService orderShopProductsItemService;
 
-    public ShopController(ShopService shopService, ShopProductsService shopProductsService) {
+    public ShopController(ShopService shopService, ShopProductsService shopProductsService, OrderService orderService, OrderShopProductsItemService orderShopProductsItemService) {
         this.shopService = shopService;
         this.shopProductsService = shopProductsService;
+        this.orderService = orderService;
+        this.orderShopProductsItemService = orderShopProductsItemService;
     }
 
 
@@ -58,5 +70,18 @@ public class ShopController {
         ShopListResponse shopListResponse = shopService.getAllShopsInfo();
         return Result.success(SUCCESS.getCode(), shopListResponse);
     }
+
+
+    @GetMapping("/order")
+    public BaseResponse<OrderResponse> order(
+            @RequestParam long id,
+            HttpServletRequest request
+    ) {
+        Order orderInfoById = orderService.getOderInfoById(id,request);
+        List<OrderShopProductsItem> orderShopProductsItemInfoById = orderShopProductsItemService.getOrderShopProductsItem(id);
+        OrderResponse orderResponse = new OrderResponse(orderInfoById, orderShopProductsItemInfoById);
+        return Result.success(SUCCESS.getCode(), orderResponse);
+    }
+
 
 }
