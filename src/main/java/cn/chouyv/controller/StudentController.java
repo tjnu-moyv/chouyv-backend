@@ -53,4 +53,6 @@ public class StudentController {
         StudentInfoResponse response = studentService.infoStudent(request);
         return Result.success(response);
     }
+
+
 }

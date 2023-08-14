@@ -60,6 +60,7 @@ public class AuthCheckInterceptor implements HandlerInterceptor {
             request.setAttribute("username", username);
             return true;
         }
+        log.info("拦截请求");
         return false;
     }
 

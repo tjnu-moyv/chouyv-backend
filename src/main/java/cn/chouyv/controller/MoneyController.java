@@ -23,6 +23,7 @@ public class MoneyController {
         this.moneyService = moneyService;
     }
 
+
     /**
      * 自己的余额
      *
@@ -42,4 +43,5 @@ public class MoneyController {
             throw MoneyException.error("");
         }
     }
+
 }

@@ -36,7 +36,6 @@ public class Student implements Serializable {
         res.username = student.username;
         // res.password = student.password;
         res.role = student.role;
-        res.shoppingInfoId = student.shoppingInfoId;
         res.createdAt = student.createdAt;
         res.updatedAt = student.updatedAt;
         res.isDeleted = student.isDeleted;
