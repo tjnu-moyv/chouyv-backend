@@ -14,8 +14,6 @@ import cn.chouyv.mapper.StudentMapper;
 import cn.chouyv.service.StudentService;
 import cn.chouyv.utils.JwtHandle;
 import cn.chouyv.utils.SnowflakeUtils;
-import cn.hutool.jwt.JWT;
-import cn.hutool.jwt.JWTPayload;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -92,7 +90,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         }
 
         String pwd = md5DigestAsHex(password);
-        long id = snowflake.newStudentId();
+        long id = snowflake.newId();
         Student student = new Student(id, username, pwd);
         log.debug("即将保存学生信息: {}", student);
         boolean flag = this.save(student);
