@@ -5,13 +5,16 @@ package cn.chouyv.exception;
  */
 public enum ChouYvError {
 
-    SUCCESS(200, "成功"),
     SYSTEM_ERROR(-1, "服务器故障, 请联系开发者修复"),
-    REGISTER_ERROR(100, "注册失败"),
-    LOGIN_ERROR(250, "登录失败"),
-    TOKEN_ERROR(300, "登陆过期, 请重新登录"),
-    SHOP_INFO_EMPTY(301, "无法获取商铺信息"),
-    UPDATE_ERROR(400, "更新失败");
+    SUCCESS(200, "成功"),
+    REGISTER_ERROR(300, "注册失败"),
+    LOGIN_ERROR(301, "登录失败"),
+    TOKEN_ERROR(302, "登陆过期, 请重新登录"),
+    SHOP_INFO_EMPTY(303, "无法获取商铺信息"),
+    UPDATE_ERROR(304, "更新失败"),
+    NO_MONEY_ERROR(305, "余额不足"),
+    ORDER_NOT_PAY(306, "订单未支付"),
+    ;
 
 
     private final int code;

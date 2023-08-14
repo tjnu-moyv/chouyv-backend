@@ -67,7 +67,14 @@ CREATE TABLE `order`
     `run_id`      bigint     NULL     DEFAULT NULL COMMENT '学生外键',
     `shop_id`     bigint     NOT NULL COMMENT '商家外键',
     `total_price` int        NOT NULL COMMENT '商品总价',
-    `status`      tinyint    NOT NULL DEFAULT 0 COMMENT '订单状态 0-备餐中 1-等待跑腿的取 2-配送中 3-商品已到达',
+    `status`      tinyint    NOT NULL DEFAULT 0 COMMENT '订单状态
+                                                           -1 - 异常(支付时间过期, 订单取消)
+                                                            0 - 待支付
+                                                            1 - 已支付(没人接单)
+                                                            2 - 备餐中(有人接单才能通知商家备餐)
+                                                            3 - 等待跑腿的取(备餐已完成)
+                                                            4 - 配送中
+                                                            5 - 商品已到达',
     `type`        tinyint    NOT NULL DEFAULT 0 COMMENT '订单的状态 0-堂食(用户取 食堂吃 不外带) 1-带走(打包, 需配送费) 2-找跑腿(run_id不可空)',
     `target_time` datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '预约时间',
     `created_at`  datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
