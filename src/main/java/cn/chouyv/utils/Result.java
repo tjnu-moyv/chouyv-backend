@@ -1,6 +1,7 @@
 package cn.chouyv.utils;
 
 import cn.chouyv.common.response.BaseResponse;
+import cn.chouyv.exception.ChouYvError;
 import cn.chouyv.exception.ChouYvException;
 
 /**
@@ -13,7 +14,7 @@ import cn.chouyv.exception.ChouYvException;
  */
 public class Result {
 
-    public static final int SUCCESS_CODE = 0;
+    public static final int SUCCESS_CODE = ChouYvError.SUCCESS.getCode();
 
     /**
      * 错误返回体
@@ -55,17 +56,6 @@ public class Result {
      */
     public static <T> BaseResponse<T> success(T data) {
         return new BaseResponse<>(SUCCESS_CODE, data, null, null);
-    }
-
-    /**
-     * 成功（指定code）
-     *
-     * @param code 代码
-     * @param data 数据
-     * @return {@link BaseResponse}<{@link T}>
-     */
-    public static <T> BaseResponse<T> success(Integer code, T data) {
-        return new BaseResponse<>(code, data, null, null);
     }
 
 }
