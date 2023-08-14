@@ -14,6 +14,7 @@ public enum ChouYvError {
     UPDATE_ERROR(304, "更新失败"),
     NO_MONEY_ERROR(305, "余额不足"),
     ORDER_NOT_PAY(306, "订单未支付"),
+    MONEY_ERROR(307, "支付错误")
     ;
 
 
