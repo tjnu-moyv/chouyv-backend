@@ -18,4 +18,12 @@ public interface MoneyService extends IService<Money> {
      */
     Money createMoney(long uid);
 
+    /**
+     * 得到余额
+     *
+     * @param uid uid
+     * @return {@link Money}
+     */
+    Money getMoney(long uid);
+
 }

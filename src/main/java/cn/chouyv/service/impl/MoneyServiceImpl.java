@@ -34,6 +34,11 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
         }
         return money;
     }
+
+    @Override
+    public Money getMoney(long uid) {
+        return this.getBaseMapper().selectOneByUid(uid);
+    }
 }
 
 
