@@ -5,9 +5,9 @@ import cn.chouyv.common.request.ShopRegisterRequest;
 import cn.chouyv.common.response.AuthResponse;
 import cn.chouyv.common.response.BaseResponse;
 import cn.chouyv.common.response.OrderResponse;
-import cn.chouyv.common.response.ShopListResponse;
-import cn.chouyv.common.shop.ShopAndProductResponse;
-import cn.chouyv.common.shop.ShopResponse;
+import cn.chouyv.common.response.shop.ShopListResponse;
+import cn.chouyv.common.response.shop.ShopAndProductResponse;
+import cn.chouyv.common.response.shop.ShopResponse;
 import cn.chouyv.domain.Order;
 import cn.chouyv.domain.OrderShopProductsItem;
 import cn.chouyv.domain.Shop;
@@ -102,6 +102,8 @@ public class ShopController {
         OrderResponse orderResponse = new OrderResponse(orderInfoById, orderShopProductsItemInfoById);
         return Result.success(SUCCESS.getCode(), orderResponse);
     }
+
+
 
 
 }

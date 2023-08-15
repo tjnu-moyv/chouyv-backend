@@ -2,9 +2,12 @@ package cn.chouyv.controller;
 
 import cn.chouyv.common.request.StudentLoginRequest;
 import cn.chouyv.common.request.StudentRegisterRequest;
+import cn.chouyv.common.request.SubmitBookRequest;
 import cn.chouyv.common.response.AuthResponse;
 import cn.chouyv.common.response.BaseResponse;
-import cn.chouyv.common.response.StudentInfoResponse;
+import cn.chouyv.common.response.shop.StudentInfoResponse;
+import cn.chouyv.common.response.shop.SubmitBookResponse;
+import cn.chouyv.service.ShopService;
 import cn.chouyv.service.StudentService;
 import cn.chouyv.utils.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +25,11 @@ import javax.servlet.http.HttpServletRequest;
 public class StudentController {
 
     private final StudentService studentService;
+    private final ShopService shopService;
 
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService, ShopService shopService) {
         this.studentService = studentService;
+        this.shopService = shopService;
     }
 
     @PostMapping("/register")
@@ -54,5 +59,14 @@ public class StudentController {
         return Result.success(response);
     }
 
+    @PostMapping("/order")
+    public BaseResponse<SubmitBookResponse> submitBookResponseBaseResponse(
+            @RequestBody SubmitBookRequest submitBookRequest,
+            HttpServletRequest request
+    ) {
+        log.info("Info: {}", request);
+        SubmitBookResponse submitBookResponse = shopService.produceBook(submitBookRequest, request);
+        return Result.success(submitBookResponse);
+    }
 
 }

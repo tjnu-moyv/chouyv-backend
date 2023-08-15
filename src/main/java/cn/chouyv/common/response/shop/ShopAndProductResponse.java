@@ -1,4 +1,4 @@
-package cn.chouyv.common.shop;
+package cn.chouyv.common.response.shop;
 
 import cn.chouyv.domain.ShopProducts;
 import lombok.AllArgsConstructor;

@@ -10,6 +10,10 @@ import cn.chouyv.exception.ShopInfoException;
 import cn.chouyv.mapper.ShopMapper;
 import cn.chouyv.service.ShopService;
 import cn.chouyv.utils.JwtHandle;
+import cn.chouyv.common.request.SubmitBookRequest;
+import cn.chouyv.common.response.shop.ShopListResponse;
+import cn.chouyv.common.response.shop.SubmitBookResponse;
+import cn.chouyv.exception.ProductCountError;
 import cn.chouyv.utils.SnowflakeUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +22,7 @@ import org.springframework.util.DigestUtils;
 
 import java.util.Objects;
 
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author SurKaa
@@ -37,7 +42,6 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
             SnowflakeUtils snowflake
     ){
         this.jwtHandle = jwtHandle;
-
         this.snowflake = snowflake;
     }
 
@@ -50,8 +54,8 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
     }
 
     @Override
-    public ShopListResponse getAllShopsInfo(){
-        ShopListResponse shopListResponse=ShopListResponse.toShopListResponse(getBaseMapper().getAllShopsInfo());
+    public ShopListResponse getAllShopsInfo() {
+        ShopListResponse shopListResponse = ShopListResponse.toShopListResponse(getBaseMapper().getAllShopsInfo());
         return shopListResponse;
     }
 
@@ -188,6 +192,27 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
 //    public ShoplnfoResponse infoShop(HttpServletRequest request) {
 //        return null;
 //    }
+
+    @Override
+    public SubmitBookResponse produceBook(SubmitBookRequest submitBookRequest, HttpServletRequest request) {
+        long tokenId = Long.parseLong((String) request.getAttribute("id"));
+
+        long l = snowflake.newId();
+        long sumMoney=0;
+        for (int i = 0; i < submitBookRequest.products.size(); i++) {
+            if(submitBookRequest.products.get(i).count<0){
+                throw ProductCountError.error("数量不能为负");
+            }else if(submitBookRequest.products.get(i).price<0){
+                throw  ProductCountError.error("金额不能为负");
+            }
+
+            sumMoney += submitBookRequest.products.get(i).count * submitBookRequest.products.get(i).price;
+        }
+
+         this.getBaseMapper().produceBook(l,tokenId, sumMoney, submitBookRequest.getShopId(), submitBookRequest.getType());
+        return new SubmitBookResponse(l,sumMoney);
+    }
+
 }
 
 

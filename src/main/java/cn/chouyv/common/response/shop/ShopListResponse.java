@@ -1,7 +1,5 @@
-package cn.chouyv.common.response;
+package cn.chouyv.common.response.shop;
 
-import cn.chouyv.common.shop.ShopResponse;
-import cn.chouyv.domain.Shop;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

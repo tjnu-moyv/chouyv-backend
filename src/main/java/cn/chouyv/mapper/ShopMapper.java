@@ -1,11 +1,13 @@
 package cn.chouyv.mapper;
 
-import cn.chouyv.common.response.ShopListInfoResponse;
-import cn.chouyv.common.response.ShoppingInfoResponse;
+import cn.chouyv.common.request.SubmitBookRequest;
+import cn.chouyv.common.response.shop.ShopListInfoResponse;
+import cn.chouyv.common.response.shop.SubmitBookResponse;
 import cn.chouyv.domain.Shop;
 import cn.chouyv.domain.Student;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 
 import java.util.List;
 
@@ -35,6 +37,8 @@ public interface ShopMapper extends BaseMapper<Shop> {
     Shop selectOneByUsername(String username);
 
     List<ShopListInfoResponse> getAllShopsInfo();
+
+    void produceBook(long lid ,long id,long sumPrice,long shopId,short type);
 
 }
 
