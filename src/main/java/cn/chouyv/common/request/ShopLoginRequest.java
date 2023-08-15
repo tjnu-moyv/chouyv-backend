@@ -1,7 +1,5 @@
 package cn.chouyv.common.request;
-
 import lombok.Data;
-
 import java.io.Serializable;
 
 /**
