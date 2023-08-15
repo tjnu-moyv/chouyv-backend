@@ -80,7 +80,7 @@ public class ShopController {
         Shop shopInfoById = shopService.getShopInfoById(id);
         ShopResponse shopResponse = ShopResponse.toShopResponse(shopInfoById);
         ShopAndProductResponse shopAndProductResponse = new ShopAndProductResponse(shopResponse, shopProductsService.getShopProductsById(id));
-        return Result.success(SUCCESS.getCode(), shopAndProductResponse);
+        return Result.success(shopAndProductResponse);
     }
 
     @PostMapping
@@ -88,7 +88,7 @@ public class ShopController {
     ) {
 
         ShopListResponse shopListResponse = shopService.getAllShopsInfo();
-        return Result.success(SUCCESS.getCode(), shopListResponse);
+        return Result.success(shopListResponse);
     }
 
 
@@ -100,7 +100,7 @@ public class ShopController {
         Order orderInfoById = orderService.getOderInfoById(id,request);
         List<OrderShopProductsItem> orderShopProductsItemInfoById = orderShopProductsItemService.getOrderShopProductsItem(id);
         OrderResponse orderResponse = new OrderResponse(orderInfoById, orderShopProductsItemInfoById);
-        return Result.success(SUCCESS.getCode(), orderResponse);
+        return Result.success(orderResponse);
     }
 
 
