@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
 
+import static cn.chouyv.utils.Pwd.md5DigestAsHex;
+
 /**
  * @author SurKaa
  * @description 针对表【student(用户信息表)】的数据库操作Service实现
@@ -186,16 +188,6 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         // a-z, A-Z
         // 0-9
         return !authString.matches("^[a-zA-Z0-9!-.:-@]+$");
-    }
-
-    /**
-     * 获取加密后的密码
-     *
-     * @param password 密码明文
-     * @return 密码密文
-     */
-    private static String md5DigestAsHex(String password) {
-        return DigestUtils.md5DigestAsHex(password.getBytes());
     }
 }
 

@@ -45,7 +45,10 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
     }
 
     @Override
-    public PayOrderBillInfoResponse payOrder(PayOrderRequest orderRequest, HttpServletRequest request) {
+    public PayOrderBillInfoResponse payOrder(
+            PayOrderRequest orderRequest, HttpServletRequest request
+    ) {
+
         return null;
     }
 }
