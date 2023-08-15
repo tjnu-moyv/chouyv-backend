@@ -21,6 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShopAndProductResponse {
+
     private ShopResponse shopResponse;
     private List<ShopProducts> shopProducts;
 

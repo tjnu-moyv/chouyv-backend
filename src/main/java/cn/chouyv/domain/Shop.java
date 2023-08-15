@@ -4,19 +4,41 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import lombok.Data;
 
 /**
  * 商家表
+ *
  * @author SurKaa
  * @TableName shop
  */
-@TableName(value ="shop")
+@TableName(value = "shop")
 @Data
 public class Shop implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 163900429470040428L;
+
+    /**
+     * 密码脱敏
+     *
+     * @param shop 商铺
+     * @return 脱敏后的
+     */
+    public static Shop safe(Shop shop) {
+        Shop res = new Shop();
+        res.id = shop.id;
+        res.username = shop.username;
+        // res.password = shop.password;
+        res.nickname = shop.nickname;
+        res.address = shop.address;
+        res.phone = shop.phone;
+        res.createdAt = shop.createdAt;
+        res.updatedAt = shop.updatedAt;
+        res.isDeleted = shop.isDeleted;
+        return res;
+    }
 
     /**
      * 商家主键

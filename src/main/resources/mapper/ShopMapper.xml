@@ -27,4 +27,7 @@
     <select id="getAllShopsInfo" resultType="cn.chouyv.common.response.ShopListInfoResponse">
         SELECT * FROM shop
     </select>
+    <select id="selectOneByUsername" resultType="cn.chouyv.domain.Shop">
+        SELECT * FROM shop WHERE username = #{username} AND is_deleted = 0
+    </select>
 </mapper>
