@@ -14,4 +14,6 @@ public interface ShopService extends IService<Shop> {
     Shop getShopInfoById(long id);
 
     ShopListResponse getAllShopsInfo();
+
+
 }
