@@ -4,7 +4,7 @@ import cn.chouyv.common.request.ShopLoginRequest;
 import cn.chouyv.common.request.ShopRegisterRequest;
 import cn.chouyv.common.response.AuthResponse;
 import cn.chouyv.common.response.BaseResponse;
-import cn.chouyv.common.response.OrderResponse;
+import cn.chouyv.common.response.OrderInfoResponse;
 import cn.chouyv.common.response.shop.ShopListResponse;
 import cn.chouyv.common.response.shop.ShopAndProductResponse;
 import cn.chouyv.common.response.shop.ShopResponse;
@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-
-import static cn.chouyv.exception.ChouYvError.SUCCESS;
 
 /**
  * Created with IntelliJ IDEA.
@@ -93,14 +91,14 @@ public class ShopController {
 
 
     @GetMapping("/order")
-    public BaseResponse<OrderResponse> order(
+    public BaseResponse<OrderInfoResponse> order(
             @RequestParam long id,
             HttpServletRequest request
     ) {
         Order orderInfoById = orderService.getOderInfoById(id,request);
         List<OrderShopProductsItem> orderShopProductsItemInfoById = orderShopProductsItemService.getOrderShopProductsItem(id);
-        OrderResponse orderResponse = new OrderResponse(orderInfoById, orderShopProductsItemInfoById);
-        return Result.success(orderResponse);
+        OrderInfoResponse orderInfoResponse = new OrderInfoResponse(orderInfoById, orderShopProductsItemInfoById);
+        return Result.success(orderInfoResponse);
     }
 
 
