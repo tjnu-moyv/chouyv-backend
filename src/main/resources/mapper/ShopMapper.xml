@@ -21,10 +21,14 @@
         nickname,address,phone,
         created_at,updated_at,is_deleted
     </sql>
+    <insert id="produceBook">
+
+        INSERT INTO `order`(id,student_id,shop_id,total_price,status,type) VALUES (#{lid},#{id},#{shopId},#{sumPrice},1,#{type})
+    </insert>
     <select id="selectOneByIdShop" resultType="cn.chouyv.domain.Shop">
         SELECT * FROM shop where id = #{id} AND is_deleted = 0
     </select>
-    <select id="getAllShopsInfo" resultType="cn.chouyv.common.response.ShopListInfoResponse">
+    <select id="getAllShopsInfo" resultType="cn.chouyv.common.response.shop.ShopListInfoResponse">
         SELECT * FROM shop
     </select>
 </mapper>

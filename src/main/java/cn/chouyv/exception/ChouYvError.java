@@ -15,7 +15,9 @@ public enum ChouYvError {
     NO_MONEY_ERROR(305, "余额不足"),
     ORDER_NOT_PAY(306, "订单未支付"),
     SELECT_ORDER_WITH_WRONG_TOKEN(307,"错误的权限"),
-    MONEY_ERROR(308, "支付错误")
+    MONEY_ERROR(308, "支付错误"),
+    MONEY_COUNT_WRONG(309,"金额不合法"),
+    PRODUCT_COUNT_WRONG(310,"数量非法")
     ;
 
 

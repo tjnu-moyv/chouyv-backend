@@ -4,7 +4,7 @@ import cn.chouyv.common.request.StudentLoginRequest;
 
 import cn.chouyv.common.request.StudentRegisterRequest;
 import cn.chouyv.common.response.AuthResponse;
-import cn.chouyv.common.response.StudentInfoResponse;
+import cn.chouyv.common.response.shop.StudentInfoResponse;
 import cn.chouyv.domain.Student;
 import com.baomidou.mybatisplus.extension.service.IService;
 
