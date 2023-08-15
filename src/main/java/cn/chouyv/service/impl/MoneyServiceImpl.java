@@ -1,5 +1,7 @@
 package cn.chouyv.service.impl;
 
+import cn.chouyv.common.request.PayOrderRequest;
+import cn.chouyv.common.response.PayOrderBillInfoResponse;
 import cn.chouyv.domain.Money;
 import cn.chouyv.exception.MoneyException;
 import cn.chouyv.mapper.MoneyMapper;
@@ -7,6 +9,8 @@ import cn.chouyv.service.MoneyService;
 import cn.chouyv.utils.SnowflakeUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author SurKaa
@@ -38,6 +42,11 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
     @Override
     public Money getMoney(long uid) {
         return this.getBaseMapper().selectOneByUid(uid);
+    }
+
+    @Override
+    public PayOrderBillInfoResponse payOrder(PayOrderRequest orderRequest, HttpServletRequest request) {
+        return null;
     }
 }
 
