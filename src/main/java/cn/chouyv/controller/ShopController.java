@@ -1,5 +1,7 @@
 package cn.chouyv.controller;
 
+import cn.chouyv.common.request.ShopLoginRequest;
+import cn.chouyv.common.response.AuthResponse;
 import cn.chouyv.common.response.BaseResponse;
 import cn.chouyv.common.response.OrderResponse;
 import cn.chouyv.common.response.ShopListResponse;
@@ -34,10 +36,18 @@ import static cn.chouyv.exception.ChouYvError.SUCCESS;
 public class ShopController {
 
     private final ShopService shopService;
-
     private final ShopProductsService shopProductsService;
     private final OrderService orderService;
     private final OrderShopProductsItemService orderShopProductsItemService;
+
+    @PostMapping("/login")
+    public BaseResponse<AuthResponse> login(
+            @RequestBody ShopLoginRequest loginRequest
+    ) {
+        log.info("Login: {}", loginRequest);
+        AuthResponse response = shopService.loginShop(loginRequest);
+        return Result.success(response);
+    }
 
     public ShopController(ShopService shopService, ShopProductsService shopProductsService, OrderService orderService, OrderShopProductsItemService orderShopProductsItemService) {
         this.shopService = shopService;

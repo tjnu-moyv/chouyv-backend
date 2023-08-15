@@ -30,6 +30,12 @@ public class Student implements Serializable {
         this.password = password;
     }
 
+    /**
+     * 密码脱敏
+     *
+     * @param student 学生
+     * @return {@link Student}
+     */
     public static Student safe(Student student) {
         Student res = new Student();
         res.id = student.id;

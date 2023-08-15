@@ -3,7 +3,7 @@ package cn.chouyv.common.response;
 import lombok.Data;
 
 /**
- * Created with IntelliJ IDEA.
+ * 商铺信息返回体
  *
  * @Author: wang
  * @Date: 2023/08/11/10:56

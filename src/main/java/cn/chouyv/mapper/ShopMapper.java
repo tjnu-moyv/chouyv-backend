@@ -3,6 +3,7 @@ package cn.chouyv.mapper;
 import cn.chouyv.common.response.ShopListInfoResponse;
 import cn.chouyv.common.response.ShoppingInfoResponse;
 import cn.chouyv.domain.Shop;
+import cn.chouyv.domain.Student;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -24,6 +25,14 @@ public interface ShopMapper extends BaseMapper<Shop> {
      * @return {@link Shop}
      */
     Shop selectOneByIdShop(long id);
+
+    /**
+     * 通过用户名获取商铺
+     *
+     * @param username 用户名
+     * @return 商铺
+     */
+    Shop selectOneByUsername(String username);
 
     List<ShopListInfoResponse> getAllShopsInfo();
 
