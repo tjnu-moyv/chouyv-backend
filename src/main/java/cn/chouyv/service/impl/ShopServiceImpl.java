@@ -5,6 +5,7 @@ import cn.chouyv.common.request.ShopRegisterRequest;
 import cn.chouyv.common.response.*;
 import cn.chouyv.domain.Shop;
 import cn.chouyv.exception.LoginException;
+import cn.chouyv.exception.RegisterException;
 import cn.chouyv.exception.ShopInfoException;
 import cn.chouyv.mapper.ShopMapper;
 import cn.chouyv.service.ShopService;
@@ -61,7 +62,58 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
      */
     @Override
     public AuthResponse registerShop(ShopRegisterRequest registerRequest) {
-        return null;
+        if (null == registerRequest) {
+            throw RegisterException.error("请求体为空");
+        }
+
+        String username = registerRequest.getUsername();
+        String password = registerRequest.getPassword();
+        String checkPwd = registerRequest.getCheckPwd();
+
+        if (null == username || username.length() < 6) {
+            throw RegisterException.error("账号长度不能小于6位");
+        }
+
+        log.debug("注册用户名: username={}", username);
+
+        if (null == password || password.length() < 6) {
+            throw RegisterException.error("密码长度不能小于6位");
+        }
+
+        if (null == checkPwd || checkPwd.length() < 6) {
+            throw RegisterException.error("确认密码长度不能小于6位");
+        }
+
+        if (!password.equals(checkPwd)) {
+            throw RegisterException.error("两次密码不一致");
+        }
+
+        if (checkCharInAuthString(username)) {
+            throw RegisterException.error("账号不能包含特殊字符");
+        }
+
+        if (checkCharInAuthString(password)) {
+            throw RegisterException.error("密码不能包含特殊字符");
+        }
+
+        Shop byUsername = getBaseMapper().selectOneByUsername(username);
+
+        if (null != byUsername) {
+            throw RegisterException.error("账号已存在");
+        }
+
+        String pwd = md5DigestAsHex(password);
+        long id = snowflake.newId();
+        Shop shop = new Shop(id, username, pwd);
+        log.debug("即将保存学生信息: {}", shop);
+        boolean flag = this.save(shop);
+        if (!flag) {
+            // 注册失败
+            throw RegisterException.error("注册失败");
+        }
+        String token = jwtHandle.generateToken(id, username);
+        log.debug("注册成功 token: {}", token);
+        return new AuthResponse(id, username, token);
     }
 
     /**

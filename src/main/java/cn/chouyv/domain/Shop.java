@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.annotation.*;
 import java.io.Serializable;
 import java.util.Date;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 商家表
@@ -13,8 +15,10 @@ import lombok.Data;
  * @author SurKaa
  * @TableName shop
  */
-@TableName(value = "shop")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@TableName(value = "shop")
 public class Shop implements Serializable {
 
     @TableField(exist = false)
@@ -38,6 +42,19 @@ public class Shop implements Serializable {
         res.updatedAt = shop.updatedAt;
         res.isDeleted = shop.isDeleted;
         return res;
+    }
+
+    /**
+     * 注冊
+     *
+     * @param id
+     * @param username
+     * @param password
+     */
+    public Shop(Long id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
     }
 
     /**

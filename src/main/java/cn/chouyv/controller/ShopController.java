@@ -1,6 +1,7 @@
 package cn.chouyv.controller;
 
 import cn.chouyv.common.request.ShopLoginRequest;
+import cn.chouyv.common.request.ShopRegisterRequest;
 import cn.chouyv.common.response.AuthResponse;
 import cn.chouyv.common.response.BaseResponse;
 import cn.chouyv.common.response.OrderResponse;
@@ -46,6 +47,15 @@ public class ShopController {
     ) {
         log.info("Login: {}", loginRequest);
         AuthResponse response = shopService.loginShop(loginRequest);
+        return Result.success(response);
+    }
+
+    @PostMapping("/register")
+    public BaseResponse<AuthResponse> register(
+            @RequestBody ShopRegisterRequest registerRequest
+    ) {
+        log.info("Register: {}", registerRequest);
+        AuthResponse response = shopService.registerShop(registerRequest);
         return Result.success(response);
     }
 
