@@ -116,7 +116,7 @@ CREATE TABLE `shop`
     `username`   varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商家登陆账号',
     `password`   varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商家登陆密码',
     `nickname`   varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL default 'name' COMMENT '商家名称',
-    `address`    varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL default 'address'  COMMENT '商家地址',
+    `address`    varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL default 'address' COMMENT '商家地址',
     `phone`      varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL default '' COMMENT '商家联系电话',
     `created_at` datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_at` datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -187,5 +187,11 @@ CREATE TABLE `student`
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户信息表'
   ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- 公共账户
+-- ----------------------------
+INSERT INTO `money` (id, uid, cny, deposit_cny)
+VALUES (0, 0, 0, 0);
 
 SET FOREIGN_KEY_CHECKS = 1;
