@@ -195,12 +195,43 @@ INSERT INTO `money` (id, uid, cny, deposit_cny)
 VALUES (1, 0, 0, 0);
 
 -- ----------------------------
--- 插入后返回的存储引擎
+-- 插入账单并修改money表后再返回账单的存储引擎
 -- ----------------------------
+DROP PROCEDURE IF EXISTS `InsertBillAndUpdateMoneyAndReturnDataSP`;
 DELIMITER //
-CREATE PROCEDURE InsertAndReturnDataSP(IN billId BIGINT, IN from_id BIGINT, IN to_id BIGINT, IN type INT, IN money INT)
+CREATE PROCEDURE `InsertBillAndUpdateMoneyAndReturnDataSP`(IN billId BIGINT,
+                                         IN billFromId BIGINT,
+                                         IN billToId BIGINT,
+                                         IN billType INT,
+                                         IN moneyCount INT)
 BEGIN
-    INSERT INTO money_bill (id, from_id, to_id, type, money) VALUES (billId, from_id, to_id, type, money);
+    -- 异常处理的声明部分 DECLARE 用于声明变量或处理程序 EXIT HANDLER 用于指定要处理的异常类型
+    -- FOR SQLEXCEPTION 这指定了要处理的异常类型(SQL异常-SQLEXCEPTION)
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+        -- 这是异常处理的执行部分
+        BEGIN
+            -- 遇到异常时要执行的操作
+            ROLLBACK;
+            RESIGNAL;
+        END;
+
+    -- 开启事务
+    START TRANSACTION;
+
+    -- 插入数据到 money_bill 表
+    INSERT INTO money_bill (id, from_id, to_id, type, money)
+    VALUES (billId, billFromId, billToId, billType, moneyCount);
+
+    -- 根据插入是否成功进行其他操作
+    IF ROW_COUNT() > 0 THEN
+        -- 在这里添加对其他表的操作
+        UPDATE money SET cny = cny - moneyCount WHERE uid = billFromId;
+        UPDATE money SET cny = cny + moneyCount WHERE uid = billToId;
+    END IF;
+
+    -- 提交事务
+    COMMIT;
+
     SELECT * FROM money_bill WHERE id = billId;
 END //
 DELIMITER ;
