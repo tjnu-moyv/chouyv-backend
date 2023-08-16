@@ -18,12 +18,17 @@ public class ChouYvProperties {
      * jwt密钥
      */
     private String jwtSecretKey = "key";
+    private static volatile byte[] key = null;
 
     /**
      * 机器id
      */
     private int machineId = 0;
-    private static volatile byte[] key = null;
+
+    /**
+     * 公共帐户id
+     */
+    private long publicAccountId = 1;
 
     public byte[] getJwtSecretKey() {
         if (key == null) {
@@ -40,11 +45,19 @@ public class ChouYvProperties {
         return machineId;
     }
 
+    public long getPublicAccountId() {
+        return publicAccountId;
+    }
+
     public void setJwtSecretKey(String jwtSecretKey) {
         this.jwtSecretKey = jwtSecretKey;
     }
 
     public void setMachineId(int machineId) {
         this.machineId = machineId;
+    }
+
+    public void setPublicAccountId(long publicAccountId) {
+        this.publicAccountId = publicAccountId;
     }
 }
