@@ -4,6 +4,7 @@ import cn.chouyv.common.request.AddBaseInfoRequest;
 import cn.chouyv.common.request.StudentLoginRequest;
 
 import cn.chouyv.common.request.StudentRegisterRequest;
+import cn.chouyv.common.request.UpdateStudentBaseInfoRequest;
 import cn.chouyv.common.response.AuthResponse;
 import cn.chouyv.common.response.shop.StudentInfoResponse;
 import cn.chouyv.domain.Student;
@@ -37,5 +38,7 @@ public interface StudentService extends IService<Student> {
     StudentInfoResponse infoStudent(HttpServletRequest request);
 
     void AddStudentAddress (AddBaseInfoRequest addBaseInfoRequest,HttpServletRequest request);
+
+    void UpdateStudentAddress(UpdateStudentBaseInfoRequest updateStudentBaseInfoRequest,HttpServletRequest request);
 
 }

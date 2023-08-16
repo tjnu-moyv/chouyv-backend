@@ -3,6 +3,7 @@ package cn.chouyv.service.impl;
 import cn.chouyv.common.request.AddBaseInfoRequest;
 import cn.chouyv.common.request.StudentLoginRequest;
 import cn.chouyv.common.request.StudentRegisterRequest;
+import cn.chouyv.common.request.UpdateStudentBaseInfoRequest;
 import cn.chouyv.common.response.AuthResponse;
 import cn.chouyv.common.response.shop.StudentInfoResponse;
 import cn.chouyv.domain.ShoppingInfo;
@@ -18,8 +19,6 @@ import cn.chouyv.utils.SnowflakeUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
@@ -188,6 +187,13 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     public void AddStudentAddress(AddBaseInfoRequest addBaseInfoRequest, HttpServletRequest request) {
             Long tokenId=Long.parseLong((String) request.getAttribute("id"));
             this.getBaseMapper().addStudentAddress(tokenId, addBaseInfoRequest.getName(), addBaseInfoRequest.getLocation(), addBaseInfoRequest.getPhone());
+    }
+
+    @Override
+    public void UpdateStudentAddress(UpdateStudentBaseInfoRequest updateStudentBaseInfoRequest, HttpServletRequest request) {
+//        Long tokenId=Long.parseLong((String) request.getAttribute("id"));
+        this.getBaseMapper().updateStudentAddress(updateStudentBaseInfoRequest.getId(), updateStudentBaseInfoRequest.getName(), updateStudentBaseInfoRequest.getLocation() ,updateStudentBaseInfoRequest.getPhone());
+
     }
 
     private static boolean checkCharInAuthString(String authString) {
