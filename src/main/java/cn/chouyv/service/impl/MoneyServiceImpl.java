@@ -69,7 +69,11 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
             // 解析信息
             long studentId = Long.parseLong((String) request.getAttribute("id"));
             String username = (String) request.getAttribute("username");
-            String codePwd = md5DigestAsHex(orderRequest.getPassword());
+            String password = orderRequest.getPassword();
+            if (password == null || password.length() < 6) {
+                throw MoneyException.error("密码错误");
+            }
+            String codePwd = md5DigestAsHex(password);
             // 查询
             Student byUsername = studentMapper.selectOneByUsername(username);
             if (byUsername == null) {
@@ -83,6 +87,15 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
             }
             // 查询订单获取总价
             Order orderInfoById = orderMapper.getOrderInfoById(orderRequest.getOrderId(), studentId);
+            if (orderInfoById == null) {
+                throw MoneyException.error("找不到与您对应的订单");
+            }
+            if (orderInfoById.getStatus() > Order.STATUS_WAIT_PAY) {
+                throw MoneyException.error("您已支付");
+            }
+            if (orderInfoById.getStatus() == Order.STATUS_ERROR) {
+                throw MoneyException.error("订单异常");
+            }
             Integer totalPrice = orderInfoById.getTotalPrice();
             // 查询余额
             Money money = getBaseMapper().selectOneByUid(studentId);
@@ -96,6 +109,8 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
                     0,
                     totalPrice
             );
+            // 更新订单状态
+            orderMapper.updateStatusById(orderInfoById.getId(), Order.STATUS_PAID);
             // 查询余额
             money = getBaseMapper().selectOneByUid(studentId);
             return new PayOrderBillInfoResponse(money.getCny(), moneyBill);
