@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `money`;
 CREATE TABLE `money`
 (
     `id`          bigint        NOT NULL AUTO_INCREMENT COMMENT '钱包主键',
-    `uid`         bigint UNIQUE NOT NULL COMMENT '用户(学生 跑腿 商家等)id',
+    `uid`         bigint        NOT NULL COMMENT '用户(学生 跑腿 商家等)id',
     `cny`         bigint        NOT NULL DEFAULT 0 COMMENT '人民币余额',
     `deposit_cny` int           NOT NULL DEFAULT 0 COMMENT '人民币押金',
     `created_at`  datetime      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
