@@ -28,6 +28,9 @@ public interface StudentMapper extends BaseMapper<Student> {
      * @return 学生
      */
     Student selectOneById(long id);
+
+    void addStudentAddress(long uid,String name,String location,String phone);
+    void updateStudentAddress(long id,String name,String location,String phone);
 }
 
 
