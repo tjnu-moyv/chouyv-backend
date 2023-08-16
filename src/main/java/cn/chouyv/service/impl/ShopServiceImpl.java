@@ -109,7 +109,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
         String pwd = md5DigestAsHex(password);
         long id = snowflake.newId();
         Shop shop = new Shop(id, username, pwd);
-        log.debug("即将保存学生信息: {}", shop);
+        log.debug("即将保存商铺信息: {}", shop);
         boolean flag = this.save(shop);
         if (!flag) {
             // 注册失败
