@@ -7,6 +7,8 @@ import cn.chouyv.domain.MoneyBill;
 import cn.chouyv.domain.Order;
 import cn.chouyv.domain.Student;
 import cn.chouyv.exception.MoneyException;
+import cn.chouyv.exception.TokenException;
+import cn.chouyv.mapper.MoneyBillMapper;
 import cn.chouyv.mapper.MoneyMapper;
 import cn.chouyv.mapper.OrderMapper;
 import cn.chouyv.mapper.StudentMapper;
@@ -33,11 +35,13 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
     private final SnowflakeUtils snowflake;
     private final StudentMapper studentMapper;
     private final OrderMapper orderMapper;
+    private final MoneyBillMapper moneyBillMapper;
 
-    public MoneyServiceImpl(SnowflakeUtils snowflake, StudentMapper studentMapper, OrderMapper orderMapper) {
+    public MoneyServiceImpl(SnowflakeUtils snowflake, StudentMapper studentMapper, OrderMapper orderMapper, MoneyBillMapper moneyBillMapper) {
         this.snowflake = snowflake;
         this.studentMapper = studentMapper;
         this.orderMapper = orderMapper;
+        this.moneyBillMapper = moneyBillMapper;
     }
 
     @Override
@@ -85,11 +89,18 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
             if (money.getCny() < totalPrice) {
                 throw MoneyException.error("余额不足");
             }
-            MoneyBill moneyBill = new MoneyBill();
-            // TODO
-            return null;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            // 生成账单
+            MoneyBill moneyBill = moneyBillMapper.transferToPublicAccount(
+                    snowflake.newId(),
+                    studentId,
+                    0,
+                    totalPrice
+            );
+            // 查询余额
+            money = getBaseMapper().selectOneByUid(studentId);
+            return new PayOrderBillInfoResponse(money.getCny(), moneyBill);
+        } catch (ClassCastException e) {
+            throw TokenException.error("token异常");
         }
     }
 }
