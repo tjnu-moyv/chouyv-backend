@@ -19,6 +19,9 @@
         role,created_at,
         updated_at,is_deleted
     </sql>
+    <insert id="addStudentAddress">
+        INSERT INTO shopping_info(uid,name,location,phone) VALUES (#{uid},#{name},#{location},#{phone})
+    </insert>
     <!--TODO * 替换成对应的字段!!! -->
     <select id="selectOneByUsername" resultType="cn.chouyv.domain.Student">
         SELECT * FROM student WHERE username = #{username} AND is_deleted = 0

@@ -1,5 +1,6 @@
 package cn.chouyv.controller;
 
+import cn.chouyv.common.request.AddBaseInfoRequest;
 import cn.chouyv.common.request.StudentLoginRequest;
 import cn.chouyv.common.request.StudentRegisterRequest;
 import cn.chouyv.common.request.SubmitBookRequest;
@@ -67,6 +68,12 @@ public class StudentController {
         log.info("Info: {}", request);
         SubmitBookResponse submitBookResponse = shopService.produceBook(submitBookRequest, request);
         return Result.success(submitBookResponse);
+    }
+    @PostMapping("addinfo")
+    public BaseResponse<String> addStudentAddress(@RequestBody AddBaseInfoRequest addBaseInfoRequest,HttpServletRequest request){
+        log.info("Info: {}", request);
+        studentService.AddStudentAddress(addBaseInfoRequest,request);
+        return Result.success(null);
     }
 
 }

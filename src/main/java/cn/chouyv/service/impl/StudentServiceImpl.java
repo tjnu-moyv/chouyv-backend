@@ -1,5 +1,6 @@
 package cn.chouyv.service.impl;
 
+import cn.chouyv.common.request.AddBaseInfoRequest;
 import cn.chouyv.common.request.StudentLoginRequest;
 import cn.chouyv.common.request.StudentRegisterRequest;
 import cn.chouyv.common.response.AuthResponse;
@@ -181,6 +182,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
             // long id = Long.`parseLong`(idObj);
             throw TokenException.error("异常token");
         }
+    }
+
+    @Override
+    public void AddStudentAddress(AddBaseInfoRequest addBaseInfoRequest, HttpServletRequest request) {
+            Long tokenId=Long.parseLong((String) request.getAttribute("id"));
+            this.getBaseMapper().addStudentAddress(tokenId, addBaseInfoRequest.getName(), addBaseInfoRequest.getLocation(), addBaseInfoRequest.getPhone());
     }
 
     private static boolean checkCharInAuthString(String authString) {
