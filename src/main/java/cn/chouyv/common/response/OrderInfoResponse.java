@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
+ * 查询订单信息返回体
  *
  * @Author: wang
  * @Date: 2023/08/14/15:03
@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderResponse {
+public class OrderInfoResponse {
     private Order order;
     private List<OrderShopProductsItem> orderShopProductsItems;
 
