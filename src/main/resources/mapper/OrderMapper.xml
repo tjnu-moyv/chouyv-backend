@@ -19,11 +19,17 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,student_id,run_id,
+        id
+        ,student_id,run_id,
         shop_id,total_price,status,
         type,target_time,created_at,
         updated_at,is_deleted
     </sql>
+    <update id="updateStatusById">
+        UPDATE `order`
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
     <select id="getOrderInfoById" resultType="cn.chouyv.domain.Order">
         select *
         from `order`

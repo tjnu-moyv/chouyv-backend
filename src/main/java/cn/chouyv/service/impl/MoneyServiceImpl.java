@@ -7,6 +7,8 @@ import cn.chouyv.domain.MoneyBill;
 import cn.chouyv.domain.Order;
 import cn.chouyv.domain.Student;
 import cn.chouyv.exception.MoneyException;
+import cn.chouyv.exception.TokenException;
+import cn.chouyv.mapper.MoneyBillMapper;
 import cn.chouyv.mapper.MoneyMapper;
 import cn.chouyv.mapper.OrderMapper;
 import cn.chouyv.mapper.StudentMapper;
@@ -33,11 +35,13 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
     private final SnowflakeUtils snowflake;
     private final StudentMapper studentMapper;
     private final OrderMapper orderMapper;
+    private final MoneyBillMapper moneyBillMapper;
 
-    public MoneyServiceImpl(SnowflakeUtils snowflake, StudentMapper studentMapper, OrderMapper orderMapper) {
+    public MoneyServiceImpl(SnowflakeUtils snowflake, StudentMapper studentMapper, OrderMapper orderMapper, MoneyBillMapper moneyBillMapper) {
         this.snowflake = snowflake;
         this.studentMapper = studentMapper;
         this.orderMapper = orderMapper;
+        this.moneyBillMapper = moneyBillMapper;
     }
 
     @Override
@@ -65,7 +69,11 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
             // 解析信息
             long studentId = Long.parseLong((String) request.getAttribute("id"));
             String username = (String) request.getAttribute("username");
-            String codePwd = md5DigestAsHex(orderRequest.getPassword());
+            String password = orderRequest.getPassword();
+            if (password == null || password.length() < 6) {
+                throw MoneyException.error("密码错误");
+            }
+            String codePwd = md5DigestAsHex(password);
             // 查询
             Student byUsername = studentMapper.selectOneByUsername(username);
             if (byUsername == null) {
@@ -79,17 +87,35 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
             }
             // 查询订单获取总价
             Order orderInfoById = orderMapper.getOrderInfoById(orderRequest.getOrderId(), studentId);
+            if (orderInfoById == null) {
+                throw MoneyException.error("找不到与您对应的订单");
+            }
+            if (orderInfoById.getStatus() > Order.STATUS_WAIT_PAY) {
+                throw MoneyException.error("您已支付");
+            }
+            if (orderInfoById.getStatus() == Order.STATUS_ERROR) {
+                throw MoneyException.error("订单异常");
+            }
             Integer totalPrice = orderInfoById.getTotalPrice();
             // 查询余额
             Money money = getBaseMapper().selectOneByUid(studentId);
             if (money.getCny() < totalPrice) {
                 throw MoneyException.error("余额不足");
             }
-            MoneyBill moneyBill = new MoneyBill();
-            // TODO
-            return null;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            // 生成账单
+            MoneyBill moneyBill = moneyBillMapper.transferToPublicAccount(
+                    snowflake.newId(),
+                    studentId,
+                    0,
+                    totalPrice
+            );
+            // 更新订单状态
+            orderMapper.updateStatusById(orderInfoById.getId(), Order.STATUS_PAID);
+            // 查询余额
+            money = getBaseMapper().selectOneByUid(studentId);
+            return new PayOrderBillInfoResponse(money.getCny(), moneyBill);
+        } catch (ClassCastException e) {
+            throw TokenException.error("token异常");
         }
     }
 }

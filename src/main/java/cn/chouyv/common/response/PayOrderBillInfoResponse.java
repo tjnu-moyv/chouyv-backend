@@ -1,5 +1,7 @@
 package cn.chouyv.common.response;
 
+import cn.chouyv.domain.MoneyBill;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -18,6 +20,17 @@ public class PayOrderBillInfoResponse {
      */
     private BillInfo bill;
 
+    public PayOrderBillInfoResponse(long balance, MoneyBill mb) {
+        this.balance = balance;
+        this.bill = new BillInfo(
+                mb.getId(),
+                mb.getFromId(),
+                mb.getToId(),
+                mb.getMoney(),
+                mb.getType(),
+                mb.getCreatedAt().toString()
+        );
+    }
 
     /**
      * 账单
@@ -25,12 +38,13 @@ public class PayOrderBillInfoResponse {
      * 账单返回体
      */
     @Data
-    public static class BillInfo {
-        private String createdAt;
-        private long fromId;
+    @AllArgsConstructor
+    private static class BillInfo {
         private long id;
-        private long money;
+        private long fromId;
         private long toId;
+        private long money;
         private long type;
+        private String createdAt;
     }
 }

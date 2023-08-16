@@ -21,7 +21,16 @@ public interface OrderMapper extends BaseMapper<Order> {
      * @return {@link Order}
      */
 
-    public Order getOrderInfoById(long id, long studentId);
+    Order getOrderInfoById(long id, long studentId);
+
+    /**
+     * 通过id更新订单状态
+     *
+     * @param id     id
+     * @param status 状态
+     */
+    void updateStatusById(long id, int status);
+
 }
 
 

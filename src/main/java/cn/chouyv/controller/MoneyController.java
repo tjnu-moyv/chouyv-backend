@@ -54,6 +54,7 @@ public class MoneyController {
      * @param request      请求
      * @return {@link BaseResponse}<{@link PayOrderBillInfoResponse}>
      */
+    @PostMapping("/pay")
     public BaseResponse<PayOrderBillInfoResponse> pay(
             @RequestBody PayOrderRequest orderRequest,
             HttpServletRequest request
