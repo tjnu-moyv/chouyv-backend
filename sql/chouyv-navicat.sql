@@ -192,6 +192,6 @@ CREATE TABLE `student`
 -- 公共账户
 -- ----------------------------
 INSERT INTO `money` (id, uid, cny, deposit_cny)
-VALUES (0, 0, 0, 0);
+VALUES (1, 0, 0, 0);
 
 SET FOREIGN_KEY_CHECKS = 1;
