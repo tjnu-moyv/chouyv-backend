@@ -194,4 +194,16 @@ CREATE TABLE `student`
 INSERT INTO `money` (id, uid, cny, deposit_cny)
 VALUES (1, 0, 0, 0);
 
+-- ----------------------------
+-- 插入后返回的存储引擎
+-- ----------------------------
+DELIMITER //
+CREATE PROCEDURE InsertAndReturnDataSP(IN billId BIGINT, IN from_id BIGINT, IN to_id BIGINT, IN type INT, IN money INT)
+BEGIN
+    INSERT INTO money_bill (id, from_id, to_id, type, money) VALUES (billId, from_id, to_id, type, money);
+    SELECT * FROM money_bill WHERE id = billId;
+END //
+DELIMITER ;
+
+
 SET FOREIGN_KEY_CHECKS = 1;
