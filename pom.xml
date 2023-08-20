@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>cn.chouyv</groupId>
-    <artifactId>ChouYv</artifactId>
+    <artifactId>chouyv-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ChouYv</name>
     <description>ChouYv</description>
