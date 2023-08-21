@@ -29,6 +29,9 @@ public interface StudentMapper extends BaseMapper<Student> {
      */
     Student selectOneById(long id);
 
+    @Deprecated
+    Student selectOneByUsernameAndPassword(String username, String password);
+
     void addStudentAddress(long uid,String name,String location,String phone);
     void updateStudentAddress(long id,String name,String location,String phone);
 }

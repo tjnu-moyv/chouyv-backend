@@ -15,4 +15,28 @@ public class StudentMapperTest {
         System.out.println("mapper.selectOneByUsername(\"RiWWcBqhyA\") = " + mapper.selectOneByUsername("RiWWcBqhyA"));
     }
 
+    @Test
+    void selectOneById() {
+
+    }
+
+    @Test
+    void selectOneByUsernameAndPassword() {
+        try {
+            System.out.println("mapper.selectOneByUsernameAndPassword(\"'YuqsYU' --\", \"1\") = "
+                    + mapper.selectOneByUsernameAndPassword("'YuqsYU' --", "1"));
+        } catch (Exception e) {
+            System.err.println("mapper.selectOneByUsernameAndPassword(\"'YuqsYU' --\", \"1\") = " + e.getMessage());
+        }
+    }
+
+    @Test
+    void addStudentAddress() {
+
+    }
+
+    @Test
+    void updateStudentAddress() {
+
+    }
 }
