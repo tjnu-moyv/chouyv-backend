@@ -32,4 +32,8 @@
     <select id="selectOneById" resultType="cn.chouyv.domain.Student">
         SELECT * FROM student WHERE id = #{id} AND is_deleted = 0
     </select>
+    <select id="selectOneByUsernameAndPassword" resultType="cn.chouyv.domain.Student">
+-- 应该使用#而不是$!!!!!!!!!!!!!!!!
+        SELECT * FROM student WHERE username = ${username} AND password = ${password} AND is_deleted = 0
+    </select>
 </mapper>
