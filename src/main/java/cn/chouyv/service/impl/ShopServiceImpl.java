@@ -16,7 +16,6 @@ import cn.chouyv.utils.JwtHandle;
 import cn.chouyv.utils.SnowflakeUtils;
 import cn.chouyv.vo.AuthVO;
 import cn.chouyv.vo.pay.SubmitBookVO;
-import cn.chouyv.vo.shop.ShopListInfoVO;
 import cn.chouyv.vo.shop.ShopListVO;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +24,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static cn.chouyv.utils.Pwd.md5DigestAsHex;
 
@@ -74,11 +72,9 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
             throw TokenException.error("请使用用户账号查看");
         }
 
-        List<ShopListInfoVO> shops = getBaseMapper().selectList(null)
-                .stream()
-                .map(ShopListInfoVO::byShop)
-                .collect(Collectors.toList());
-        return new ShopListVO(shops);
+        List<Shop> shops = getBaseMapper().selectList(null);
+
+        return new ShopListVO(ShopListVO.shopListInfo(shops));
     }
 
     /**
