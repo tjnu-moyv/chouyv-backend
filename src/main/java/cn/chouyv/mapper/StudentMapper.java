@@ -1,8 +1,11 @@
 package cn.chouyv.mapper;
 
 import cn.chouyv.domain.Student;
+import cn.chouyv.exception.TokenException;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author SurKaa
@@ -29,10 +32,36 @@ public interface StudentMapper extends BaseMapper<Student> {
      */
     Student selectOneById(long id);
 
+    /**
+     * 通过id和用户选择一个学生
+     *
+     * @param id       id
+     * @param username 用户名
+     * @return {@link Student}
+     */
+    Student selectOneByIdAndUsernameStudent(long id, String username);
+
     @Deprecated
     Student selectOneByUsernameAndPassword(String username, String password);
+
+    /**
+     * 检查token是否合法
+     *
+     * @param request 请求
+     * @return {@link Student}
+     */
+    default Student checkLogin(HttpServletRequest request) {
+        Long id;
+        String username;
+        try {
+            id = (Long) request.getAttribute("id");
+            username = (String) request.getAttribute("username");
+            if (username == null || username.length() == 0 || id == null) {
+                throw TokenException.error("异常token");
+            }
+        } catch (ClassCastException e) {
+            throw TokenException.error("异常token");
+        }
+        return selectOneByIdAndUsernameStudent(id, username);
+    }
 }
-
-
-
-
