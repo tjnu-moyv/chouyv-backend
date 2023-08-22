@@ -69,4 +69,12 @@ public class MoneyController {
         );
     }
 
+    @PostMapping("/new")
+    public BaseVO<Money> newMoneyAccount(
+            HttpServletRequest request
+    ) {
+        Money money = moneyService.newAccount(request);
+        return Result.success(money);
+    }
+
 }
