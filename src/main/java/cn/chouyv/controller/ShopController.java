@@ -1,21 +1,21 @@
 package cn.chouyv.controller;
 
-import cn.chouyv.common.request.ShopLoginRequest;
-import cn.chouyv.common.request.ShopRegisterRequest;
-import cn.chouyv.common.response.AuthResponse;
-import cn.chouyv.common.response.BaseResponse;
-import cn.chouyv.common.response.OrderInfoResponse;
-import cn.chouyv.common.response.shop.ShopListResponse;
-import cn.chouyv.common.response.shop.ShopAndProductResponse;
-import cn.chouyv.common.response.shop.ShopResponse;
 import cn.chouyv.domain.Order;
 import cn.chouyv.domain.OrderShopProductsItem;
 import cn.chouyv.domain.Shop;
+import cn.chouyv.dto.ShopLoginRequest;
+import cn.chouyv.dto.ShopRegisterRequest;
 import cn.chouyv.service.OrderService;
 import cn.chouyv.service.OrderShopProductsItemService;
 import cn.chouyv.service.ShopProductsService;
 import cn.chouyv.service.ShopService;
 import cn.chouyv.utils.Result;
+import cn.chouyv.vo.AuthResponse;
+import cn.chouyv.vo.BaseResponse;
+import cn.chouyv.vo.OrderInfoResponse;
+import cn.chouyv.vo.shop.ShopAndProductResponse;
+import cn.chouyv.vo.shop.ShopListResponse;
+import cn.chouyv.vo.shop.ShopResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,4 +1,4 @@
-package cn.chouyv.common.response;
+package cn.chouyv.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

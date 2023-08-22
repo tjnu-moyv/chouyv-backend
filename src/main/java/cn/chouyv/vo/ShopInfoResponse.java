@@ -1,4 +1,4 @@
-package cn.chouyv.common.response;
+package cn.chouyv.vo;
 
 import cn.chouyv.domain.ShoppingInfo;
 import cn.chouyv.domain.Student;
@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author 81047
  */
-public class ShoplnfoResponse {
+public class ShopInfoResponse {
 
     private long id;
     private String username;
@@ -19,7 +19,7 @@ public class ShoplnfoResponse {
     private String phone;
     private List<ShoppingInfo> arrayOfShoppingInfo;
 
-    public ShoplnfoResponse(Student student, List<ShoppingInfo> shoppingInfos) {
+    public ShopInfoResponse(Student student, List<ShoppingInfo> shoppingInfos) {
         this.id = student.getId();
         this.username = student.getUsername();
         this.arrayOfShoppingInfo = shoppingInfos;

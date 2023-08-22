@@ -1,4 +1,4 @@
-package cn.chouyv.common.response;
+package cn.chouyv.vo;
 
 import cn.chouyv.domain.MoneyBill;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package cn.chouyv.common.request;
+package cn.chouyv.dto;
 
 import lombok.Data;
 

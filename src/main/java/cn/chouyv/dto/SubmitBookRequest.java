@@ -1,5 +1,6 @@
-package cn.chouyv.common.request;
-import cn.chouyv.common.response.shop.SubmitBook;
+package cn.chouyv.dto;
+
+import cn.chouyv.vo.shop.SubmitBook;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

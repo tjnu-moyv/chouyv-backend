@@ -1,4 +1,4 @@
-package cn.chouyv.common.response.shop;
+package cn.chouyv.vo.shop;
 
 /**
  * 提交订单，未封装

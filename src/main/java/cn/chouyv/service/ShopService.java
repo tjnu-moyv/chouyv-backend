@@ -1,16 +1,12 @@
 package cn.chouyv.service;
 
-import cn.chouyv.common.request.ShopLoginRequest;
-import cn.chouyv.common.request.ShopRegisterRequest;
-import cn.chouyv.common.request.StudentLoginRequest;
-import cn.chouyv.common.request.StudentRegisterRequest;
-import cn.chouyv.common.response.AuthResponse;
-import cn.chouyv.common.response.shop.ShopListResponse;
-import cn.chouyv.common.response.shop.StudentInfoResponse;
-import cn.chouyv.common.request.SubmitBookRequest;
-import cn.chouyv.common.response.shop.ShopListResponse;
-import cn.chouyv.common.response.shop.SubmitBookResponse;
 import cn.chouyv.domain.Shop;
+import cn.chouyv.dto.ShopLoginRequest;
+import cn.chouyv.dto.ShopRegisterRequest;
+import cn.chouyv.dto.SubmitBookRequest;
+import cn.chouyv.vo.AuthResponse;
+import cn.chouyv.vo.shop.ShopListResponse;
+import cn.chouyv.vo.shop.SubmitBookResponse;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +39,7 @@ public interface ShopService extends IService<Shop> {
 
     AuthResponse loginShop(ShopLoginRequest loginRequest);
 
-//    ShoplnfoResponse infoShop(HttpServletRequest request);
+//    ShopInfoResponse infoShop(HttpServletRequest request);
 
     SubmitBookResponse produceBook(SubmitBookRequest submitBookRequest, HttpServletRequest request);
 }

@@ -1,13 +1,13 @@
 package cn.chouyv.controller;
 
-import cn.chouyv.common.request.*;
-import cn.chouyv.common.response.AuthResponse;
-import cn.chouyv.common.response.BaseResponse;
-import cn.chouyv.common.response.shop.StudentInfoResponse;
-import cn.chouyv.common.response.shop.SubmitBookResponse;
+import cn.chouyv.dto.*;
 import cn.chouyv.service.ShopService;
 import cn.chouyv.service.StudentService;
 import cn.chouyv.utils.Result;
+import cn.chouyv.vo.AuthResponse;
+import cn.chouyv.vo.BaseResponse;
+import cn.chouyv.vo.shop.StudentInfoResponse;
+import cn.chouyv.vo.shop.SubmitBookResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,17 +66,18 @@ public class StudentController {
         SubmitBookResponse submitBookResponse = shopService.produceBook(submitBookRequest, request);
         return Result.success(submitBookResponse);
     }
+
     @PostMapping("addinfo")
-    public BaseResponse<String> addStudentAddress(@RequestBody AddBaseInfoRequest addBaseInfoRequest,HttpServletRequest request){
+    public BaseResponse<String> addStudentAddress(@RequestBody AddBaseInfoRequest addBaseInfoRequest, HttpServletRequest request) {
         log.info("Info: {}", request);
-        studentService.AddStudentAddress(addBaseInfoRequest,request);
+        studentService.AddStudentAddress(addBaseInfoRequest, request);
         return Result.success(null);
     }
 
     @PutMapping("addinfo")
-    public BaseResponse<String> updateStudentInfo(@RequestBody UpdateStudentBaseInfoRequest updateStudentBaseInfoRequest,HttpServletRequest request){
+    public BaseResponse<String> updateStudentInfo(@RequestBody UpdateStudentBaseInfoRequest updateStudentBaseInfoRequest, HttpServletRequest request) {
         log.info("Info: {}", request);
-        studentService.UpdateStudentAddress(updateStudentBaseInfoRequest,request);
+        studentService.UpdateStudentAddress(updateStudentBaseInfoRequest, request);
         return Result.success(null);
     }
 

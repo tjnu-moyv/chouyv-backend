@@ -1,8 +1,8 @@
 package cn.chouyv.config;
 
-import cn.chouyv.common.response.BaseResponse;
 import cn.chouyv.exception.ChouYvException;
 import cn.chouyv.utils.Result;
+import cn.chouyv.vo.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

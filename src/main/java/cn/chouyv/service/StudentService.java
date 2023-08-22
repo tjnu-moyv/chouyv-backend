@@ -1,13 +1,12 @@
 package cn.chouyv.service;
 
-import cn.chouyv.common.request.AddBaseInfoRequest;
-import cn.chouyv.common.request.StudentLoginRequest;
-
-import cn.chouyv.common.request.StudentRegisterRequest;
-import cn.chouyv.common.request.UpdateStudentBaseInfoRequest;
-import cn.chouyv.common.response.AuthResponse;
-import cn.chouyv.common.response.shop.StudentInfoResponse;
 import cn.chouyv.domain.Student;
+import cn.chouyv.dto.AddBaseInfoRequest;
+import cn.chouyv.dto.StudentLoginRequest;
+import cn.chouyv.dto.StudentRegisterRequest;
+import cn.chouyv.dto.UpdateStudentBaseInfoRequest;
+import cn.chouyv.vo.AuthResponse;
+import cn.chouyv.vo.shop.StudentInfoResponse;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;

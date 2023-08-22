@@ -1,13 +1,11 @@
 package cn.chouyv.service.impl;
 
-import cn.chouyv.common.request.AddBaseInfoRequest;
-import cn.chouyv.common.request.StudentLoginRequest;
-import cn.chouyv.common.request.StudentRegisterRequest;
-import cn.chouyv.common.request.UpdateStudentBaseInfoRequest;
-import cn.chouyv.common.response.AuthResponse;
-import cn.chouyv.common.response.shop.StudentInfoResponse;
 import cn.chouyv.domain.ShoppingInfo;
 import cn.chouyv.domain.Student;
+import cn.chouyv.dto.AddBaseInfoRequest;
+import cn.chouyv.dto.StudentLoginRequest;
+import cn.chouyv.dto.StudentRegisterRequest;
+import cn.chouyv.dto.UpdateStudentBaseInfoRequest;
 import cn.chouyv.exception.LoginException;
 import cn.chouyv.exception.RegisterException;
 import cn.chouyv.exception.TokenException;
@@ -16,9 +14,12 @@ import cn.chouyv.mapper.StudentMapper;
 import cn.chouyv.service.StudentService;
 import cn.chouyv.utils.JwtHandle;
 import cn.chouyv.utils.SnowflakeUtils;
+import cn.chouyv.vo.AuthResponse;
+import cn.chouyv.vo.shop.StudentInfoResponse;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;

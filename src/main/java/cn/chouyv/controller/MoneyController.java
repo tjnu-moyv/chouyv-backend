@@ -1,11 +1,11 @@
 package cn.chouyv.controller;
 
-import cn.chouyv.common.request.PayOrderRequest;
-import cn.chouyv.common.response.BaseResponse;
-import cn.chouyv.common.response.PayOrderBillInfoResponse;
+import cn.chouyv.dto.PayOrderRequest;
 import cn.chouyv.exception.MoneyException;
 import cn.chouyv.service.MoneyService;
 import cn.chouyv.utils.Result;
+import cn.chouyv.vo.BaseResponse;
+import cn.chouyv.vo.PayOrderBillInfoResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
