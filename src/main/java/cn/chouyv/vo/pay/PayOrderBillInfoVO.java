@@ -10,7 +10,7 @@ import lombok.Data;
  * @author SurKaa
  */
 @Data
-public class PayOrderBillInfoResponse {
+public class PayOrderBillInfoVO {
     /**
      * 余额
      */
@@ -20,7 +20,7 @@ public class PayOrderBillInfoResponse {
      */
     private BillInfo bill;
 
-    public PayOrderBillInfoResponse(long balance, MoneyBill mb) {
+    public PayOrderBillInfoVO(long balance, MoneyBill mb) {
         this.balance = balance;
         this.bill = new BillInfo(
                 mb.getId(),

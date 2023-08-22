@@ -3,19 +3,19 @@ package cn.chouyv.controller;
 import cn.chouyv.domain.Order;
 import cn.chouyv.domain.OrderShopProductsItem;
 import cn.chouyv.domain.Shop;
-import cn.chouyv.dto.shop.ShopLoginRequest;
-import cn.chouyv.dto.shop.ShopRegisterRequest;
+import cn.chouyv.dto.shop.ShopLoginDTO;
+import cn.chouyv.dto.shop.ShopRegisterDTO;
 import cn.chouyv.service.OrderService;
 import cn.chouyv.service.OrderShopProductsItemService;
 import cn.chouyv.service.ShopProductsService;
 import cn.chouyv.service.ShopService;
 import cn.chouyv.utils.Result;
-import cn.chouyv.vo.AuthResponse;
-import cn.chouyv.vo.BaseResponse;
-import cn.chouyv.vo.pay.OrderInfoResponse;
-import cn.chouyv.vo.shop.ShopAndProductResponse;
-import cn.chouyv.vo.shop.ShopListResponse;
-import cn.chouyv.vo.shop.ShopResponse;
+import cn.chouyv.vo.AuthVO;
+import cn.chouyv.vo.BaseVO;
+import cn.chouyv.vo.pay.OrderInfoVO;
+import cn.chouyv.vo.shop.ShopAndProductVO;
+import cn.chouyv.vo.shop.ShopListVO;
+import cn.chouyv.vo.shop.ShopVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,20 +41,20 @@ public class ShopController {
     private final OrderShopProductsItemService orderShopProductsItemService;
 
     @PostMapping("/login")
-    public BaseResponse<AuthResponse> login(
-            @RequestBody ShopLoginRequest loginRequest
+    public BaseVO<AuthVO> login(
+            @RequestBody ShopLoginDTO loginRequest
     ) {
         log.info("Login: {}", loginRequest);
-        AuthResponse response = shopService.loginShop(loginRequest);
+        AuthVO response = shopService.loginShop(loginRequest);
         return Result.success(response);
     }
 
     @PostMapping("/register")
-    public BaseResponse<AuthResponse> register(
-            @RequestBody ShopRegisterRequest registerRequest
+    public BaseVO<AuthVO> register(
+            @RequestBody ShopRegisterDTO registerRequest
     ) {
         log.info("Register: {}", registerRequest);
-        AuthResponse response = shopService.registerShop(registerRequest);
+        AuthVO response = shopService.registerShop(registerRequest);
         return Result.success(response);
     }
 
@@ -67,39 +67,39 @@ public class ShopController {
 
 
 //    @GetMapping
-//    public BaseResponse<ShopResponse> getShopInfoById(@RequestParam Integer id) {
+//    public BaseVO<ShopVO> getShopInfoById(@RequestParam Integer id) {
 //        log.info("收到请求 参数id={}", id);
 //        Shop shopInfoById = shopService.getShopInfoByid(id);
-//        ShopResponse shopResponse = ShopResponse.toShopResponse(shopInfoById);
+//        ShopVO shopResponse = ShopVO.toShopResponse(shopInfoById);
 //        return Result.success(200, shopResponse);
 //    }
 
     @GetMapping
-    public BaseResponse<ShopAndProductResponse> getShopAndProductResponse(@RequestParam long id) {
+    public BaseVO<ShopAndProductVO> getShopAndProductResponse(@RequestParam long id) {
         Shop shopInfoById = shopService.getShopInfoById(id);
-        ShopResponse shopResponse = ShopResponse.toShopResponse(shopInfoById);
-        ShopAndProductResponse shopAndProductResponse = new ShopAndProductResponse(shopResponse, shopProductsService.getShopProductsById(id));
-        return Result.success(shopAndProductResponse);
+        ShopVO shopVO = ShopVO.toShopResponse(shopInfoById);
+        ShopAndProductVO shopAndProductVO = new ShopAndProductVO(shopVO, shopProductsService.getShopProductsById(id));
+        return Result.success(shopAndProductVO);
     }
 
     @PostMapping
-    public BaseResponse<ShopListResponse> getAllShopsInfo(
+    public BaseVO<ShopListVO> getAllShopsInfo(
     ) {
 
-        ShopListResponse shopListResponse = shopService.getAllShopsInfo();
-        return Result.success(shopListResponse);
+        ShopListVO shopListVO = shopService.getAllShopsInfo();
+        return Result.success(shopListVO);
     }
 
 
     @GetMapping("/order")
-    public BaseResponse<OrderInfoResponse> order(
+    public BaseVO<OrderInfoVO> order(
             @RequestParam long id,
             HttpServletRequest request
     ) {
-        Order orderInfoById = orderService.getOderInfoById(id,request);
+        Order orderInfoById = orderService.getOderInfoById(id, request);
         List<OrderShopProductsItem> orderShopProductsItemInfoById = orderShopProductsItemService.getOrderShopProductsItem(id);
-        OrderInfoResponse orderInfoResponse = new OrderInfoResponse(orderInfoById, orderShopProductsItemInfoById);
-        return Result.success(orderInfoResponse);
+        OrderInfoVO orderInfoVO = new OrderInfoVO(orderInfoById, orderShopProductsItemInfoById);
+        return Result.success(orderInfoVO);
     }
 
 

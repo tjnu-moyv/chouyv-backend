@@ -16,12 +16,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShopListResponse {
-    public List<ShopListInfoResponse> shopListInfoResponse;
+public class ShopListVO {
+    public List<ShopListInfoVO> shopListInfoVO;
 
 
-    public static ShopListResponse toShopListResponse(List<ShopListInfoResponse> shopListInfoResponse){
-        return new ShopListResponse(shopListInfoResponse);
+    public static ShopListVO toShopListResponse(List<ShopListInfoVO> shopListInfoVO) {
+        return new ShopListVO(shopListInfoVO);
     }
 }
 

@@ -4,7 +4,7 @@ import cn.chouyv.domain.Money;
 import cn.chouyv.domain.MoneyBill;
 import cn.chouyv.domain.Order;
 import cn.chouyv.domain.Student;
-import cn.chouyv.dto.pay.PayOrderRequest;
+import cn.chouyv.dto.pay.PayOrderDTO;
 import cn.chouyv.exception.MoneyException;
 import cn.chouyv.exception.TokenException;
 import cn.chouyv.mapper.MoneyBillMapper;
@@ -13,7 +13,7 @@ import cn.chouyv.mapper.OrderMapper;
 import cn.chouyv.mapper.StudentMapper;
 import cn.chouyv.service.MoneyService;
 import cn.chouyv.utils.SnowflakeUtils;
-import cn.chouyv.vo.pay.PayOrderBillInfoResponse;
+import cn.chouyv.vo.pay.PayOrderBillInfoVO;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -61,8 +61,8 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
     }
 
     @Override
-    public PayOrderBillInfoResponse payOrder(
-            PayOrderRequest orderRequest, HttpServletRequest request
+    public PayOrderBillInfoVO payOrder(
+            PayOrderDTO orderRequest, HttpServletRequest request
     ) {
         try {
             // 解析信息
@@ -112,7 +112,7 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
             orderMapper.updateStatusById(orderInfoById.getId(), Order.STATUS_PAID);
             // 查询余额
             money = getBaseMapper().selectOneByUid(studentId);
-            return new PayOrderBillInfoResponse(money.getCny(), moneyBill);
+            return new PayOrderBillInfoVO(money.getCny(), moneyBill);
         } catch (ClassCastException e) {
             throw TokenException.error("token异常");
         }

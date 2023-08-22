@@ -1,8 +1,8 @@
 package cn.chouyv.service;
 
 import cn.chouyv.domain.Money;
-import cn.chouyv.dto.pay.PayOrderRequest;
-import cn.chouyv.vo.pay.PayOrderBillInfoResponse;
+import cn.chouyv.dto.pay.PayOrderDTO;
+import cn.chouyv.vo.pay.PayOrderBillInfoVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,10 +35,10 @@ public interface MoneyService extends IService<Money> {
      *
      * @param orderRequest 订单请求
      * @param request      请求
-     * @return {@link PayOrderBillInfoResponse}
+     * @return {@link PayOrderBillInfoVO}
      */
-    PayOrderBillInfoResponse payOrder(
-            PayOrderRequest orderRequest,
+    PayOrderBillInfoVO payOrder(
+            PayOrderDTO orderRequest,
             HttpServletRequest request
     );
 

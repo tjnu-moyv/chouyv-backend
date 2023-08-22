@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderInfoResponse {
+public class OrderInfoVO {
     private Order order;
     private List<OrderShopProductsItem> orderShopProductsItems;
 

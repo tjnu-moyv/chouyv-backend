@@ -15,15 +15,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShopResponse {
+public class ShopVO {
 
     private Long id;
     private String nickname;
     private String address;
     private String phone;
 
-    public static ShopResponse toShopResponse(Shop shop) {
-        return new ShopResponse(
+    public static ShopVO toShopResponse(Shop shop) {
+        return new ShopVO(
                 shop.getId(),
                 shop.getNickname(),
                 shop.getAddress(),

@@ -10,7 +10,7 @@ import lombok.Data;
  * @Description:
  */
 @Data
-public class ShopListInfoResponse {
+public class ShopListInfoVO {
     private long id;
     private String nickname;
     private String address;

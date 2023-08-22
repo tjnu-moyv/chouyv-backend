@@ -1,12 +1,12 @@
 package cn.chouyv.service;
 
 import cn.chouyv.domain.Shop;
-import cn.chouyv.dto.pay.SubmitBookRequest;
-import cn.chouyv.dto.shop.ShopLoginRequest;
-import cn.chouyv.dto.shop.ShopRegisterRequest;
-import cn.chouyv.vo.AuthResponse;
-import cn.chouyv.vo.pay.SubmitBookResponse;
-import cn.chouyv.vo.shop.ShopListResponse;
+import cn.chouyv.dto.pay.SubmitBookDTO;
+import cn.chouyv.dto.shop.ShopLoginDTO;
+import cn.chouyv.dto.shop.ShopRegisterDTO;
+import cn.chouyv.vo.AuthVO;
+import cn.chouyv.vo.pay.SubmitBookVO;
+import cn.chouyv.vo.shop.ShopListVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +20,8 @@ public interface ShopService extends IService<Shop> {
 
     Shop getShopInfoById(long id);
 
-    ShopListResponse getAllShopsInfo();
+    ShopListVO getAllShopsInfo();
+
     /**
      * 商家注册
      *
@@ -28,7 +29,7 @@ public interface ShopService extends IService<Shop> {
      * @return 注册返回体
      */
 
-    AuthResponse registerShop(ShopRegisterRequest registerRequest);
+    AuthVO registerShop(ShopRegisterDTO registerRequest);
 
     /**
      * 商家登录
@@ -37,9 +38,9 @@ public interface ShopService extends IService<Shop> {
      * @return 登录返回体
      */
 
-    AuthResponse loginShop(ShopLoginRequest loginRequest);
+    AuthVO loginShop(ShopLoginDTO loginRequest);
 
-//    ShopInfoResponse infoShop(HttpServletRequest request);
+//    ShopInfoVO infoShop(HttpServletRequest request);
 
-    SubmitBookResponse produceBook(SubmitBookRequest submitBookRequest, HttpServletRequest request);
+    SubmitBookVO produceBook(SubmitBookDTO submitBookDTO, HttpServletRequest request);
 }

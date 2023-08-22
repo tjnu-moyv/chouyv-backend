@@ -20,9 +20,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShopAndProductResponse {
+public class ShopAndProductVO {
 
-    private ShopResponse shopResponse;
+    private ShopVO shopVO;
     private List<ShopProducts> shopProducts;
 
 }

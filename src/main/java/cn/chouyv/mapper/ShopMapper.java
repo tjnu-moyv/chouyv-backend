@@ -1,7 +1,7 @@
 package cn.chouyv.mapper;
 
 import cn.chouyv.domain.Shop;
-import cn.chouyv.vo.shop.ShopListInfoResponse;
+import cn.chouyv.vo.shop.ShopListInfoVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -32,7 +32,7 @@ public interface ShopMapper extends BaseMapper<Shop> {
      */
     Shop selectOneByUsername(String username);
 
-    List<ShopListInfoResponse> getAllShopsInfo();
+    List<ShopListInfoVO> getAllShopsInfo();
 
     void produceBook(long lid ,long id,long sumPrice,long shopId,short type);
 

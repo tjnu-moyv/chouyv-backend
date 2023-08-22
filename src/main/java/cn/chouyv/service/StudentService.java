@@ -1,12 +1,12 @@
 package cn.chouyv.service;
 
 import cn.chouyv.domain.Student;
-import cn.chouyv.dto.shopinfo.AddBaseInfoRequest;
-import cn.chouyv.dto.shopinfo.UpdateStudentBaseInfoRequest;
-import cn.chouyv.dto.student.StudentLoginRequest;
-import cn.chouyv.dto.student.StudentRegisterRequest;
-import cn.chouyv.vo.AuthResponse;
-import cn.chouyv.vo.shopinfo.StudentInfoResponse;
+import cn.chouyv.dto.shopinfo.AddBaseInfoDTO;
+import cn.chouyv.dto.shopinfo.UpdateStudentBaseInfoDTO;
+import cn.chouyv.dto.student.StudentLoginDTO;
+import cn.chouyv.dto.student.StudentRegisterDTO;
+import cn.chouyv.vo.AuthVO;
+import cn.chouyv.vo.shopinfo.StudentInfoVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +24,7 @@ public interface StudentService extends IService<Student> {
      * @param registerRequest 注册请求体
      * @return 注册返回体
      */
-    AuthResponse registerStudent(StudentRegisterRequest registerRequest);
+    AuthVO registerStudent(StudentRegisterDTO registerRequest);
 
     /**
      * 学生登录
@@ -32,12 +32,12 @@ public interface StudentService extends IService<Student> {
      * @param loginRequest 登录请求体
      * @return 登录返回体
      */
-    AuthResponse loginStudent(StudentLoginRequest loginRequest);
+    AuthVO loginStudent(StudentLoginDTO loginRequest);
 
-    StudentInfoResponse infoStudent(HttpServletRequest request);
+    StudentInfoVO infoStudent(HttpServletRequest request);
 
-    void AddStudentAddress (AddBaseInfoRequest addBaseInfoRequest,HttpServletRequest request);
+    void AddStudentAddress(AddBaseInfoDTO addBaseInfoDTO, HttpServletRequest request);
 
-    void UpdateStudentAddress(UpdateStudentBaseInfoRequest updateStudentBaseInfoRequest,HttpServletRequest request);
+    void UpdateStudentAddress(UpdateStudentBaseInfoDTO updateStudentBaseInfoDTO, HttpServletRequest request);
 
 }

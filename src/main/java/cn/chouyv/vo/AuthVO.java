@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthResponse implements Serializable {
+public class AuthVO implements Serializable {
 
     private static final long serialVersionUID = 5019590273968922269L;
 

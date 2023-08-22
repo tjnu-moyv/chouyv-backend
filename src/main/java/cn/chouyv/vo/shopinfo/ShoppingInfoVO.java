@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author SurKaa
  */
 @Data
-public class ShoppingInfoResponse implements Serializable {
+public class ShoppingInfoVO implements Serializable {
 
     private static final long serialVersionUID = 484823876970528285L;
 

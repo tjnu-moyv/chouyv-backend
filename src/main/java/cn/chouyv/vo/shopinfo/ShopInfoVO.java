@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author 81047
  */
-public class ShopInfoResponse {
+public class ShopInfoVO {
 
     private long id;
     private String username;
@@ -19,7 +19,7 @@ public class ShopInfoResponse {
     private String phone;
     private List<ShoppingInfo> arrayOfShoppingInfo;
 
-    public ShopInfoResponse(Student student, List<ShoppingInfo> shoppingInfos) {
+    public ShopInfoVO(Student student, List<ShoppingInfo> shoppingInfos) {
         this.id = student.getId();
         this.username = student.getUsername();
         this.arrayOfShoppingInfo = shoppingInfos;

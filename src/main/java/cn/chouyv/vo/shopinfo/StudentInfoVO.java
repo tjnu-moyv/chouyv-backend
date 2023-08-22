@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentInfoResponse implements Serializable {
+public class StudentInfoVO implements Serializable {
 
     private static final long serialVersionUID = -6666415261780399878L;
 
@@ -28,7 +28,7 @@ public class StudentInfoResponse implements Serializable {
     private long shoppingInfoId;
     private List<ShoppingInfo> arrayOfShoppingInfo;
 
-    public StudentInfoResponse(Student student, List<ShoppingInfo> shoppingInfos) {
+    public StudentInfoVO(Student student, List<ShoppingInfo> shoppingInfos) {
         this.id = student.getId();
         this.username = student.getUsername();
         this.role = student.getRole();

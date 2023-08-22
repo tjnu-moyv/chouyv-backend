@@ -2,10 +2,10 @@ package cn.chouyv.service.impl;
 
 import cn.chouyv.domain.ShoppingInfo;
 import cn.chouyv.domain.Student;
-import cn.chouyv.dto.shopinfo.AddBaseInfoRequest;
-import cn.chouyv.dto.shopinfo.UpdateStudentBaseInfoRequest;
-import cn.chouyv.dto.student.StudentLoginRequest;
-import cn.chouyv.dto.student.StudentRegisterRequest;
+import cn.chouyv.dto.shopinfo.AddBaseInfoDTO;
+import cn.chouyv.dto.shopinfo.UpdateStudentBaseInfoDTO;
+import cn.chouyv.dto.student.StudentLoginDTO;
+import cn.chouyv.dto.student.StudentRegisterDTO;
 import cn.chouyv.exception.LoginException;
 import cn.chouyv.exception.RegisterException;
 import cn.chouyv.exception.TokenException;
@@ -14,8 +14,8 @@ import cn.chouyv.mapper.StudentMapper;
 import cn.chouyv.service.StudentService;
 import cn.chouyv.utils.JwtHandle;
 import cn.chouyv.utils.SnowflakeUtils;
-import cn.chouyv.vo.AuthResponse;
-import cn.chouyv.vo.shopinfo.StudentInfoResponse;
+import cn.chouyv.vo.AuthVO;
+import cn.chouyv.vo.shopinfo.StudentInfoVO;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -51,7 +51,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     }
 
     @Override
-    public AuthResponse registerStudent(StudentRegisterRequest registerRequest) {
+    public AuthVO registerStudent(StudentRegisterDTO registerRequest) {
         if (null == registerRequest) {
             throw RegisterException.error("请求体为空");
         }
@@ -103,11 +103,11 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         }
         String token = jwtHandle.generateToken(id, username);
         log.debug("注册成功 token: {}", token);
-        return new AuthResponse(id, username, token);
+        return new AuthVO(id, username, token);
     }
 
     @Override
-    public AuthResponse loginStudent(StudentLoginRequest loginRequest) {
+    public AuthVO loginStudent(StudentLoginDTO loginRequest) {
         if (null == loginRequest) {
             throw LoginException.error("请求体为空");
         }
@@ -149,11 +149,11 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         String token = jwtHandle.generateToken(
                 safe.getId(), safe.getUsername());
         log.debug("登录成功 token: {}", token);
-        return new AuthResponse(safe.getId(), safe.getUsername(), token);
+        return new AuthVO(safe.getId(), safe.getUsername(), token);
     }
 
     @Override
-    public StudentInfoResponse infoStudent(HttpServletRequest request) {
+    public StudentInfoVO infoStudent(HttpServletRequest request) {
         String token = request.getHeader("token");
         log.debug("info token: {}", token);
         try {
@@ -174,7 +174,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
             List<ShoppingInfo> shoppingInfos
                     = shoppingInfoMapper.selectAllByUid(id);
 
-            return new StudentInfoResponse(byId, shoppingInfos);
+            return new StudentInfoVO(byId, shoppingInfos);
         } catch (ClassCastException e) {
             // String idObj = `(String)` jwt.getPayload(JWTPayload.ISSUER);
             throw TokenException.error("非法token");
@@ -185,15 +185,15 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     }
 
     @Override
-    public void AddStudentAddress(AddBaseInfoRequest addBaseInfoRequest, HttpServletRequest request) {
-            Long tokenId=Long.parseLong((String) request.getAttribute("id"));
-            this.getBaseMapper().addStudentAddress(tokenId, addBaseInfoRequest.getName(), addBaseInfoRequest.getLocation(), addBaseInfoRequest.getPhone());
+    public void AddStudentAddress(AddBaseInfoDTO addBaseInfoDTO, HttpServletRequest request) {
+        Long tokenId = Long.parseLong((String) request.getAttribute("id"));
+        this.getBaseMapper().addStudentAddress(tokenId, addBaseInfoDTO.getName(), addBaseInfoDTO.getLocation(), addBaseInfoDTO.getPhone());
     }
 
     @Override
-    public void UpdateStudentAddress(UpdateStudentBaseInfoRequest updateStudentBaseInfoRequest, HttpServletRequest request) {
+    public void UpdateStudentAddress(UpdateStudentBaseInfoDTO updateStudentBaseInfoDTO, HttpServletRequest request) {
 //        Long tokenId=Long.parseLong((String) request.getAttribute("id"));
-        this.getBaseMapper().updateStudentAddress(updateStudentBaseInfoRequest.getId(), updateStudentBaseInfoRequest.getName(), updateStudentBaseInfoRequest.getLocation() ,updateStudentBaseInfoRequest.getPhone());
+        this.getBaseMapper().updateStudentAddress(updateStudentBaseInfoDTO.getId(), updateStudentBaseInfoDTO.getName(), updateStudentBaseInfoDTO.getLocation(), updateStudentBaseInfoDTO.getPhone());
 
     }
 
