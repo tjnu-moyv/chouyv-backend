@@ -35,21 +35,15 @@ public class MoneyController {
      * @return {@link BaseVO}<{@link Long}>
      */
     @PostMapping
-    public BaseVO<Long> selfBalance(
+    public BaseVO<Money> selfBalance(
             HttpServletRequest request
     ) {
-        try {
-            long id = Long.parseLong((String) request.getAttribute("id"));
-            Money money = moneyService.getMoney(id);
-            if (null == money) {
-                throw MoneyException.error("未开户");
-            }
-            return Result.success(
-                    money.getCny()
-            );
-        } catch (NumberFormatException e) {
-            throw MoneyException.error("");
+        long id = (long) request.getAttribute("id");
+        Money money = moneyService.getMoney(id);
+        if (null == money) {
+            throw MoneyException.error("未开户");
         }
+        return Result.success(money);
     }
 
     /**
@@ -69,6 +63,12 @@ public class MoneyController {
         );
     }
 
+    /**
+     * 开户
+     *
+     * @param request 请求
+     * @return {@link BaseVO}<{@link Money}>
+     */
     @PostMapping("/new")
     public BaseVO<Money> newMoneyAccount(
             HttpServletRequest request

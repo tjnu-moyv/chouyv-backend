@@ -68,8 +68,8 @@ public class AuthCheckInterceptor implements HandlerInterceptor {
         String token = request.getHeader("token");
         if (token != null && token.length() > 0) {
             JWT jwt = jwtHandle.validate(token);
-            Object id = jwt.getPayload(JWTPayload.ISSUER);
-            Object username = jwt.getPayload(JWTPayload.SUBJECT);
+            long id = Long.parseLong((String) jwt.getPayload(JWTPayload.ISSUER));
+            String username = (String) jwt.getPayload(JWTPayload.SUBJECT);
             request.setAttribute("id", id);
             request.setAttribute("username", username);
             return true;

@@ -200,7 +200,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
 
     @Override
     public SubmitBookVO produceBook(SubmitBookDTO submitBookDTO, HttpServletRequest request) {
-        long tokenId = Long.parseLong((String) request.getAttribute("id"));
+        long tokenId = (long) request.getAttribute("id");
 
         long l = snowflake.newId();
         long sumMoney = 0;

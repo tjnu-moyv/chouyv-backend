@@ -1,10 +1,10 @@
 package cn.chouyv.service.impl;
 
-import cn.chouyv.exception.SelectWithoutPermissionException;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.chouyv.domain.Order;
-import cn.chouyv.service.OrderService;
+import cn.chouyv.exception.SelectWithoutPermissionException;
 import cn.chouyv.mapper.OrderMapper;
+import cn.chouyv.service.OrderService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,10 +20,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
 
     @Override
     public Order getOderInfoById(long id, HttpServletRequest request) {
-        String tokenId = (String) request.getAttribute("id");
+        long tokenId = (long) request.getAttribute("id");
         try {
-            long studentId = Long.parseLong(tokenId);
-            Order orderInfoById = this.getBaseMapper().getOrderInfoById(id, studentId);
+            Order orderInfoById = this.getBaseMapper().getOrderInfoById(id, tokenId);
             if (orderInfoById == null) {
                 throw SelectWithoutPermissionException.error("没有找到相应的");
             }

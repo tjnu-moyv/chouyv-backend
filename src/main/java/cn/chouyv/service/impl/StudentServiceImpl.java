@@ -157,7 +157,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         String token = request.getHeader("token");
         log.debug("info token: {}", token);
         try {
-            long id = Long.parseLong((String) request.getAttribute("id"));
+            long id = (long) request.getAttribute("id");
             log.debug("idStr: {}", id);
             Student byId = getBaseMapper().selectOneById(id);
             if (null == byId) {
@@ -186,7 +186,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
 
     @Override
     public void AddStudentAddress(AddBaseInfoDTO addBaseInfoDTO, HttpServletRequest request) {
-        Long tokenId = Long.parseLong((String) request.getAttribute("id"));
+        long tokenId = (long) request.getAttribute("id");
         this.getBaseMapper().addStudentAddress(tokenId, addBaseInfoDTO.getName(), addBaseInfoDTO.getLocation(), addBaseInfoDTO.getPhone());
     }
 
