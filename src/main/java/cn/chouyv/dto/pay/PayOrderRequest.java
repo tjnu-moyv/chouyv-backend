@@ -1,4 +1,4 @@
-package cn.chouyv.dto;
+package cn.chouyv.dto.pay;
 
 import lombok.Data;
 

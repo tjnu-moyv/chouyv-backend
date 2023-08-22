@@ -1,4 +1,4 @@
-package cn.chouyv.dto;
+package cn.chouyv.dto.shopinfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

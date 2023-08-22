@@ -1,4 +1,4 @@
-package cn.chouyv.vo;
+package cn.chouyv.vo.pay;
 
 import cn.chouyv.domain.MoneyBill;
 import lombok.AllArgsConstructor;

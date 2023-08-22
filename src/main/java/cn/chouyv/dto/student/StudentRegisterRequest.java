@@ -1,14 +1,14 @@
-package cn.chouyv.dto;
+package cn.chouyv.dto.student;
 
 import lombok.Data;
 
 import java.io.Serializable;
 
 /**
- * @author 81047
+ * @author SurKaa
  */
 @Data
-public class ShopRegisterRequest implements Serializable {
+public class StudentRegisterRequest implements Serializable {
 
     private static final long serialVersionUID = -7816389411291113132L;
 

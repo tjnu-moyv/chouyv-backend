@@ -1,4 +1,6 @@
-package cn.chouyv.vo.shop;
+package cn.chouyv.dto.pay;
+
+import lombok.Data;
 
 /**
  * 提交订单，未封装
@@ -10,6 +12,7 @@ package cn.chouyv.vo.shop;
  * @Description:
  * @date 2023/08/15
  */
+@Data
 public class SubmitBook {
     private long id;
     public long price;

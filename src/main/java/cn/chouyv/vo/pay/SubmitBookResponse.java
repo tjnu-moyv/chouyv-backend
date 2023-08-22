@@ -1,4 +1,4 @@
-package cn.chouyv.vo.shop;
+package cn.chouyv.vo.pay;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

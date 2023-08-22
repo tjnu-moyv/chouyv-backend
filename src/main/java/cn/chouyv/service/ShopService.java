@@ -1,12 +1,12 @@
 package cn.chouyv.service;
 
 import cn.chouyv.domain.Shop;
-import cn.chouyv.dto.ShopLoginRequest;
-import cn.chouyv.dto.ShopRegisterRequest;
-import cn.chouyv.dto.SubmitBookRequest;
+import cn.chouyv.dto.pay.SubmitBookRequest;
+import cn.chouyv.dto.shop.ShopLoginRequest;
+import cn.chouyv.dto.shop.ShopRegisterRequest;
 import cn.chouyv.vo.AuthResponse;
+import cn.chouyv.vo.pay.SubmitBookResponse;
 import cn.chouyv.vo.shop.ShopListResponse;
-import cn.chouyv.vo.shop.SubmitBookResponse;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;

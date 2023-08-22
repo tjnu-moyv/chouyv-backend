@@ -1,8 +1,8 @@
 package cn.chouyv.service;
 
 import cn.chouyv.domain.Money;
-import cn.chouyv.dto.PayOrderRequest;
-import cn.chouyv.vo.PayOrderBillInfoResponse;
+import cn.chouyv.dto.pay.PayOrderRequest;
+import cn.chouyv.vo.pay.PayOrderBillInfoResponse;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;

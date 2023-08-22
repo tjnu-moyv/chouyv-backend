@@ -1,6 +1,5 @@
-package cn.chouyv.dto;
+package cn.chouyv.dto.pay;
 
-import cn.chouyv.vo.shop.SubmitBook;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

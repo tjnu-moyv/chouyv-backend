@@ -1,9 +1,9 @@
 package cn.chouyv.service.impl;
 
 import cn.chouyv.domain.Shop;
-import cn.chouyv.dto.ShopLoginRequest;
-import cn.chouyv.dto.ShopRegisterRequest;
-import cn.chouyv.dto.SubmitBookRequest;
+import cn.chouyv.dto.pay.SubmitBookRequest;
+import cn.chouyv.dto.shop.ShopLoginRequest;
+import cn.chouyv.dto.shop.ShopRegisterRequest;
 import cn.chouyv.exception.LoginException;
 import cn.chouyv.exception.ProductCountError;
 import cn.chouyv.exception.RegisterException;
@@ -13,8 +13,8 @@ import cn.chouyv.service.ShopService;
 import cn.chouyv.utils.JwtHandle;
 import cn.chouyv.utils.SnowflakeUtils;
 import cn.chouyv.vo.AuthResponse;
+import cn.chouyv.vo.pay.SubmitBookResponse;
 import cn.chouyv.vo.shop.ShopListResponse;
-import cn.chouyv.vo.shop.SubmitBookResponse;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

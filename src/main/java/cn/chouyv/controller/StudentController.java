@@ -1,13 +1,17 @@
 package cn.chouyv.controller;
 
-import cn.chouyv.dto.*;
+import cn.chouyv.dto.pay.SubmitBookRequest;
+import cn.chouyv.dto.shopinfo.AddBaseInfoRequest;
+import cn.chouyv.dto.shopinfo.UpdateStudentBaseInfoRequest;
+import cn.chouyv.dto.student.StudentLoginRequest;
+import cn.chouyv.dto.student.StudentRegisterRequest;
 import cn.chouyv.service.ShopService;
 import cn.chouyv.service.StudentService;
 import cn.chouyv.utils.Result;
 import cn.chouyv.vo.AuthResponse;
 import cn.chouyv.vo.BaseResponse;
-import cn.chouyv.vo.shop.StudentInfoResponse;
-import cn.chouyv.vo.shop.SubmitBookResponse;
+import cn.chouyv.vo.pay.SubmitBookResponse;
+import cn.chouyv.vo.shopinfo.StudentInfoResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 

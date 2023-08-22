@@ -1,4 +1,4 @@
-package cn.chouyv.vo.shop;
+package cn.chouyv.vo.shopinfo;
 
 import lombok.Data;
 
