@@ -17,7 +17,8 @@ public enum ChouYvError {
     SELECT_ORDER_WITH_WRONG_TOKEN(307, "错误的权限"),
     MONEY_ERROR(308, "支付错误"),
     MONEY_COUNT_WRONG(309, "金额不合法"),
-    PRODUCT_COUNT_WRONG(310, "数量非法");
+    PRODUCT_COUNT_WRONG(310, "数量非法"),
+    SHOP_INFO_ERROR(311, "收获地址错误");
 
 
     private final int code;
