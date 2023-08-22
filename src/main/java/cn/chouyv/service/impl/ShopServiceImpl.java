@@ -1,12 +1,9 @@
 package cn.chouyv.service.impl;
 
-import cn.chouyv.common.request.ShopLoginRequest;
-import cn.chouyv.common.request.ShopRegisterRequest;
-import cn.chouyv.common.request.SubmitBookRequest;
-import cn.chouyv.common.response.AuthResponse;
-import cn.chouyv.common.response.shop.ShopListResponse;
-import cn.chouyv.common.response.shop.SubmitBookResponse;
 import cn.chouyv.domain.Shop;
+import cn.chouyv.dto.pay.SubmitBookDTO;
+import cn.chouyv.dto.shop.ShopLoginDTO;
+import cn.chouyv.dto.shop.ShopRegisterDTO;
 import cn.chouyv.exception.LoginException;
 import cn.chouyv.exception.ProductCountError;
 import cn.chouyv.exception.RegisterException;
@@ -15,6 +12,9 @@ import cn.chouyv.mapper.ShopMapper;
 import cn.chouyv.service.ShopService;
 import cn.chouyv.utils.JwtHandle;
 import cn.chouyv.utils.SnowflakeUtils;
+import cn.chouyv.vo.AuthVO;
+import cn.chouyv.vo.pay.SubmitBookVO;
+import cn.chouyv.vo.shop.ShopListVO;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -54,8 +54,8 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
     }
 
     @Override
-    public ShopListResponse getAllShopsInfo() {
-        return ShopListResponse.toShopListResponse(getBaseMapper().getAllShopsInfo());
+    public ShopListVO getAllShopsInfo() {
+        return ShopListVO.toShopListResponse(getBaseMapper().getAllShopsInfo());
     }
 
     /**
@@ -65,7 +65,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
      * @return 登录成功后返回的认证响应
      */
     @Override
-    public AuthResponse registerShop(ShopRegisterRequest registerRequest) {
+    public AuthVO registerShop(ShopRegisterDTO registerRequest) {
         if (null == registerRequest) {
             throw RegisterException.error("请求体为空");
         }
@@ -117,7 +117,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
         }
         String token = jwtHandle.generateToken(id, username);
         log.debug("注册成功 token: {}", token);
-        return new AuthResponse(id, username, token);
+        return new AuthVO(id, username, token);
     }
 
     /**
@@ -127,7 +127,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
      * @return 登录成功后返回的认证响应
      */
     @Override
-    public AuthResponse loginShop(ShopLoginRequest loginRequest) {
+    public AuthVO loginShop(ShopLoginDTO loginRequest) {
         if (null == loginRequest) {
             throw LoginException.error("请求体为空");
         }
@@ -169,7 +169,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
         String token = jwtHandle.generateToken(
                 safe.getId(), safe.getUsername());
         log.debug("登录成功 token: {}", token);
-        return new AuthResponse(safe.getId(), safe.getUsername(), token);
+        return new AuthVO(safe.getId(), safe.getUsername(), token);
     }
 
     private static boolean checkCharInAuthString(String authString) {
@@ -180,23 +180,23 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
     }
 
     @Override
-    public SubmitBookResponse produceBook(SubmitBookRequest submitBookRequest, HttpServletRequest request) {
+    public SubmitBookVO produceBook(SubmitBookDTO submitBookDTO, HttpServletRequest request) {
         long tokenId = Long.parseLong((String) request.getAttribute("id"));
 
         long l = snowflake.newId();
         long sumMoney = 0;
-        for (int i = 0; i < submitBookRequest.products.size(); i++) {
-            if (submitBookRequest.products.get(i).count < 0) {
+        for (int i = 0; i < submitBookDTO.products.size(); i++) {
+            if (submitBookDTO.products.get(i).count < 0) {
                 throw ProductCountError.error("数量不能为负");
-            } else if (submitBookRequest.products.get(i).price < 0) {
+            } else if (submitBookDTO.products.get(i).price < 0) {
                 throw ProductCountError.error("金额不能为负");
             }
 
-            sumMoney += submitBookRequest.products.get(i).count * submitBookRequest.products.get(i).price;
+            sumMoney += submitBookDTO.products.get(i).count * submitBookDTO.products.get(i).price;
         }
 
-        this.getBaseMapper().produceBook(l, tokenId, sumMoney, submitBookRequest.getShopId(), submitBookRequest.getType());
-        return new SubmitBookResponse(l, sumMoney);
+        this.getBaseMapper().produceBook(l, tokenId, sumMoney, submitBookDTO.getShopId(), submitBookDTO.getType());
+        return new SubmitBookVO(l, sumMoney);
     }
 
 }

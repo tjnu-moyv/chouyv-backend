@@ -1,4 +1,4 @@
-package cn.chouyv.common.response.shop;
+package cn.chouyv.vo.pay;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SubmitBookResponse {
+public class SubmitBookVO {
     private long orderId;
     private long totalPrice;
 }

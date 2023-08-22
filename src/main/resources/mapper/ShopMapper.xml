@@ -28,8 +28,9 @@
     <select id="selectOneByIdShop" resultType="cn.chouyv.domain.Shop">
         SELECT * FROM shop where id = #{id} AND is_deleted = 0
     </select>
-    <select id="getAllShopsInfo" resultType="cn.chouyv.common.response.shop.ShopListInfoResponse">
-        SELECT * FROM shop
+    <select id="getAllShopsInfo" resultType="cn.chouyv.vo.shop.ShopListInfoVO">
+        SELECT *
+        FROM shop
     </select>
     <select id="selectOneByUsername" resultType="cn.chouyv.domain.Shop">
         SELECT * FROM shop WHERE username = #{username} AND is_deleted = 0

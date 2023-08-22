@@ -1,4 +1,4 @@
-package cn.chouyv.common.request;
+package cn.chouyv.dto.pay;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author SurKaa
  */
 @Data
-public class PayOrderRequest implements Serializable {
+public class PayOrderDTO implements Serializable {
 
     private static final long serialVersionUID = -3460844719626046214L;
 

@@ -1,13 +1,17 @@
 package cn.chouyv.controller;
 
-import cn.chouyv.common.request.*;
-import cn.chouyv.common.response.AuthResponse;
-import cn.chouyv.common.response.BaseResponse;
-import cn.chouyv.common.response.shop.StudentInfoResponse;
-import cn.chouyv.common.response.shop.SubmitBookResponse;
+import cn.chouyv.dto.pay.SubmitBookDTO;
+import cn.chouyv.dto.shopinfo.AddBaseInfoDTO;
+import cn.chouyv.dto.shopinfo.UpdateStudentBaseInfoDTO;
+import cn.chouyv.dto.student.StudentLoginDTO;
+import cn.chouyv.dto.student.StudentRegisterDTO;
 import cn.chouyv.service.ShopService;
 import cn.chouyv.service.StudentService;
 import cn.chouyv.utils.Result;
+import cn.chouyv.vo.AuthVO;
+import cn.chouyv.vo.BaseVO;
+import cn.chouyv.vo.pay.SubmitBookVO;
+import cn.chouyv.vo.shopinfo.StudentInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,52 +35,53 @@ public class StudentController {
     }
 
     @PostMapping("/register")
-    public BaseResponse<AuthResponse> register(
-            @RequestBody StudentRegisterRequest registerRequest
+    public BaseVO<AuthVO> register(
+            @RequestBody StudentRegisterDTO registerRequest
     ) {
         log.info("Register: {}", registerRequest);
-        AuthResponse response = studentService.registerStudent(registerRequest);
+        AuthVO response = studentService.registerStudent(registerRequest);
         return Result.success(response);
     }
 
     @PostMapping("/login")
-    public BaseResponse<AuthResponse> login(
-            @RequestBody StudentLoginRequest loginRequest
+    public BaseVO<AuthVO> login(
+            @RequestBody StudentLoginDTO loginRequest
     ) {
         log.info("Login: {}", loginRequest);
-        AuthResponse response = studentService.loginStudent(loginRequest);
+        AuthVO response = studentService.loginStudent(loginRequest);
         return Result.success(response);
     }
 
     @GetMapping
-    public BaseResponse<StudentInfoResponse> info(
+    public BaseVO<StudentInfoVO> info(
             HttpServletRequest request
     ) {
         log.info("Info: {}", request);
-        StudentInfoResponse response = studentService.infoStudent(request);
+        StudentInfoVO response = studentService.infoStudent(request);
         return Result.success(response);
     }
 
     @PostMapping("/order")
-    public BaseResponse<SubmitBookResponse> submitBookResponseBaseResponse(
-            @RequestBody SubmitBookRequest submitBookRequest,
+    public BaseVO<SubmitBookVO> submitBookResponseBaseResponse(
+            @RequestBody SubmitBookDTO submitBookDTO,
             HttpServletRequest request
     ) {
         log.info("Info: {}", request);
-        SubmitBookResponse submitBookResponse = shopService.produceBook(submitBookRequest, request);
-        return Result.success(submitBookResponse);
+        SubmitBookVO submitBookVO = shopService.produceBook(submitBookDTO, request);
+        return Result.success(submitBookVO);
     }
+
     @PostMapping("addinfo")
-    public BaseResponse<String> addStudentAddress(@RequestBody AddBaseInfoRequest addBaseInfoRequest,HttpServletRequest request){
+    public BaseVO<String> addStudentAddress(@RequestBody AddBaseInfoDTO addBaseInfoDTO, HttpServletRequest request) {
         log.info("Info: {}", request);
-        studentService.AddStudentAddress(addBaseInfoRequest,request);
+        studentService.AddStudentAddress(addBaseInfoDTO, request);
         return Result.success(null);
     }
 
     @PutMapping("addinfo")
-    public BaseResponse<String> updateStudentInfo(@RequestBody UpdateStudentBaseInfoRequest updateStudentBaseInfoRequest,HttpServletRequest request){
+    public BaseVO<String> updateStudentInfo(@RequestBody UpdateStudentBaseInfoDTO updateStudentBaseInfoDTO, HttpServletRequest request) {
         log.info("Info: {}", request);
-        studentService.UpdateStudentAddress(updateStudentBaseInfoRequest,request);
+        studentService.UpdateStudentAddress(updateStudentBaseInfoDTO, request);
         return Result.success(null);
     }
 

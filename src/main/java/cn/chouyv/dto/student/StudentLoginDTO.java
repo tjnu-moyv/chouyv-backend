@@ -1,4 +1,4 @@
-package cn.chouyv.common.request;
+package cn.chouyv.dto.student;
 
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author SurKaa
  */
 @Data
-public class StudentLoginRequest implements Serializable {
+public class StudentLoginDTO implements Serializable {
 
     private static final long serialVersionUID = -4822032801251789016L;
 

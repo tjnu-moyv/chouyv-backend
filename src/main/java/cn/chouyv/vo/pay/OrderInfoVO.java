@@ -1,4 +1,4 @@
-package cn.chouyv.common.response;
+package cn.chouyv.vo.pay;
 
 import cn.chouyv.domain.Order;
 import cn.chouyv.domain.OrderShopProductsItem;
@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderInfoResponse {
+public class OrderInfoVO {
     private Order order;
     private List<OrderShopProductsItem> orderShopProductsItems;
 

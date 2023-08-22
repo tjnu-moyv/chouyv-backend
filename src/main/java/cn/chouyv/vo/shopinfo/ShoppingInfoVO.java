@@ -1,4 +1,4 @@
-package cn.chouyv.common.response.shop;
+package cn.chouyv.vo.shopinfo;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author SurKaa
  */
 @Data
-public class ShoppingInfoResponse implements Serializable {
+public class ShoppingInfoVO implements Serializable {
 
     private static final long serialVersionUID = 484823876970528285L;
 

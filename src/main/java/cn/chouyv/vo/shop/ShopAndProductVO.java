@@ -1,4 +1,4 @@
-package cn.chouyv.common.response.shop;
+package cn.chouyv.vo.shop;
 
 import cn.chouyv.domain.ShopProducts;
 import lombok.AllArgsConstructor;
@@ -20,9 +20,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShopAndProductResponse {
+public class ShopAndProductVO {
 
-    private ShopResponse shopResponse;
+    private ShopVO shopVO;
     private List<ShopProducts> shopProducts;
 
 }
