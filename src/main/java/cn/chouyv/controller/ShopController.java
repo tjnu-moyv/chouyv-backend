@@ -40,6 +40,13 @@ public class ShopController {
     private final OrderService orderService;
     private final OrderShopProductsItemService orderShopProductsItemService;
 
+    public ShopController(ShopService shopService, ShopProductsService shopProductsService, OrderService orderService, OrderShopProductsItemService orderShopProductsItemService) {
+        this.shopService = shopService;
+        this.shopProductsService = shopProductsService;
+        this.orderService = orderService;
+        this.orderShopProductsItemService = orderShopProductsItemService;
+    }
+
     @PostMapping("/login")
     public BaseVO<AuthVO> login(
             @RequestBody ShopLoginDTO loginRequest
@@ -58,36 +65,19 @@ public class ShopController {
         return Result.success(response);
     }
 
-    public ShopController(ShopService shopService, ShopProductsService shopProductsService, OrderService orderService, OrderShopProductsItemService orderShopProductsItemService) {
-        this.shopService = shopService;
-        this.shopProductsService = shopProductsService;
-        this.orderService = orderService;
-        this.orderShopProductsItemService = orderShopProductsItemService;
-    }
-
-
-//    @GetMapping
-//    public BaseVO<ShopVO> getShopInfoById(@RequestParam Integer id) {
-//        log.info("收到请求 参数id={}", id);
-//        Shop shopInfoById = shopService.getShopInfoByid(id);
-//        ShopVO shopResponse = ShopVO.toShopResponse(shopInfoById);
-//        return Result.success(200, shopResponse);
-//    }
-
     @GetMapping
-    public BaseVO<ShopAndProductVO> getShopAndProductResponse(@RequestParam long id) {
-        Shop shopInfoById = shopService.getShopInfoById(id);
+    public BaseVO<ShopAndProductVO> getShopAndProductResponse(@RequestParam long shopId) {
+        Shop shopInfoById = shopService.getShopInfoById(shopId);
         ShopVO shopVO = ShopVO.toShopResponse(shopInfoById);
-        ShopAndProductVO shopAndProductVO = new ShopAndProductVO(shopVO, shopProductsService.getShopProductsById(id));
+        ShopAndProductVO shopAndProductVO = new ShopAndProductVO(shopVO, shopProductsService.getShopProductsById(shopId));
         return Result.success(shopAndProductVO);
     }
 
     @PostMapping
     public BaseVO<ShopListVO> getAllShopsInfo(
+            HttpServletRequest request
     ) {
-
-        ShopListVO shopListVO = shopService.getAllShopsInfo();
-        return Result.success(shopListVO);
+        return Result.success(shopService.getAllShopsInfo(request));
     }
 
 
@@ -101,8 +91,6 @@ public class ShopController {
         OrderInfoVO orderInfoVO = new OrderInfoVO(orderInfoById, orderShopProductsItemInfoById);
         return Result.success(orderInfoVO);
     }
-
-
 
 
 }

@@ -17,12 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShopListVO {
-    public List<ShopListInfoVO> shopListInfoVO;
-
-
-    public static ShopListVO toShopListResponse(List<ShopListInfoVO> shopListInfoVO) {
-        return new ShopListVO(shopListInfoVO);
-    }
+    public List<ShopListInfoVO> shops;
 }
 
 

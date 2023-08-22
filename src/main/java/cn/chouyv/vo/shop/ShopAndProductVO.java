@@ -1,6 +1,5 @@
 package cn.chouyv.vo.shop;
 
-import cn.chouyv.domain.ShopProducts;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +21,32 @@ import java.util.List;
 @NoArgsConstructor
 public class ShopAndProductVO {
 
-    private ShopVO shopVO;
-    private List<ShopProducts> shopProducts;
+    private OneShopInfo shop;
+    private List<OneShopProductsInfo> shopProducts;
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class OneShopInfo {
+        private String address;
+        private long id;
+        private String nickname;
+        /**
+         * 商家联系电话
+         */
+        private String phone;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class OneShopProductsInfo {
+        private long count;
+        private String description;
+        private long id;
+        private String imgUrl;
+        private String name;
+        private long price;
+    }
 
 }
