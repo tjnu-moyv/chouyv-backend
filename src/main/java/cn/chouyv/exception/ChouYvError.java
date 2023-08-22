@@ -10,15 +10,14 @@ public enum ChouYvError {
     REGISTER_ERROR(300, "注册失败"),
     LOGIN_ERROR(301, "登录失败"),
     TOKEN_ERROR(302, "登陆过期, 请重新登录"),
-    SHOP_INFO_EMPTY(303, "无法获取商铺信息"),
+    SHOP_DETAIL_EMPTY(303, "无法获取商铺信息"),
     UPDATE_ERROR(304, "更新失败"),
     NO_MONEY_ERROR(305, "余额不足"),
     ORDER_NOT_PAY(306, "订单未支付"),
-    SELECT_ORDER_WITH_WRONG_TOKEN(307,"错误的权限"),
+    SELECT_ORDER_WITH_WRONG_TOKEN(307, "错误的权限"),
     MONEY_ERROR(308, "支付错误"),
-    MONEY_COUNT_WRONG(309,"金额不合法"),
-    PRODUCT_COUNT_WRONG(310,"数量非法")
-    ;
+    MONEY_COUNT_WRONG(309, "金额不合法"),
+    PRODUCT_COUNT_WRONG(310, "数量非法");
 
 
     private final int code;
