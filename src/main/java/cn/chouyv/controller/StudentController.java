@@ -1,8 +1,6 @@
 package cn.chouyv.controller;
 
 import cn.chouyv.dto.pay.SubmitBookDTO;
-import cn.chouyv.dto.shopinfo.AddBaseInfoDTO;
-import cn.chouyv.dto.shopinfo.UpdateStudentBaseInfoDTO;
 import cn.chouyv.dto.student.StudentLoginDTO;
 import cn.chouyv.dto.student.StudentRegisterDTO;
 import cn.chouyv.service.ShopService;
@@ -69,20 +67,6 @@ public class StudentController {
         log.info("Info: {}", request);
         SubmitBookVO submitBookVO = shopService.produceBook(submitBookDTO, request);
         return Result.success(submitBookVO);
-    }
-
-    @PostMapping("addinfo")
-    public BaseVO<String> addStudentAddress(@RequestBody AddBaseInfoDTO addBaseInfoDTO, HttpServletRequest request) {
-        log.info("Info: {}", request);
-        studentService.AddStudentAddress(addBaseInfoDTO, request);
-        return Result.success(null);
-    }
-
-    @PutMapping("addinfo")
-    public BaseVO<String> updateStudentInfo(@RequestBody UpdateStudentBaseInfoDTO updateStudentBaseInfoDTO, HttpServletRequest request) {
-        log.info("Info: {}", request);
-        studentService.UpdateStudentAddress(updateStudentBaseInfoDTO, request);
-        return Result.success(null);
     }
 
 }
