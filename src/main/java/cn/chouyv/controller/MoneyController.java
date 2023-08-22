@@ -1,5 +1,6 @@
 package cn.chouyv.controller;
 
+import cn.chouyv.domain.Money;
 import cn.chouyv.dto.pay.PayOrderDTO;
 import cn.chouyv.exception.MoneyException;
 import cn.chouyv.service.MoneyService;
@@ -39,8 +40,12 @@ public class MoneyController {
     ) {
         try {
             long id = Long.parseLong((String) request.getAttribute("id"));
+            Money money = moneyService.getMoney(id);
+            if (null == money) {
+                throw MoneyException.error("未开户");
+            }
             return Result.success(
-                    moneyService.getMoney(id).getCny()
+                    money.getCny()
             );
         } catch (NumberFormatException e) {
             throw MoneyException.error("");
