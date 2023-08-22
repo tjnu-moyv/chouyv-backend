@@ -11,7 +11,6 @@ public class ShopInfoException extends ChouYvException {
         super(message, code, description);
     }
 
-
     /**
      * 获取收货地址时发生错误
      *
@@ -23,6 +22,20 @@ public class ShopInfoException extends ChouYvException {
                 ChouYvError.SHOP_INFO_ERROR.getMessage(),
                 ChouYvError.SHOP_INFO_ERROR.getCode(),
                 description
+        );
+    }
+
+
+    /**
+     * 获取收货地址时发生错误
+     *
+     * @return error
+     */
+    public static ShopInfoException errorWithNoLogin() {
+        return new ShopInfoException(
+                ChouYvError.SHOP_INFO_ERROR.getMessage(),
+                ChouYvError.SHOP_INFO_ERROR.getCode(),
+                "没有找到登录账户, 请重新登录"
         );
     }
 }
