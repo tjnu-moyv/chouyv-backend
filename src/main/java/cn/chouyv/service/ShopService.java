@@ -18,9 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface ShopService extends IService<Shop> {
 
-    Shop getShopInfoById(long id);
-
-    ShopListVO getAllShopsInfo();
+    ShopListVO getAllShopsInfo(HttpServletRequest request);
 
     /**
      * 商家注册
@@ -28,7 +26,6 @@ public interface ShopService extends IService<Shop> {
      * @param registerRequest 注册请求返回体
      * @return 注册返回体
      */
-
     AuthVO registerShop(ShopRegisterDTO registerRequest);
 
     /**
@@ -37,7 +34,6 @@ public interface ShopService extends IService<Shop> {
      * @param loginRequest 登录请求体
      * @return 登录返回体
      */
-
     AuthVO loginShop(ShopLoginDTO loginRequest);
 
 //    ShopInfoVO infoShop(HttpServletRequest request);

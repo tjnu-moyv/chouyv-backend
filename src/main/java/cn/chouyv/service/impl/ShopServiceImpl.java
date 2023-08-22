@@ -1,14 +1,16 @@
 package cn.chouyv.service.impl;
 
 import cn.chouyv.domain.Shop;
+import cn.chouyv.domain.Student;
 import cn.chouyv.dto.pay.SubmitBookDTO;
 import cn.chouyv.dto.shop.ShopLoginDTO;
 import cn.chouyv.dto.shop.ShopRegisterDTO;
 import cn.chouyv.exception.LoginException;
 import cn.chouyv.exception.ProductCountError;
 import cn.chouyv.exception.RegisterException;
-import cn.chouyv.exception.ShopInfoException;
+import cn.chouyv.exception.TokenException;
 import cn.chouyv.mapper.ShopMapper;
+import cn.chouyv.mapper.StudentMapper;
 import cn.chouyv.service.ShopService;
 import cn.chouyv.utils.JwtHandle;
 import cn.chouyv.utils.SnowflakeUtils;
@@ -20,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Objects;
 
 import static cn.chouyv.utils.Pwd.md5DigestAsHex;
@@ -36,26 +39,42 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
 
     private final JwtHandle jwtHandle;
     private final SnowflakeUtils snowflake;
+    private final StudentMapper studentMapper;
 
     public ShopServiceImpl(
             JwtHandle jwtHandle,
-            SnowflakeUtils snowflake
+            SnowflakeUtils snowflake,
+            StudentMapper studentMapper
     ) {
         this.jwtHandle = jwtHandle;
         this.snowflake = snowflake;
+        this.studentMapper = studentMapper;
     }
 
     @Override
-    public Shop getShopInfoById(long id) {
-        if (getBaseMapper().selectById(id) == null) {
-            throw ShopInfoException.error("id错误");
+    public ShopListVO getAllShopsInfo(HttpServletRequest request) {
+
+
+        String username;
+        try {
+            username = (String) request.getAttribute("username");
+        } catch (ClassCastException e) {
+            throw TokenException.error("token异常");
         }
-        return getBaseMapper().selectById(id);
-    }
+        if (username == null) {
+            throw TokenException.error("token异常");
+        }
 
-    @Override
-    public ShopListVO getAllShopsInfo() {
-        return ShopListVO.toShopListResponse(getBaseMapper().getAllShopsInfo());
+        // 不允许未登录的查看
+        Shop shop = getBaseMapper().selectOneByUsername(username);
+        Student student = studentMapper.selectOneByUsername(username);
+        if (null == shop && null == student) {
+            throw TokenException.error("请使用用户账号查看");
+        }
+
+        List<Shop> shops = getBaseMapper().selectList(null);
+
+        return new ShopListVO(ShopListVO.shopListInfo(shops));
     }
 
     /**

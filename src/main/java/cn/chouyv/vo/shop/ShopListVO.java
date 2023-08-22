@@ -1,10 +1,12 @@
 package cn.chouyv.vo.shop;
 
+import cn.chouyv.domain.Shop;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,11 +19,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShopListVO {
-    public List<ShopListInfoVO> shopListInfoVO;
+    public List<ShopListInfoVO> shops;
 
-
-    public static ShopListVO toShopListResponse(List<ShopListInfoVO> shopListInfoVO) {
-        return new ShopListVO(shopListInfoVO);
+    public static List<ShopListInfoVO> shopListInfo(List<Shop> shopList) {
+        return shopList
+                .stream()
+                .map(ShopListInfoVO::byShop)
+                .collect(Collectors.toList());
     }
 }
 
