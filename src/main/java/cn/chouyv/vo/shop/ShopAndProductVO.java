@@ -1,10 +1,13 @@
 package cn.chouyv.vo.shop;
 
+import cn.chouyv.domain.Shop;
+import cn.chouyv.domain.ShopProducts;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 商店和产品响应
@@ -47,6 +50,26 @@ public class ShopAndProductVO {
         private String imgUrl;
         private String name;
         private long price;
+    }
+
+    public static OneShopInfo oneShopInfo(Shop shop) {
+        return new ShopAndProductVO.OneShopInfo(
+                shop.getAddress(),
+                shop.getId(),
+                shop.getNickname(),
+                shop.getPhone()
+        );
+    }
+
+    public static List<OneShopProductsInfo> shopProductsInfoList(List<ShopProducts> list) {
+        return list.stream().map(shopProducts -> new OneShopProductsInfo(
+                shopProducts.getCount(),
+                shopProducts.getDescription(),
+                shopProducts.getId(),
+                shopProducts.getImgUrl(),
+                shopProducts.getName(),
+                shopProducts.getPrice()
+        )).collect(Collectors.toList());
     }
 
 }

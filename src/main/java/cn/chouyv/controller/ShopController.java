@@ -3,6 +3,7 @@ package cn.chouyv.controller;
 import cn.chouyv.domain.Order;
 import cn.chouyv.domain.OrderShopProductsItem;
 import cn.chouyv.domain.Shop;
+import cn.chouyv.domain.ShopProducts;
 import cn.chouyv.dto.shop.ShopLoginDTO;
 import cn.chouyv.dto.shop.ShopRegisterDTO;
 import cn.chouyv.service.OrderService;
@@ -15,7 +16,6 @@ import cn.chouyv.vo.BaseVO;
 import cn.chouyv.vo.pay.OrderInfoVO;
 import cn.chouyv.vo.shop.ShopAndProductVO;
 import cn.chouyv.vo.shop.ShopListVO;
-import cn.chouyv.vo.shop.ShopVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -67,10 +67,12 @@ public class ShopController {
 
     @GetMapping
     public BaseVO<ShopAndProductVO> getShopAndProductResponse(@RequestParam long shopId) {
-        Shop shopInfoById = shopService.getShopInfoById(shopId);
-        ShopVO shopVO = ShopVO.toShopResponse(shopInfoById);
-        ShopAndProductVO shopAndProductVO = new ShopAndProductVO(shopVO, shopProductsService.getShopProductsById(shopId));
-        return Result.success(shopAndProductVO);
+        Shop shopInfoById = shopService.getById(shopId);
+        List<ShopProducts> productsList = shopProductsService.getShopProductsById(shopId);
+        return Result.success(new ShopAndProductVO(
+                ShopAndProductVO.oneShopInfo(shopInfoById),
+                ShopAndProductVO.shopProductsInfoList(productsList)
+        ));
     }
 
     @PostMapping
