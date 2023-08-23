@@ -64,7 +64,7 @@ public class StudentController {
             @RequestBody SubmitBookDTO submitBookDTO,
             HttpServletRequest request
     ) {
-        log.info("Info: {}", request);
+        log.info("Info: {}", submitBookDTO);
         SubmitBookVO submitBookVO = shopService.produceBook(submitBookDTO, request);
         return Result.success(submitBookVO);
     }
