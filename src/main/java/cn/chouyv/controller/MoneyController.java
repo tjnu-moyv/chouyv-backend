@@ -1,11 +1,12 @@
 package cn.chouyv.controller;
 
-import cn.chouyv.common.request.PayOrderRequest;
-import cn.chouyv.common.response.BaseResponse;
-import cn.chouyv.common.response.PayOrderBillInfoResponse;
+import cn.chouyv.domain.Money;
+import cn.chouyv.dto.pay.PayOrderDTO;
 import cn.chouyv.exception.MoneyException;
 import cn.chouyv.service.MoneyService;
 import cn.chouyv.utils.Result;
+import cn.chouyv.vo.BaseVO;
+import cn.chouyv.vo.pay.PayOrderBillInfoVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,20 +32,18 @@ public class MoneyController {
      * 自己的余额
      *
      * @param request 请求
-     * @return {@link BaseResponse}<{@link Long}>
+     * @return {@link BaseVO}<{@link Long}>
      */
     @PostMapping
-    public BaseResponse<Long> selfBalance(
+    public BaseVO<Money> selfBalance(
             HttpServletRequest request
     ) {
-        try {
-            long id = Long.parseLong((String) request.getAttribute("id"));
-            return Result.success(
-                    moneyService.getMoney(id).getCny()
-            );
-        } catch (NumberFormatException e) {
-            throw MoneyException.error("");
+        long id = (long) request.getAttribute("id");
+        Money money = moneyService.getMoney(id);
+        if (null == money) {
+            throw MoneyException.error("未开户");
         }
+        return Result.success(money);
     }
 
     /**
@@ -52,16 +51,30 @@ public class MoneyController {
      *
      * @param orderRequest 订单请求
      * @param request      请求
-     * @return {@link BaseResponse}<{@link PayOrderBillInfoResponse}>
+     * @return {@link BaseVO}<{@link PayOrderBillInfoVO}>
      */
     @PostMapping("/pay")
-    public BaseResponse<PayOrderBillInfoResponse> pay(
-            @RequestBody PayOrderRequest orderRequest,
+    public BaseVO<PayOrderBillInfoVO> pay(
+            @RequestBody PayOrderDTO orderRequest,
             HttpServletRequest request
     ) {
         return Result.success(
                 moneyService.payOrder(orderRequest, request)
         );
+    }
+
+    /**
+     * 开户
+     *
+     * @param request 请求
+     * @return {@link BaseVO}<{@link Money}>
+     */
+    @PostMapping("/new")
+    public BaseVO<Money> newMoneyAccount(
+            HttpServletRequest request
+    ) {
+        Money money = moneyService.newAccount(request);
+        return Result.success(money);
     }
 
 }

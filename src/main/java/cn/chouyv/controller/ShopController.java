@@ -1,23 +1,17 @@
 package cn.chouyv.controller;
 
-import cn.chouyv.common.request.ShopLoginRequest;
-import cn.chouyv.common.request.ShopRegisterRequest;
-import cn.chouyv.common.response.AuthResponse;
-import cn.chouyv.common.response.BaseResponse;
-import cn.chouyv.common.response.OrderInfoResponse;
-import cn.chouyv.common.response.shop.ShopListResponse;
-import cn.chouyv.common.response.shop.ShopAndProductResponse;
-import cn.chouyv.common.response.shop.ShopResponse;
-import cn.chouyv.domain.Order;
-import cn.chouyv.domain.OrderShopProductsItem;
 import cn.chouyv.domain.Shop;
-import cn.chouyv.service.OrderService;
-import cn.chouyv.service.OrderShopProductsItemService;
 import cn.chouyv.domain.ShopProducts;
+import cn.chouyv.dto.shop.ShopLoginDTO;
+import cn.chouyv.dto.shop.ShopRegisterDTO;
 import cn.chouyv.exception.NoFoundException;
 import cn.chouyv.service.ShopProductsService;
 import cn.chouyv.service.ShopService;
 import cn.chouyv.utils.Result;
+import cn.chouyv.vo.AuthVO;
+import cn.chouyv.vo.BaseVO;
+import cn.chouyv.vo.shop.ShopAndProductVO;
+import cn.chouyv.vo.shop.ShopListVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,14 +57,23 @@ public class ShopController {
         this.shopProductsService = shopProductsService;
     }
 
+    @PostMapping("/login")
+    public BaseVO<AuthVO> login(
+            @RequestBody ShopLoginDTO loginRequest
+    ) {
+        log.info("Login: {}", loginRequest);
+        AuthVO response = shopService.loginShop(loginRequest);
+        return Result.success(response);
+    }
 
-//    @GetMapping
-//    public BaseResponse<ShopResponse> getShopInfoById(@RequestParam Integer id) {
-//        log.info("收到请求 参数id={}", id);
-//        Shop shopInfoById = shopService.getShopInfoByid(id);
-//        ShopResponse shopResponse = ShopResponse.toShopResponse(shopInfoById);
-//        return Result.success(200, shopResponse);
-//    }
+    @PostMapping("/register")
+    public BaseVO<AuthVO> register(
+            @RequestBody ShopRegisterDTO registerRequest
+    ) {
+        log.info("Register: {}", registerRequest);
+        AuthVO response = shopService.registerShop(registerRequest);
+        return Result.success(response);
+    }
 
     @GetMapping("/{shopId}")
     public BaseVO<ShopAndProductVO> getShopAndProductResponse(@PathVariable long shopId) {
@@ -82,6 +85,7 @@ public class ShopController {
         if (productsList == null) {
             throw NoFoundException.error("无此id对应的商铺");
         }
+
         return Result.success(new ShopAndProductVO(
                 ShopAndProductVO.oneShopInfo(shopInfoById),
                 ShopAndProductVO.shopProductsInfoList(productsList)
@@ -89,26 +93,10 @@ public class ShopController {
     }
 
     @PostMapping
-    public BaseResponse<ShopListResponse> getAllShopsInfo(
-    ) {
-
-        ShopListResponse shopListResponse = shopService.getAllShopsInfo();
-        return Result.success(shopListResponse);
-    }
-
-
-    @GetMapping("/order")
-    public BaseResponse<OrderInfoResponse> order(
-            @RequestParam long id,
+    public BaseVO<ShopListVO> getAllShopsInfo(
             HttpServletRequest request
     ) {
-        Order orderInfoById = orderService.getOderInfoById(id,request);
-        List<OrderShopProductsItem> orderShopProductsItemInfoById = orderShopProductsItemService.getOrderShopProductsItem(id);
-        OrderInfoResponse orderInfoResponse = new OrderInfoResponse(orderInfoById, orderShopProductsItemInfoById);
-        return Result.success(orderInfoResponse);
+        return Result.success(shopService.getAllShopsInfo(request));
     }
-
-
-
 
 }

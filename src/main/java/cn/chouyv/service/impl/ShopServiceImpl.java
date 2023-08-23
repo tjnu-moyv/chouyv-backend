@@ -1,26 +1,29 @@
 package cn.chouyv.service.impl;
 
-import cn.chouyv.common.request.ShopLoginRequest;
-import cn.chouyv.common.request.ShopRegisterRequest;
-import cn.chouyv.common.request.SubmitBookRequest;
-import cn.chouyv.common.response.AuthResponse;
-import cn.chouyv.common.response.shop.ShopListResponse;
-import cn.chouyv.common.response.shop.SubmitBookResponse;
-import cn.chouyv.domain.Shop;
-import cn.chouyv.exception.LoginException;
-import cn.chouyv.exception.ProductCountError;
-import cn.chouyv.exception.RegisterException;
-import cn.chouyv.exception.ShopInfoException;
-import cn.chouyv.mapper.ShopMapper;
+import cn.chouyv.domain.*;
+import cn.chouyv.dto.pay.SubmitBookDTO;
+import cn.chouyv.dto.shop.ShopLoginDTO;
+import cn.chouyv.dto.shop.ShopRegisterDTO;
+import cn.chouyv.exception.*;
+import cn.chouyv.mapper.*;
 import cn.chouyv.service.ShopService;
 import cn.chouyv.utils.JwtHandle;
 import cn.chouyv.utils.SnowflakeUtils;
+import cn.chouyv.vo.AuthVO;
+import cn.chouyv.vo.pay.SubmitBookVO;
+import cn.chouyv.vo.shop.ShopListVO;
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static cn.chouyv.utils.Pwd.md5DigestAsHex;
 
@@ -36,26 +39,51 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
 
     private final JwtHandle jwtHandle;
     private final SnowflakeUtils snowflake;
+    private final StudentMapper studentMapper;
+    private final ShopProductsMapper shopProductsMapper;
+    private final OrderShopProductsItemMapper orderShopProductsItemMapper;
+    private final OrderMapper orderMapper;
 
     public ShopServiceImpl(
             JwtHandle jwtHandle,
-            SnowflakeUtils snowflake
+            OrderMapper orderMapper,
+            SnowflakeUtils snowflake,
+            StudentMapper studentMapper,
+            ShopProductsMapper shopProductsMapper,
+            OrderShopProductsItemMapper orderShopProductsItemMapper
     ) {
         this.jwtHandle = jwtHandle;
+        this.orderMapper = orderMapper;
         this.snowflake = snowflake;
+        this.studentMapper = studentMapper;
+        this.shopProductsMapper = shopProductsMapper;
+        this.orderShopProductsItemMapper = orderShopProductsItemMapper;
     }
 
     @Override
-    public Shop getShopInfoById(long id) {
-        if (getBaseMapper().selectById(id) == null) {
-            throw ShopInfoException.error("id错误");
+    public ShopListVO getAllShopsInfo(HttpServletRequest request) {
+
+
+        String username;
+        try {
+            username = (String) request.getAttribute("username");
+        } catch (ClassCastException e) {
+            throw TokenException.errorToken();
         }
-        return getBaseMapper().selectById(id);
-    }
+        if (username == null) {
+            throw TokenException.errorToken();
+        }
 
-    @Override
-    public ShopListResponse getAllShopsInfo() {
-        return ShopListResponse.toShopListResponse(getBaseMapper().getAllShopsInfo());
+        // 不允许未登录的查看
+        Shop shop = getBaseMapper().selectOneByUsername(username);
+        Student student = studentMapper.selectOneByUsername(username);
+        if (null == shop && null == student) {
+            throw TokenException.error("请使用用户账号查看");
+        }
+
+        List<Shop> shops = getBaseMapper().selectList(null);
+
+        return new ShopListVO(ShopListVO.shopListInfo(shops));
     }
 
     /**
@@ -65,7 +93,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
      * @return 登录成功后返回的认证响应
      */
     @Override
-    public AuthResponse registerShop(ShopRegisterRequest registerRequest) {
+    public AuthVO registerShop(ShopRegisterDTO registerRequest) {
         if (null == registerRequest) {
             throw RegisterException.error("请求体为空");
         }
@@ -117,7 +145,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
         }
         String token = jwtHandle.generateToken(id, username);
         log.debug("注册成功 token: {}", token);
-        return new AuthResponse(id, username, token);
+        return new AuthVO(id, username, token);
     }
 
     /**
@@ -127,7 +155,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
      * @return 登录成功后返回的认证响应
      */
     @Override
-    public AuthResponse loginShop(ShopLoginRequest loginRequest) {
+    public AuthVO loginShop(ShopLoginDTO loginRequest) {
         if (null == loginRequest) {
             throw LoginException.error("请求体为空");
         }
@@ -169,7 +197,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
         String token = jwtHandle.generateToken(
                 safe.getId(), safe.getUsername());
         log.debug("登录成功 token: {}", token);
-        return new AuthResponse(safe.getId(), safe.getUsername(), token);
+        return new AuthVO(safe.getId(), safe.getUsername(), token);
     }
 
     private static boolean checkCharInAuthString(String authString) {
@@ -180,23 +208,89 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
     }
 
     @Override
-    public SubmitBookResponse produceBook(SubmitBookRequest submitBookRequest, HttpServletRequest request) {
-        long tokenId = Long.parseLong((String) request.getAttribute("id"));
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class) // 遇到错误回滚
+    public SubmitBookVO produceBook(SubmitBookDTO submitBookDTO, HttpServletRequest request) {
+        long tokenId = (long) request.getAttribute("id");
+        String username = (String) request.getAttribute("username");
+        Student student = studentMapper.selectOneByIdAndUsernameStudent(tokenId, username);
+        if (student == null) {
+            throw TokenException.errorToken();
+        }
+        // 登陆了
+        log.info("Student: {}", student);
 
-        long l = snowflake.newId();
-        long sumMoney = 0;
-        for (int i = 0; i < submitBookRequest.products.size(); i++) {
-            if (submitBookRequest.products.get(i).count < 0) {
-                throw ProductCountError.error("数量不能为负");
-            } else if (submitBookRequest.products.get(i).price < 0) {
-                throw ProductCountError.error("金额不能为负");
-            }
-
-            sumMoney += submitBookRequest.products.get(i).count * submitBookRequest.products.get(i).price;
+        // 检测type
+        int type = submitBookDTO.getType();
+        // TODO 日后新增type需要更改这里 麻烦
+        if (type != Order.TYPE_DINE_IN && type != Order.TYPE_TAKE_AWAY && type != Order.TYPE_FIND_RUNNER) {
+            throw MoneyException.error("非法type");
         }
 
-        this.getBaseMapper().produceBook(l, tokenId, sumMoney, submitBookRequest.getShopId(), submitBookRequest.getType());
-        return new SubmitBookResponse(l, sumMoney);
+        // 生成id
+        long orderId = snowflake.newId();
+        // 总价
+        AtomicInteger sumPrice = new AtomicInteger(0);
+
+        // 遍历获取, 而不是一下子找全部 同时也能减少内存负担, (TODO 其次还允许用户跨商铺购买)
+        submitBookDTO.getProducts().forEach(submitProduct -> {
+            if (submitProduct.getCount() <= 0) {
+                throw ProductCountException.error("购买数量非法");
+            }
+            // 查找对应的商品
+            ShopProducts product = shopProductsMapper.selectById(submitProduct.getId());
+            if (product == null) {
+                throw MoneyException.error("商品id错误: " + submitProduct.getId());
+            }
+            log.debug("查找对应的商品 id{} => 商品{}", submitProduct.getId(), product);
+
+            // 计算总价
+            sumPrice.addAndGet(submitProduct.getCount() * product.getPrice());
+
+            // 数量不够时
+            if (submitProduct.getCount() > product.getCount()) {
+                throw ProductCountException.error("没有那么多了");
+            }
+            int insert = shopProductsMapper.updateById(
+                    ShopProducts.builder()
+                            .id(product.getId())
+                            // 更新商品剩余量
+                            .count(product.getCount() - submitProduct.getCount())
+                            .build());
+            if (insert <= 0) {
+                throw MoneyException.error("请重试");
+            }
+            // 保存订单商品item
+            OrderShopProductsItem shopProductsItem = OrderShopProductsItem.builder()
+                    .id(snowflake.newId())
+                    .orderId(orderId)
+                    .shopProductsId(submitProduct.getId())
+                    .count(submitProduct.getCount())
+                    .description(submitProduct.getDescription())
+                    .build();
+            insert = orderShopProductsItemMapper.insert(shopProductsItem);
+            if (insert <= 0) {
+                throw MoneyException.error("请重试");
+            }
+            log.debug("保存订单商品item: {}", shopProductsItem);
+        });
+
+        int insert = orderMapper.insert(
+                Order.builder()
+                        .id(orderId)
+                        .studentId(tokenId)
+                        .shopId(submitBookDTO.getShopId())
+                        .totalPrice(sumPrice.get())
+                        .status(Order.STATUS_WAIT_PAY)
+                        .type(type)
+                        .targetTime(DateUtil.offsetHour(new Date(), 3)) // TODO 默认三个小时后
+                        .build()
+        );
+
+        if (insert <= 0) {
+            throw MoneyException.error("请重试");
+        }
+
+        return new SubmitBookVO(orderId, sumPrice.get());
     }
 
 }

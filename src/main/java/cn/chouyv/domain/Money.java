@@ -1,11 +1,12 @@
 package cn.chouyv.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
-
-import lombok.Data;
 
 /**
  * 用户钱包表
@@ -15,6 +16,8 @@ import lombok.Data;
  */
 @TableName(value = "money")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Money implements Serializable {
 
     @TableField(exist = false)

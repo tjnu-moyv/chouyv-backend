@@ -12,6 +12,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -24,11 +26,20 @@ public class AuthCheckInterceptor implements HandlerInterceptor {
 
     private final JwtHandle jwtHandle;
 
-    public static final String[] NO_TOKEN_URL = {
-            "/students/login",
-            "/students/register",
-            "/shops/login",
-            "/shops/register",
+    /**
+     * 无需token的请求map
+     *
+     * @key url
+     * @value method
+     */
+    public static final Map<String, String> NO_TOKEN_MAP = new HashMap<String, String>() {
+        /*匿名初始化函数*/ {
+            put("/students/login", "post");
+            put("/students/register", "post");
+            put("/shops/login", "post");
+            put("/shops/register", "post");
+            put("/shops", "get");
+        }
     };
 
     public AuthCheckInterceptor(JwtHandle jwtHandle) {
@@ -41,15 +52,15 @@ public class AuthCheckInterceptor implements HandlerInterceptor {
             HttpServletResponse response,
             Object handler
     ) {
-        String uri = request.getRequestURI();
+        String uriStr = request.getRequestURI();
+        String methodStr = request.getMethod();
         showRequestInfo(request);
-        int i = 0;
-        while (i < NO_TOKEN_URL.length) {
-            if (uri.endsWith(NO_TOKEN_URL[i])) {
-                log.debug("Login or register request");
-                return true;
+        final boolean[] flag = {false};
+        NO_TOKEN_MAP.forEach((uri, method) -> {
+            if (uriStr.equals(uri) && methodStr.equalsIgnoreCase(method)) {
+                log.debug("免token请求 uri:{} method:{}", uri, method);
+                flag[0] = true;
             }
-            i++;
         });
 
         // 特殊放行: /shops/xxx TODO 整合所有放行的类型 或者找其他方法
@@ -71,8 +82,8 @@ public class AuthCheckInterceptor implements HandlerInterceptor {
         String token = request.getHeader("token");
         if (token != null && token.length() > 0) {
             JWT jwt = jwtHandle.validate(token);
-            Object id = jwt.getPayload(JWTPayload.ISSUER);
-            Object username = jwt.getPayload(JWTPayload.SUBJECT);
+            long id = Long.parseLong((String) jwt.getPayload(JWTPayload.ISSUER));
+            String username = (String) jwt.getPayload(JWTPayload.SUBJECT);
             request.setAttribute("id", id);
             request.setAttribute("username", username);
             return true;

@@ -1,13 +1,12 @@
 package cn.chouyv.utils;
 
-import cn.chouyv.common.response.BaseResponse;
 import cn.chouyv.exception.ChouYvError;
 import cn.chouyv.exception.ChouYvException;
+import cn.chouyv.vo.BaseVO;
 
 /**
  * @author SurKaa
  * Created with IntelliJ IDEA.
- *
  * @Author: wang
  * @Date: 2023/08/09/17:19
  * @Description:
@@ -23,8 +22,8 @@ public class Result {
      * @param description 错误详情
      * @return 返回体
      */
-    public static BaseResponse<Object> fail(String message, String description) {
-        return new BaseResponse<>(-1, null, message, description);
+    public static BaseVO<Object> fail(String message, String description) {
+        return new BaseVO<>(-1, null, message, description);
     }
 
     /**
@@ -33,8 +32,8 @@ public class Result {
      * @param message 错误信息
      * @return 返回体
      */
-    public static BaseResponse<Object> fail(String message) {
-        return new BaseResponse<>(-1, null, message, null);
+    public static BaseVO<Object> fail(String message) {
+        return new BaseVO<>(-1, null, message, null);
     }
 
     /**
@@ -43,8 +42,8 @@ public class Result {
      * @param e 错误异常
      * @return 返回体
      */
-    public static BaseResponse<Object> fail(ChouYvException e) {
-        return new BaseResponse<>(e.getCode(), null, e.getMessage(), e.getDescription());
+    public static BaseVO<Object> fail(ChouYvException e) {
+        return new BaseVO<>(e.getCode(), null, e.getMessage(), e.getDescription());
     }
 
     /**
@@ -54,8 +53,17 @@ public class Result {
      * @param <T>  返回数据的类型
      * @return 返回体
      */
-    public static <T> BaseResponse<T> success(T data) {
-        return new BaseResponse<>(SUCCESS_CODE, data, null, null);
+    public static <T> BaseVO<T> success(T data) {
+        return new BaseVO<>(SUCCESS_CODE, data, null, null);
+    }
+
+    /**
+     * 成功返回体
+     *
+     * @return 返回体 data为null
+     */
+    public static BaseVO<Object> success() {
+        return new BaseVO<>(SUCCESS_CODE, null, null, null);
     }
 
 }

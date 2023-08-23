@@ -1,11 +1,10 @@
 package cn.chouyv.service.impl;
 
-import cn.chouyv.common.request.PayOrderRequest;
-import cn.chouyv.common.response.PayOrderBillInfoResponse;
 import cn.chouyv.domain.Money;
 import cn.chouyv.domain.MoneyBill;
 import cn.chouyv.domain.Order;
 import cn.chouyv.domain.Student;
+import cn.chouyv.dto.pay.PayOrderDTO;
 import cn.chouyv.exception.MoneyException;
 import cn.chouyv.exception.TokenException;
 import cn.chouyv.mapper.MoneyBillMapper;
@@ -14,11 +13,11 @@ import cn.chouyv.mapper.OrderMapper;
 import cn.chouyv.mapper.StudentMapper;
 import cn.chouyv.service.MoneyService;
 import cn.chouyv.utils.SnowflakeUtils;
+import cn.chouyv.vo.pay.PayOrderBillInfoVO;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.Objects;
 
 import static cn.chouyv.utils.Pwd.md5DigestAsHex;
@@ -62,12 +61,12 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
     }
 
     @Override
-    public PayOrderBillInfoResponse payOrder(
-            PayOrderRequest orderRequest, HttpServletRequest request
+    public PayOrderBillInfoVO payOrder(
+            PayOrderDTO orderRequest, HttpServletRequest request
     ) {
         try {
             // 解析信息
-            long studentId = Long.parseLong((String) request.getAttribute("id"));
+            long studentId = (long) request.getAttribute("id");
             String username = (String) request.getAttribute("username");
             String password = orderRequest.getPassword();
             if (password == null || password.length() < 6) {
@@ -113,10 +112,28 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
             orderMapper.updateStatusById(orderInfoById.getId(), Order.STATUS_PAID);
             // 查询余额
             money = getBaseMapper().selectOneByUid(studentId);
-            return new PayOrderBillInfoResponse(money.getCny(), moneyBill);
+            return new PayOrderBillInfoVO(money.getCny(), moneyBill);
         } catch (ClassCastException e) {
-            throw TokenException.error("token异常");
+            throw TokenException.errorToken();
         }
+    }
+
+    @Override
+    public Money newAccount(HttpServletRequest request) {
+        Long uid = (Long) request.getAttribute("id");
+        Student byId = studentMapper.selectOneById(uid);
+        if (byId == null) {
+            throw TokenException.errorToken();
+        }
+        Money money = new Money();
+        long id = snowflake.newId();
+        money.setId(id);
+        money.setUid(uid);
+        boolean flag = this.save(money);
+        if (!flag) {
+            throw MoneyException.error("开户失败");
+        }
+        return this.getById(id);
     }
 }
 

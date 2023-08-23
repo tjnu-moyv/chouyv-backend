@@ -3,6 +3,7 @@ package cn.chouyv.utils;
 import cn.chouyv.config.ChouYvProperties;
 import cn.chouyv.exception.TokenException;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.json.JSONException;
 import cn.hutool.jwt.JWT;
 import org.springframework.stereotype.Component;
 
@@ -61,11 +62,15 @@ public class JwtHandle {
      * @throws TokenException jwt不合法 过期 或者异常
      */
     public JWT validate(String token) throws TokenException {
-        JWT jwt = JWT.of(token);
-        if (jwt.setKey(properties.getJwtSecretKey()).validate(5)) {
-            return jwt;
+        try {
+            JWT jwt = JWT.of(token);
+            if (jwt.setKey(properties.getJwtSecretKey()).validate(5)) {
+                return jwt;
+            }
+            throw TokenException.error("非法token或者过期token");
+        } catch (JSONException e) {
+            throw TokenException.error("非法token或者过期token");
         }
-        throw TokenException.error("非法token或者过期token");
     }
 
 }
