@@ -1,6 +1,7 @@
 package cn.chouyv.config;
 
 import cn.chouyv.interceptor.AuthCheckInterceptor;
+import cn.chouyv.interceptor.LogRequestInfoInterceptor;
 import cn.chouyv.utils.JwtHandle;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -22,6 +23,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LogRequestInfoInterceptor());
         registry.addInterceptor(new AuthCheckInterceptor(jwtHandle));
     }
 }
