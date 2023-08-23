@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubmitBookDTO {
-    private short type;
+    private int type;
     private long shopId;
     private List<SubmitBookItem> products;
 
@@ -36,8 +36,7 @@ public class SubmitBookDTO {
     @Data
     public static class SubmitBookItem {
         private long id;
-        public long price;
-        public long count;
+        private int count;
         private String description;
     }
 }
