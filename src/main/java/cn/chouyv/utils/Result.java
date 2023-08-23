@@ -7,7 +7,6 @@ import cn.chouyv.vo.BaseVO;
 /**
  * @author SurKaa
  * Created with IntelliJ IDEA.
- *
  * @Author: wang
  * @Date: 2023/08/09/17:19
  * @Description:
@@ -56,6 +55,15 @@ public class Result {
      */
     public static <T> BaseVO<T> success(T data) {
         return new BaseVO<>(SUCCESS_CODE, data, null, null);
+    }
+
+    /**
+     * 成功返回体
+     *
+     * @return 返回体 data为null
+     */
+    public static BaseVO<?> success() {
+        return new BaseVO<>(SUCCESS_CODE, null, null, null);
     }
 
 }

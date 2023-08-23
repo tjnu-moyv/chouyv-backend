@@ -57,7 +57,7 @@ public class ShopInfoController {
     ) {
         log.info("updateStudentShopInfo: shoppingInfoDTO={}", shoppingInfoDTO);
         shoppingInfoService.updateStudentShopInfo(shoppingInfoDTO, request);
-        return Result.success(null);
+        return Result.success();
     }
 
     /**
@@ -73,7 +73,7 @@ public class ShopInfoController {
     ) {
         log.info("deleteStudentShopInfo: id={}", shopInfo.getId());
         shoppingInfoService.deleteStudentShopInfo(shopInfo.getId(), request);
-        return Result.success(null);
+        return Result.success();
     }
 
     @GetMapping
