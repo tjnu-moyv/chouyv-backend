@@ -19,7 +19,8 @@ public enum ChouYvError {
     MONEY_COUNT_WRONG(309, "金额不合法"),
     PRODUCT_COUNT_WRONG(310, "数量非法"),
     SHOP_INFO_ERROR(311, "收获地址错误"),
-    NO_FOUND_ERROR(312, "未找到");
+    NO_FOUND_ERROR(312, "未找到"),
+    PASSWORD_ERROR(313, "密码错误");
 
 
     private final int code;
