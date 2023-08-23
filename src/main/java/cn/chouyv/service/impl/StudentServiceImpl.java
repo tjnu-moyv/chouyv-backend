@@ -156,12 +156,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         log.debug("info token: {}", token);
         try {
             long id = (long) request.getAttribute("id");
-            log.debug("idStr: {}", id);
+            log.debug("id: {}", id);
             Student byId = getBaseMapper().selectOneById(id);
             if (null == byId) {
                 throw TokenException.errorToken();
             }
-            log.debug("byId: {}", byId);
+            log.debug("getBaseMapper().selectOneById(id): {}", byId);
             String username = (String) request.getAttribute("username");
             log.debug("username: {}", username);
             if (!Objects.equals(username, byId.getUsername())) {
@@ -175,7 +175,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
             return new StudentInfoVO(byId, shoppingInfos);
         } catch (ClassCastException e) {
             // String idObj = `(String)` jwt.getPayload(JWTPayload.ISSUER);
-            throw TokenException.error("非法token");
+            throw TokenException.errorToken();
         } catch (NumberFormatException e) {
             // long id = Long.`parseLong`(idObj);
             throw TokenException.errorToken();
