@@ -34,24 +34,6 @@ public class ShopController {
     private final ShopService shopService;
     private final ShopProductsService shopProductsService;
 
-    @PostMapping("/login")
-    public BaseResponse<AuthResponse> login(
-            @RequestBody ShopLoginRequest loginRequest
-    ) {
-        log.info("Login: {}", loginRequest);
-        AuthResponse response = shopService.loginShop(loginRequest);
-        return Result.success(response);
-    }
-
-    @PostMapping("/register")
-    public BaseResponse<AuthResponse> register(
-            @RequestBody ShopRegisterRequest registerRequest
-    ) {
-        log.info("Register: {}", registerRequest);
-        AuthResponse response = shopService.registerShop(registerRequest);
-        return Result.success(response);
-    }
-
     public ShopController(ShopService shopService, ShopProductsService shopProductsService) {
         this.shopService = shopService;
         this.shopProductsService = shopProductsService;
