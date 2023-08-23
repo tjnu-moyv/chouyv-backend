@@ -4,17 +4,12 @@ import cn.chouyv.utils.JwtHandle;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTPayload;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.StopWatch;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * 检测是否登陆了的鉴权拦截器
@@ -54,7 +49,6 @@ public class AuthCheckInterceptor implements HandlerInterceptor {
     ) {
         String uriStr = request.getRequestURI();
         String methodStr = request.getMethod();
-        showRequestInfo(request);
         final boolean[] flag = {false};
         NO_TOKEN_MAP.forEach((uri, method) -> {
             if (uriStr.equals(uri) && methodStr.equalsIgnoreCase(method)) {
@@ -90,34 +84,5 @@ public class AuthCheckInterceptor implements HandlerInterceptor {
         }
         log.info("拦截请求");
         return false;
-    }
-
-    private void showRequestInfo(HttpServletRequest request) {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-
-        String requestId = UUID.randomUUID().toString();
-        String url = request.getRequestURI();
-        String reqParam = "[" + request.getQueryString() + "]";
-        log.info("Request start, id: {}, path: {}, ip: {}, params: {}", requestId, url,
-                request.getRemoteHost(), reqParam);
-
-        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
-        if (requestAttributes instanceof ServletRequestAttributes) {
-            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
-            HttpServletRequest httpServletRequest = servletRequestAttributes.getRequest();
-
-            try {
-                Object result = null;  // You need to adapt this part based on your use case
-                // Uncomment and adapt the next line based on your specific context
-                // Object result = proceedingJoinPoint.proceed();
-
-                stopWatch.stop();
-                long totalTimeMillis = stopWatch.getTotalTimeMillis();
-                log.info("Request end, id: {}, cost: {}ms", requestId, totalTimeMillis);
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
-            }
-        }
     }
 }
