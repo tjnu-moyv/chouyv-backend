@@ -20,7 +20,4 @@
         count,description,created_at,
         updated_at,is_deleted
     </sql>
-    <select id="getOrderShopProductsItem" resultType="cn.chouyv.domain.OrderShopProductsItem">
-        select * from order_shop_products_item where is_deleted!=1 and order_id = #{id}
-    </select>
 </mapper>
