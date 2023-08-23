@@ -241,21 +241,37 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
             if (product == null) {
                 throw MoneyException.error("商品id错误: " + submitProduct.getId());
             }
+            log.debug("查找对应的商品 id{} => 商品{}", submitProduct.getId(), product);
+
             // 计算总价
             sumPrice.addAndGet(submitProduct.getCount() * product.getPrice());
-            // 保存订单商品item
-            int insert = orderShopProductsItemMapper.insert(
-                    OrderShopProductsItem.builder()
-                            .id(snowflake.newId())
-                            .orderId(orderId)
-                            .shopProductsId(submitProduct.getId())
-                            .count(submitProduct.getCount())
-                            .description(submitProduct.getDescription())
-                            .build()
-            );
+
+            // 数量不够时
+            if (submitProduct.getCount() > product.getCount()) {
+                throw ProductCountException.error("没有那么多了");
+            }
+            int insert = shopProductsMapper.updateById(
+                    ShopProducts.builder()
+                            .id(product.getId())
+                            // 更新商品剩余量
+                            .count(product.getCount() - submitProduct.getCount())
+                            .build());
             if (insert <= 0) {
                 throw MoneyException.error("请重试");
             }
+            // 保存订单商品item
+            OrderShopProductsItem shopProductsItem = OrderShopProductsItem.builder()
+                    .id(snowflake.newId())
+                    .orderId(orderId)
+                    .shopProductsId(submitProduct.getId())
+                    .count(submitProduct.getCount())
+                    .description(submitProduct.getDescription())
+                    .build();
+            insert = orderShopProductsItemMapper.insert(shopProductsItem);
+            if (insert <= 0) {
+                throw MoneyException.error("请重试");
+            }
+            log.debug("保存订单商品item: {}", shopProductsItem);
         });
 
         int insert = orderMapper.insert(
