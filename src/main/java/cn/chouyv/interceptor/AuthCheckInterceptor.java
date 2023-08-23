@@ -62,6 +62,20 @@ public class AuthCheckInterceptor implements HandlerInterceptor {
                 flag[0] = true;
             }
         });
+
+        // 特殊放行: /shops/xxx TODO 整合所有放行的类型 或者找其他方法
+        if (uriStr.startsWith("/shops/")) {
+            String substring = uriStr.substring(7);
+            try {
+                long l = Long.parseLong(substring);
+                log.debug("/shops/xxx: l={} 放行", l);
+                flag[0] = true;
+            } catch (NumberFormatException e) {
+                log.debug("/shops/xxx: 错误 不放行");
+                flag[0] = false;
+            }
+        }
+
         if (flag[0]) {
             return true;
         }

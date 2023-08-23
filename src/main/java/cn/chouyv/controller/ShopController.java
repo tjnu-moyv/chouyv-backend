@@ -4,8 +4,7 @@ import cn.chouyv.domain.Shop;
 import cn.chouyv.domain.ShopProducts;
 import cn.chouyv.dto.shop.ShopLoginDTO;
 import cn.chouyv.dto.shop.ShopRegisterDTO;
-import cn.chouyv.service.OrderService;
-import cn.chouyv.service.OrderShopProductsItemService;
+import cn.chouyv.exception.NoFoundException;
 import cn.chouyv.service.ShopProductsService;
 import cn.chouyv.service.ShopService;
 import cn.chouyv.utils.Result;
@@ -34,14 +33,28 @@ public class ShopController {
 
     private final ShopService shopService;
     private final ShopProductsService shopProductsService;
-    private final OrderService orderService;
-    private final OrderShopProductsItemService orderShopProductsItemService;
 
-    public ShopController(ShopService shopService, ShopProductsService shopProductsService, OrderService orderService, OrderShopProductsItemService orderShopProductsItemService) {
+    @PostMapping("/login")
+    public BaseResponse<AuthResponse> login(
+            @RequestBody ShopLoginRequest loginRequest
+    ) {
+        log.info("Login: {}", loginRequest);
+        AuthResponse response = shopService.loginShop(loginRequest);
+        return Result.success(response);
+    }
+
+    @PostMapping("/register")
+    public BaseResponse<AuthResponse> register(
+            @RequestBody ShopRegisterRequest registerRequest
+    ) {
+        log.info("Register: {}", registerRequest);
+        AuthResponse response = shopService.registerShop(registerRequest);
+        return Result.success(response);
+    }
+
+    public ShopController(ShopService shopService, ShopProductsService shopProductsService) {
         this.shopService = shopService;
         this.shopProductsService = shopProductsService;
-        this.orderService = orderService;
-        this.orderShopProductsItemService = orderShopProductsItemService;
     }
 
     @PostMapping("/login")
@@ -62,10 +75,17 @@ public class ShopController {
         return Result.success(response);
     }
 
-    @GetMapping
-    public BaseVO<ShopAndProductVO> getShopAndProductResponse(@RequestParam long shopId) {
+    @GetMapping("/{shopId}")
+    public BaseVO<ShopAndProductVO> getShopAndProductResponse(@PathVariable long shopId) {
         Shop shopInfoById = shopService.getById(shopId);
+        if (shopInfoById == null) {
+            throw NoFoundException.error("无此id对应的商铺");
+        }
         List<ShopProducts> productsList = shopProductsService.getShopProductsById(shopId);
+        if (productsList == null) {
+            throw NoFoundException.error("无此id对应的商铺");
+        }
+
         return Result.success(new ShopAndProductVO(
                 ShopAndProductVO.oneShopInfo(shopInfoById),
                 ShopAndProductVO.shopProductsInfoList(productsList)
