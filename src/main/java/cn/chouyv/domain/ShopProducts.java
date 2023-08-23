@@ -1,10 +1,11 @@
 package cn.chouyv.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.Builder;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 商品信息表
@@ -13,6 +14,7 @@ import lombok.Data;
  */
 @TableName(value ="shop_products")
 @Data
+@Builder
 public class ShopProducts implements Serializable {
 
     @TableField(exist = false)

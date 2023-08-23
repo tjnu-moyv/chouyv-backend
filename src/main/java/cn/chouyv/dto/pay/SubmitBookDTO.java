@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
+ * 创建订单DTO
+ * <p>
  * Created with IntelliJ IDEA.
  *
  * @Author: wang
@@ -17,9 +19,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubmitBookDTO {
-    private short type;
+    private int type;
     private long shopId;
-    public List<SubmitBookItem> products;
+    private List<SubmitBookItem> products;
 
     /**
      * 提交订单，未封装
@@ -34,8 +36,7 @@ public class SubmitBookDTO {
     @Data
     public static class SubmitBookItem {
         private long id;
-        public long price;
-        public long count;
+        private int count;
         private String description;
     }
 }

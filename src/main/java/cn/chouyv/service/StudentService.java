@@ -1,8 +1,6 @@
 package cn.chouyv.service;
 
 import cn.chouyv.domain.Student;
-import cn.chouyv.dto.shopinfo.AddBaseInfoDTO;
-import cn.chouyv.dto.shopinfo.UpdateStudentBaseInfoDTO;
 import cn.chouyv.dto.student.StudentLoginDTO;
 import cn.chouyv.dto.student.StudentRegisterDTO;
 import cn.chouyv.vo.AuthVO;
@@ -35,9 +33,4 @@ public interface StudentService extends IService<Student> {
     AuthVO loginStudent(StudentLoginDTO loginRequest);
 
     StudentInfoVO infoStudent(HttpServletRequest request);
-
-    void AddStudentAddress(AddBaseInfoDTO addBaseInfoDTO, HttpServletRequest request);
-
-    void UpdateStudentAddress(UpdateStudentBaseInfoDTO updateStudentBaseInfoDTO, HttpServletRequest request);
-
 }

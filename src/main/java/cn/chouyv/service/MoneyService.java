@@ -42,4 +42,11 @@ public interface MoneyService extends IService<Money> {
             HttpServletRequest request
     );
 
+    /**
+     * 开户
+     *
+     * @param request 请求
+     * @return {@link Money}
+     */
+    Money newAccount(HttpServletRequest request);
 }

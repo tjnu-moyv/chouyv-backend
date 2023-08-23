@@ -66,7 +66,7 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
     ) {
         try {
             // 解析信息
-            long studentId = Long.parseLong((String) request.getAttribute("id"));
+            long studentId = (long) request.getAttribute("id");
             String username = (String) request.getAttribute("username");
             String password = orderRequest.getPassword();
             if (password == null || password.length() < 6) {
@@ -114,8 +114,26 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
             money = getBaseMapper().selectOneByUid(studentId);
             return new PayOrderBillInfoVO(money.getCny(), moneyBill);
         } catch (ClassCastException e) {
-            throw TokenException.error("token异常");
+            throw TokenException.errorToken();
         }
+    }
+
+    @Override
+    public Money newAccount(HttpServletRequest request) {
+        Long uid = (Long) request.getAttribute("id");
+        Student byId = studentMapper.selectOneById(uid);
+        if (byId == null) {
+            throw TokenException.errorToken();
+        }
+        Money money = new Money();
+        long id = snowflake.newId();
+        money.setId(id);
+        money.setUid(uid);
+        boolean flag = this.save(money);
+        if (!flag) {
+            throw MoneyException.error("开户失败");
+        }
+        return this.getById(id);
     }
 }
 

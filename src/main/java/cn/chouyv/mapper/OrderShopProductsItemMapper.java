@@ -1,6 +1,7 @@
 package cn.chouyv.mapper;
 
 import cn.chouyv.domain.OrderShopProductsItem;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,7 +15,19 @@ import java.util.List;
  */
 @Mapper
 public interface OrderShopProductsItemMapper extends BaseMapper<OrderShopProductsItem> {
-    public List<OrderShopProductsItem> getOrderShopProductsItem(long id);
+
+    /**
+     * 选择订单id对应的商品
+     *
+     * @param orderId 订单id
+     * @return {@link List}<{@link OrderShopProductsItem}>
+     */
+    default List<OrderShopProductsItem> selectAllByOrderId(long orderId) {
+        LambdaQueryWrapper<OrderShopProductsItem> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(OrderShopProductsItem::getOrderId, orderId);
+        return this.selectList(lqw);
+    }
+
 }
 
 

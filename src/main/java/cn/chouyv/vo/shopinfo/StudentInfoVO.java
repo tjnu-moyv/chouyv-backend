@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public class StudentInfoVO implements Serializable {
     private long id;
     private String username;
     private int role;
-    private long createdAt;
+    private Date createdAt;
     private long shoppingInfoId;
     private List<ShoppingInfo> arrayOfShoppingInfo;
 
@@ -32,7 +33,7 @@ public class StudentInfoVO implements Serializable {
         this.id = student.getId();
         this.username = student.getUsername();
         this.role = student.getRole();
-        this.createdAt = student.getCreatedAt().getTime();
+        this.createdAt = student.getCreatedAt();
         this.arrayOfShoppingInfo = shoppingInfos;
     }
 

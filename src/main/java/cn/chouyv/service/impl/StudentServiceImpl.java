@@ -2,8 +2,6 @@ package cn.chouyv.service.impl;
 
 import cn.chouyv.domain.ShoppingInfo;
 import cn.chouyv.domain.Student;
-import cn.chouyv.dto.shopinfo.AddBaseInfoDTO;
-import cn.chouyv.dto.shopinfo.UpdateStudentBaseInfoDTO;
 import cn.chouyv.dto.student.StudentLoginDTO;
 import cn.chouyv.dto.student.StudentRegisterDTO;
 import cn.chouyv.exception.LoginException;
@@ -157,17 +155,17 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         String token = request.getHeader("token");
         log.debug("info token: {}", token);
         try {
-            long id = Long.parseLong((String) request.getAttribute("id"));
-            log.debug("idStr: {}", id);
+            long id = (long) request.getAttribute("id");
+            log.debug("id: {}", id);
             Student byId = getBaseMapper().selectOneById(id);
             if (null == byId) {
-                throw TokenException.error("异常token");
+                throw TokenException.errorToken();
             }
-            log.debug("byId: {}", byId);
+            log.debug("getBaseMapper().selectOneById(id): {}", byId);
             String username = (String) request.getAttribute("username");
             log.debug("username: {}", username);
             if (!Objects.equals(username, byId.getUsername())) {
-                throw TokenException.error("异常token");
+                throw TokenException.errorToken();
             }
 
             log.debug("开始获取收货地址信息");
@@ -177,24 +175,11 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
             return new StudentInfoVO(byId, shoppingInfos);
         } catch (ClassCastException e) {
             // String idObj = `(String)` jwt.getPayload(JWTPayload.ISSUER);
-            throw TokenException.error("非法token");
+            throw TokenException.errorToken();
         } catch (NumberFormatException e) {
             // long id = Long.`parseLong`(idObj);
-            throw TokenException.error("异常token");
+            throw TokenException.errorToken();
         }
-    }
-
-    @Override
-    public void AddStudentAddress(AddBaseInfoDTO addBaseInfoDTO, HttpServletRequest request) {
-        Long tokenId = Long.parseLong((String) request.getAttribute("id"));
-        this.getBaseMapper().addStudentAddress(tokenId, addBaseInfoDTO.getName(), addBaseInfoDTO.getLocation(), addBaseInfoDTO.getPhone());
-    }
-
-    @Override
-    public void UpdateStudentAddress(UpdateStudentBaseInfoDTO updateStudentBaseInfoDTO, HttpServletRequest request) {
-//        Long tokenId=Long.parseLong((String) request.getAttribute("id"));
-        this.getBaseMapper().updateStudentAddress(updateStudentBaseInfoDTO.getId(), updateStudentBaseInfoDTO.getName(), updateStudentBaseInfoDTO.getLocation(), updateStudentBaseInfoDTO.getPhone());
-
     }
 
     private static boolean checkCharInAuthString(String authString) {

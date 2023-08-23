@@ -6,8 +6,6 @@ import cn.chouyv.service.OrderShopProductsItemService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * @author SurKaa
  * @description 针对表【order_shop_products_item(订单商品表)】的数据库操作Service实现
@@ -17,11 +15,6 @@ import java.util.List;
 public class OrderShopProductsItemServiceImpl extends ServiceImpl<OrderShopProductsItemMapper, OrderShopProductsItem>
         implements OrderShopProductsItemService {
 
-    @Override
-    public List<OrderShopProductsItem> getOrderShopProductsItem(long id) {
-
-        return getBaseMapper().getOrderShopProductsItem(id);
-    }
 }
 
 

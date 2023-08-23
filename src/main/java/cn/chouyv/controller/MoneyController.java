@@ -1,5 +1,6 @@
 package cn.chouyv.controller;
 
+import cn.chouyv.domain.Money;
 import cn.chouyv.dto.pay.PayOrderDTO;
 import cn.chouyv.exception.MoneyException;
 import cn.chouyv.service.MoneyService;
@@ -34,17 +35,15 @@ public class MoneyController {
      * @return {@link BaseVO}<{@link Long}>
      */
     @PostMapping
-    public BaseVO<Long> selfBalance(
+    public BaseVO<Money> selfBalance(
             HttpServletRequest request
     ) {
-        try {
-            long id = Long.parseLong((String) request.getAttribute("id"));
-            return Result.success(
-                    moneyService.getMoney(id).getCny()
-            );
-        } catch (NumberFormatException e) {
-            throw MoneyException.error("");
+        long id = (long) request.getAttribute("id");
+        Money money = moneyService.getMoney(id);
+        if (null == money) {
+            throw MoneyException.error("未开户");
         }
+        return Result.success(money);
     }
 
     /**
@@ -62,6 +61,20 @@ public class MoneyController {
         return Result.success(
                 moneyService.payOrder(orderRequest, request)
         );
+    }
+
+    /**
+     * 开户
+     *
+     * @param request 请求
+     * @return {@link BaseVO}<{@link Money}>
+     */
+    @PostMapping("/new")
+    public BaseVO<Money> newMoneyAccount(
+            HttpServletRequest request
+    ) {
+        Money money = moneyService.newAccount(request);
+        return Result.success(money);
     }
 
 }
