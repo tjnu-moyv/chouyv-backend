@@ -1,11 +1,11 @@
 package cn.chouyv.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.Builder;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-
-import lombok.Data;
 
 /**
  * 订单表
@@ -15,6 +15,7 @@ import lombok.Data;
  */
 @TableName(value = "order")
 @Data
+@Builder
 public class Order implements Serializable {
 
     @TableField(exist = false)
@@ -93,6 +94,18 @@ public class Order implements Serializable {
      * 订单的状态 0-堂食(用户取 食堂吃 不外带) 1-带走(打包, 需配送费) 2-找跑腿(run_id不可空)
      */
     private Integer type;
+    /**
+     * 堂食(用户取 食堂吃 不外带)
+     */
+    public static final int TYPE_DINE_IN = 0;
+    /**
+     * 带走(打包, 需配送费)
+     */
+    public static final int TYPE_TAKE_AWAY = 1;
+    /**
+     * 找跑腿(run_id不可空)
+     */
+    public static final int TYPE_FIND_RUNNER = 2;
 
     /**
      * 预约时间
@@ -114,4 +127,53 @@ public class Order implements Serializable {
      */
     @TableLogic
     private Integer isDeleted;
+
+    /*public enum OrderStatus {
+        ERROR(-1, "异常(支付时间过期, 订单取消)"),
+        WAIT_PAY(1, "待支付"),
+        PAID(2, "已支付(没人接单)"),
+        WAIT_DONE(3, "备餐中(有人接单才能通知商家备餐)"),
+        WAIT_GET_BY_RUNNER(4, "等待跑腿的取(备餐已完成)"),
+        RUNNING(5, "配送中"),
+        OK(6, "商品已到达")
+
+        private final int value;
+        private final String description;
+
+        OrderStatus(int value, String description) {
+            this.value = value;
+            this.description = description;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+    }
+
+    public enum OrderType {
+        DINE_IN(0, "堂食(用户取 食堂吃 不外带)"),
+        TAKE_AWAY(1, "带走(打包, 需配送费)"),
+        FIND_RUNNER(2, "找跑腿(run_id不可空)");
+
+        private final int value;
+        private final String description;
+
+        OrderType(int value, String description) {
+            this.value = value;
+            this.description = description;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+    }*/
+
 }
