@@ -1,5 +1,6 @@
 package cn.chouyv.interceptor;
 
+import cn.chouyv.exception.TokenException;
 import cn.chouyv.utils.JwtHandle;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTPayload;
@@ -83,6 +84,6 @@ public class AuthCheckInterceptor implements HandlerInterceptor {
             return true;
         }
         log.info("拦截请求");
-        return false;
+        throw TokenException.error("");
     }
 }
