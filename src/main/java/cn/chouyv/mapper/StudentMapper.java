@@ -57,10 +57,10 @@ public interface StudentMapper extends BaseMapper<Student> {
             id = (Long) request.getAttribute("id");
             username = (String) request.getAttribute("username");
             if (username == null || username.length() == 0 || id == null) {
-                throw TokenException.error("异常token");
+                throw TokenException.errorToken();
             }
         } catch (ClassCastException e) {
-            throw TokenException.error("异常token");
+            throw TokenException.errorToken();
         }
         return selectOneByIdAndUsernameStudent(id, username);
     }

@@ -59,10 +59,10 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
         try {
             username = (String) request.getAttribute("username");
         } catch (ClassCastException e) {
-            throw TokenException.error("token异常");
+            throw TokenException.errorToken();
         }
         if (username == null) {
-            throw TokenException.error("token异常");
+            throw TokenException.errorToken();
         }
 
         // 不允许未登录的查看

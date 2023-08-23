@@ -23,4 +23,17 @@ public class TokenException extends ChouYvException {
                 description
         );
     }
+
+    /**
+     * 发生鉴权错误
+     *
+     * @return error
+     */
+    public static TokenException errorToken() {
+        return new TokenException(
+                ChouYvError.TOKEN_ERROR.getMessage(),
+                ChouYvError.TOKEN_ERROR.getCode(),
+                "token异常"
+        );
+    }
 }

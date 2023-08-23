@@ -159,13 +159,13 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
             log.debug("idStr: {}", id);
             Student byId = getBaseMapper().selectOneById(id);
             if (null == byId) {
-                throw TokenException.error("异常token");
+                throw TokenException.errorToken();
             }
             log.debug("byId: {}", byId);
             String username = (String) request.getAttribute("username");
             log.debug("username: {}", username);
             if (!Objects.equals(username, byId.getUsername())) {
-                throw TokenException.error("异常token");
+                throw TokenException.errorToken();
             }
 
             log.debug("开始获取收货地址信息");
@@ -178,7 +178,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
             throw TokenException.error("非法token");
         } catch (NumberFormatException e) {
             // long id = Long.`parseLong`(idObj);
-            throw TokenException.error("异常token");
+            throw TokenException.errorToken();
         }
     }
 

@@ -114,7 +114,7 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
             money = getBaseMapper().selectOneByUid(studentId);
             return new PayOrderBillInfoVO(money.getCny(), moneyBill);
         } catch (ClassCastException e) {
-            throw TokenException.error("token异常");
+            throw TokenException.errorToken();
         }
     }
 
@@ -123,7 +123,7 @@ public class MoneyServiceImpl extends ServiceImpl<MoneyMapper, Money>
         Long uid = (Long) request.getAttribute("id");
         Student byId = studentMapper.selectOneById(uid);
         if (byId == null) {
-            throw TokenException.error("token异常");
+            throw TokenException.errorToken();
         }
         Money money = new Money();
         long id = snowflake.newId();
