@@ -33,9 +33,6 @@ public class ShoppingInfoServiceImpl extends ServiceImpl<ShoppingInfoMapper, Sho
     @Override
     public long addStudentShopInfo(ShoppingInfo shopInfoDTO, HttpServletRequest request) {
         Student student = studentMapper.checkLogin(request);
-        if (student == null) {
-            throw ShopInfoException.errorWithNoLogin();
-        }
         long id = snowflake.newId();
         shopInfoDTO.setUid(student.getId());
         shopInfoDTO.setId(id);
@@ -49,9 +46,6 @@ public class ShoppingInfoServiceImpl extends ServiceImpl<ShoppingInfoMapper, Sho
     @Override
     public void deleteStudentShopInfo(Long id, HttpServletRequest request) {
         Student student = studentMapper.checkLogin(request);
-        if (student == null) {
-            throw ShopInfoException.errorWithNoLogin();
-        }
         getBaseMapper().deleteById(id);
     }
 

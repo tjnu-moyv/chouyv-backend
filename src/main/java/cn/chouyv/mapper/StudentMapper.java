@@ -50,7 +50,7 @@ public interface StudentMapper extends BaseMapper<Student> {
      * @param request 请求
      * @return {@link Student}
      */
-    default Student checkLogin(HttpServletRequest request) {
+    default Student checkLogin(HttpServletRequest request) throws TokenException {
         Long id;
         String username;
         try {
@@ -62,6 +62,10 @@ public interface StudentMapper extends BaseMapper<Student> {
         } catch (ClassCastException e) {
             throw TokenException.errorToken();
         }
-        return selectOneByIdAndUsernameStudent(id, username);
+        Student student = selectOneByIdAndUsernameStudent(id, username);
+        if (student == null) {
+            throw TokenException.errorToken();
+        }
+        return student;
     }
 }

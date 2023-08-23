@@ -4,7 +4,6 @@ import cn.chouyv.domain.Order;
 import cn.chouyv.domain.ShopProducts;
 import cn.chouyv.domain.Student;
 import cn.chouyv.exception.NoFoundException;
-import cn.chouyv.exception.TokenException;
 import cn.chouyv.mapper.OrderMapper;
 import cn.chouyv.mapper.OrderShopProductsItemMapper;
 import cn.chouyv.mapper.ShopProductsMapper;
@@ -44,9 +43,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
     @Override
     public OrderInfoVO orderInfo(long orderId, HttpServletRequest request) {
         Student student = studentMapper.checkLogin(request);
-        if (student == null) {
-            throw TokenException.errorToken();
-        }
 
         Order order = getBaseMapper().getOrderInfoById(orderId, student.getId());
 
