@@ -62,7 +62,7 @@ public class Result {
      *
      * @return 返回体 data为null
      */
-    public static BaseVO<?> success() {
+    public static BaseVO<Object> success() {
         return new BaseVO<>(SUCCESS_CODE, null, null, null);
     }
 

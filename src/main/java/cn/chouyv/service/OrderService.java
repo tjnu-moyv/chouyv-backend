@@ -1,6 +1,7 @@
 package cn.chouyv.service;
 
 import cn.chouyv.domain.Order;
+import cn.chouyv.vo.pay.AcceptOrderVO;
 import cn.chouyv.vo.pay.OrderInfoVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface OrderService extends IService<Order> {
     OrderInfoVO orderInfo(long id, HttpServletRequest request);
+
+    void acceptOrder(AcceptOrderVO acceptOrderVO, HttpServletRequest request);
 }
