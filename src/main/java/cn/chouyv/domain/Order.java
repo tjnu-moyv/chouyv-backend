@@ -13,7 +13,7 @@ import java.util.Date;
  * @author SurKaa
  * @TableName order
  */
-@TableName(value = "order")
+@TableName(value = "`order`")
 @Data
 @Builder
 public class Order implements Serializable {
