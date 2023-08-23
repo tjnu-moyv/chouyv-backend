@@ -1,13 +1,22 @@
 package cn.chouyv.service.impl;
 
 import cn.chouyv.domain.Order;
-import cn.chouyv.exception.SelectWithoutPermissionException;
+import cn.chouyv.domain.ShopProducts;
+import cn.chouyv.domain.Student;
+import cn.chouyv.exception.NoFoundException;
+import cn.chouyv.exception.TokenException;
 import cn.chouyv.mapper.OrderMapper;
+import cn.chouyv.mapper.OrderShopProductsItemMapper;
+import cn.chouyv.mapper.ShopProductsMapper;
+import cn.chouyv.mapper.StudentMapper;
 import cn.chouyv.service.OrderService;
+import cn.chouyv.vo.pay.OrderInfoVO;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author SurKaa
@@ -18,18 +27,46 @@ import javax.servlet.http.HttpServletRequest;
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
         implements OrderService {
 
+    private final StudentMapper studentMapper;
+    private final ShopProductsMapper shopProductsMapper;
+    private final OrderShopProductsItemMapper orderShopProductsItemMapper;
+
+    public OrderServiceImpl(
+            StudentMapper studentMapper,
+            ShopProductsMapper shopProductsMapper,
+            OrderShopProductsItemMapper orderShopProductsItemMapper
+    ) {
+        this.studentMapper = studentMapper;
+        this.shopProductsMapper = shopProductsMapper;
+        this.orderShopProductsItemMapper = orderShopProductsItemMapper;
+    }
+
     @Override
-    public Order getOderInfoById(long id, HttpServletRequest request) {
-        long tokenId = (long) request.getAttribute("id");
-        try {
-            Order orderInfoById = this.getBaseMapper().getOrderInfoById(id, tokenId);
-            if (orderInfoById == null) {
-                throw SelectWithoutPermissionException.error("没有找到相应的");
-            }
-            return orderInfoById;
-        } catch (NumberFormatException e) {
-            throw SelectWithoutPermissionException.error("Token异常");
+    public OrderInfoVO orderInfo(long orderId, HttpServletRequest request) {
+        Student student = studentMapper.checkLogin(request);
+        if (student == null) {
+            throw TokenException.errorToken();
         }
+
+        Order order = getBaseMapper().getOrderInfoById(orderId, student.getId());
+
+        if (order == null) {
+            throw NoFoundException.error("没有找到对应的订单");
+        }
+
+        List<OrderInfoVO.OrderShopProducts> productsForReturn = new ArrayList<>();
+
+        orderShopProductsItemMapper.selectAllByOrderId(orderId).forEach(product -> {
+            ShopProducts shopProducts = shopProductsMapper.selectById(product.getShopProductsId());
+            productsForReturn.add(new OrderInfoVO.OrderShopProducts(
+                    product.getId(),
+                    shopProducts.getPrice(),
+                    product.getCount(),
+                    product.getDescription()
+            ));
+        });
+
+        return new OrderInfoVO(order, productsForReturn);
     }
 }
 

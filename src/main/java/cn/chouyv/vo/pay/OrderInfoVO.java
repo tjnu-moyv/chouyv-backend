@@ -1,7 +1,6 @@
 package cn.chouyv.vo.pay;
 
 import cn.chouyv.domain.Order;
-import cn.chouyv.domain.OrderShopProductsItem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +19,25 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderInfoVO {
     private Order order;
-    private List<OrderShopProductsItem> orderShopProductsItems;
+    private List<OrderShopProducts> orderShopProductsItems;
 
+    /**
+     * 单个商品的购物车
+     */
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class OrderShopProducts {
+        /**
+         * 商品主键(shop_products_id)
+         */
+        private long id;
+        /**
+         * 单价
+         */
+        private double price;
+        private long count;
+        private String description;
+    }
 
 }

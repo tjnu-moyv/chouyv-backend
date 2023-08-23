@@ -1,7 +1,5 @@
 package cn.chouyv.controller;
 
-import cn.chouyv.domain.Order;
-import cn.chouyv.domain.OrderShopProductsItem;
 import cn.chouyv.domain.Shop;
 import cn.chouyv.domain.ShopProducts;
 import cn.chouyv.dto.shop.ShopLoginDTO;
@@ -13,7 +11,6 @@ import cn.chouyv.service.ShopService;
 import cn.chouyv.utils.Result;
 import cn.chouyv.vo.AuthVO;
 import cn.chouyv.vo.BaseVO;
-import cn.chouyv.vo.pay.OrderInfoVO;
 import cn.chouyv.vo.shop.ShopAndProductVO;
 import cn.chouyv.vo.shop.ShopListVO;
 import lombok.extern.slf4j.Slf4j;
@@ -81,18 +78,5 @@ public class ShopController {
     ) {
         return Result.success(shopService.getAllShopsInfo(request));
     }
-
-
-    @GetMapping("/order")
-    public BaseVO<OrderInfoVO> order(
-            @RequestParam long id,
-            HttpServletRequest request
-    ) {
-        Order orderInfoById = orderService.getOderInfoById(id, request);
-        List<OrderShopProductsItem> orderShopProductsItemInfoById = orderShopProductsItemService.getOrderShopProductsItem(id);
-        OrderInfoVO orderInfoVO = new OrderInfoVO(orderInfoById, orderShopProductsItemInfoById);
-        return Result.success(orderInfoVO);
-    }
-
 
 }

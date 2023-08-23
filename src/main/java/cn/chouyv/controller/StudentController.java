@@ -3,11 +3,14 @@ package cn.chouyv.controller;
 import cn.chouyv.dto.pay.SubmitBookDTO;
 import cn.chouyv.dto.student.StudentLoginDTO;
 import cn.chouyv.dto.student.StudentRegisterDTO;
+import cn.chouyv.service.OrderService;
+import cn.chouyv.service.OrderShopProductsItemService;
 import cn.chouyv.service.ShopService;
 import cn.chouyv.service.StudentService;
 import cn.chouyv.utils.Result;
 import cn.chouyv.vo.AuthVO;
 import cn.chouyv.vo.BaseVO;
+import cn.chouyv.vo.pay.OrderInfoVO;
 import cn.chouyv.vo.pay.SubmitBookVO;
 import cn.chouyv.vo.shopinfo.StudentInfoVO;
 import lombok.extern.slf4j.Slf4j;
@@ -26,10 +29,19 @@ public class StudentController {
 
     private final StudentService studentService;
     private final ShopService shopService;
+    private final OrderService orderService;
+    private final OrderShopProductsItemService orderShopProductsItemService;
 
-    public StudentController(StudentService studentService, ShopService shopService) {
+    public StudentController(
+            StudentService studentService,
+            ShopService shopService,
+            OrderService orderService,
+            OrderShopProductsItemService orderShopProductsItemService
+    ) {
         this.studentService = studentService;
         this.shopService = shopService;
+        this.orderService = orderService;
+        this.orderShopProductsItemService = orderShopProductsItemService;
     }
 
     @PostMapping("/register")
@@ -67,6 +79,15 @@ public class StudentController {
         log.info("Info: {}", submitBookDTO);
         SubmitBookVO submitBookVO = shopService.produceBook(submitBookDTO, request);
         return Result.success(submitBookVO);
+    }
+
+    @GetMapping("/order/{id}")
+    public BaseVO<OrderInfoVO> orderInfo(
+            @PathVariable long id,
+            HttpServletRequest request
+    ) {
+        log.info("orderInfo: {}", id);
+        return Result.success(orderService.orderInfo(id, request));
     }
 
 }
