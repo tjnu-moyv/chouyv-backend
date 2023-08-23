@@ -1,6 +1,7 @@
 package cn.chouyv.mapper;
 
 import cn.chouyv.domain.ShoppingInfo;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -21,7 +22,11 @@ public interface ShoppingInfoMapper extends BaseMapper<ShoppingInfo> {
      * @param uid uid学生主键
      * @return {@link List}<{@link ShoppingInfo}>
      */
-    List<ShoppingInfo> selectAllByUid(long uid);
+    default List<ShoppingInfo> selectAllByUid(long uid) {
+        LambdaQueryWrapper<ShoppingInfo> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(ShoppingInfo::getUid, uid);
+        return this.selectList(lqw);
+    }
 
 }
 
