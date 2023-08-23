@@ -28,6 +28,20 @@ public interface ShoppingInfoMapper extends BaseMapper<ShoppingInfo> {
         return this.selectList(lqw);
     }
 
+    /**
+     * 删除id和学生对应的收货地址
+     *
+     * @param id  id
+     * @param uid uid
+     * @return int
+     */
+    default int deleteByIdAndStudentId(long id, long uid) {
+        LambdaQueryWrapper<ShoppingInfo> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(ShoppingInfo::getId, id);
+        lqw.eq(ShoppingInfo::getUid, uid);
+        return this.delete(lqw);
+    }
+
 }
 
 

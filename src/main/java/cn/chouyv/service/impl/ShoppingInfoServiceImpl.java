@@ -46,7 +46,7 @@ public class ShoppingInfoServiceImpl extends ServiceImpl<ShoppingInfoMapper, Sho
     @Override
     public void deleteStudentShopInfo(Long id, HttpServletRequest request) {
         Student student = studentMapper.checkLogin(request);
-        getBaseMapper().deleteById(id);
+        getBaseMapper().deleteByIdAndStudentId(id, student.getId());
     }
 
     @Override
