@@ -74,6 +74,13 @@
             <version>5.8.21</version>
         </dependency>
 
+        <!-- alibaba druid 数据库连接池 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.2.6</version>
+        </dependency>
+
     </dependencies>
 
     <build>
