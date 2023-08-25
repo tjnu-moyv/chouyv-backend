@@ -2,8 +2,12 @@ package cn.chouyv.service.impl;
 
 import cn.chouyv.domain.ShoppingInfo;
 import cn.chouyv.domain.Student;
+<<<<<<< Updated upstream
 import cn.chouyv.dto.student.StudentLoginDTO;
 import cn.chouyv.dto.student.StudentRegisterDTO;
+=======
+import cn.chouyv.exception.DeleteAddressWithWrongTokenException;
+>>>>>>> Stashed changes
 import cn.chouyv.exception.LoginException;
 import cn.chouyv.exception.RegisterException;
 import cn.chouyv.exception.TokenException;
@@ -182,6 +186,36 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    @Override
+    public void AddStudentAddress(AddBaseInfoRequest addBaseInfoRequest, HttpServletRequest request) {
+            Long tokenId=Long.parseLong((String) request.getAttribute("id"));
+            this.getBaseMapper().addStudentAddress(tokenId, addBaseInfoRequest.getName(), addBaseInfoRequest.getLocation(), addBaseInfoRequest.getPhone());
+    }
+
+    @Override
+    public void UpdateStudentAddress(UpdateStudentBaseInfoRequest updateStudentBaseInfoRequest, HttpServletRequest request) {
+//        Long tokenId=Long.parseLong((String) request.getAttribute("id"));
+        this.getBaseMapper().updateStudentAddress(updateStudentBaseInfoRequest.getId(), updateStudentBaseInfoRequest.getName(), updateStudentBaseInfoRequest.getLocation() ,updateStudentBaseInfoRequest.getPhone());
+
+    }
+
+    @Override
+    public void deleteStudentAddress(long id, HttpServletRequest request) {
+        Long tokenId=Long.parseLong((String) request.getAttribute("id"));
+        if(baseMapper.selectUidById(id)==null){
+            throw DeleteAddressWithWrongTokenException.error("id无效");
+        }
+        long checkId= baseMapper.selectUidById(id);
+
+        if(checkId!=tokenId){
+            throw DeleteAddressWithWrongTokenException.error("请检查id");
+        }
+        getBaseMapper().deleteAddressInfoById(id);
+    }
+
+>>>>>>> Stashed changes
     private static boolean checkCharInAuthString(String authString) {
         // 分别包括:
         // a-z, A-Z

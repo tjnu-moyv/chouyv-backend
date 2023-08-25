@@ -32,6 +32,7 @@ public interface StudentMapper extends BaseMapper<Student> {
      */
     Student selectOneById(long id);
 
+<<<<<<< Updated upstream
     /**
      * 通过id和用户选择一个学生
      *
@@ -68,4 +69,10 @@ public interface StudentMapper extends BaseMapper<Student> {
         }
         return student;
     }
+=======
+    void addStudentAddress(long uid,String name,String location,String phone);
+    void updateStudentAddress(long id,String name,String location,String phone);
+    Long selectUidById(long id);
+    void deleteAddressInfoById(long id);
+>>>>>>> Stashed changes
 }

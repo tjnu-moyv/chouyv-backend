@@ -14,6 +14,7 @@ import cn.chouyv.vo.pay.OrderInfoVO;
 import cn.chouyv.vo.pay.SubmitBookVO;
 import cn.chouyv.vo.shopinfo.StudentInfoVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -73,6 +74,7 @@ public class StudentController {
             @RequestBody SubmitBookDTO submitBookDTO,
             HttpServletRequest request
     ) {
+<<<<<<< Updated upstream
         log.info("Info: {}", submitBookDTO);
         SubmitBookVO submitBookVO = shopService.produceBook(submitBookDTO, request);
         return Result.success(submitBookVO);
@@ -95,6 +97,30 @@ public class StudentController {
         log.info("acceptOrder: {}", acceptOrderVO);
         orderService.acceptOrder(acceptOrderVO, request);
         return Result.success();
+=======
+        log.info("Info: {}", request);
+        SubmitBookResponse submitBookResponse = shopService.produceBook(submitBookRequest, request);
+        return Result.success(submitBookResponse);
+    }
+    @PostMapping("addinfo")
+    public BaseResponse<?> addStudentAddress(@RequestBody AddBaseInfoRequest addBaseInfoRequest,HttpServletRequest request){
+        log.info("Info: {}", request);
+        studentService.AddStudentAddress(addBaseInfoRequest,request);
+        return Result.success(null);
+    }
+
+    @PutMapping("addinfo")
+    public BaseResponse<?> updateStudentInfo(@RequestBody UpdateStudentBaseInfoRequest updateStudentBaseInfoRequest,HttpServletRequest request){
+        log.info("Info: {}", request);
+        studentService.UpdateStudentAddress(updateStudentBaseInfoRequest,request);
+        return Result.success(null);
+>>>>>>> Stashed changes
+    }
+    @DeleteMapping("addinfo")
+    public BaseResponse<?> deleteStudentAddress(@RequestParam long id,HttpServletRequest request){
+        log.info("Info: {}", request);
+        studentService.deleteStudentAddress(id,request);
+        return Result.success(null);
     }
 
 }

@@ -19,6 +19,18 @@
         role,created_at,
         updated_at,is_deleted
     </sql>
+<<<<<<< Updated upstream
+=======
+    <insert id="addStudentAddress">
+        INSERT INTO shopping_info(uid,name,location,phone) VALUES (#{uid},#{name},#{location},#{phone})
+    </insert>
+    <update id="updateStudentAddress">
+        UPDATE shopping_info  SET name=#{name},phone=#{phone},location=#{location} WHERE id=#{id}
+    </update>
+    <delete id="deleteAddressInfoById">
+        DELETE FROM shopping_info WHERE id=#{id}
+    </delete>
+>>>>>>> Stashed changes
     <!--TODO * 替换成对应的字段!!! -->
     <select id="selectOneByUsername" resultType="cn.chouyv.domain.Student">
         SELECT *
@@ -47,4 +59,8 @@
           AND username = #{username}
           AND is_deleted = 0
     </select>
+    <select id="selectUidById" resultType="java.lang.Long">
+        SELECT uid FROM shopping_info WHERE id=#{id}
+    </select>
+
 </mapper>

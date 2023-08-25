@@ -16,11 +16,18 @@ public enum ChouYvError {
     ORDER_NOT_PAY(306, "订单未支付"),
     SELECT_ORDER_WITH_WRONG_TOKEN(307, "错误的权限"),
     MONEY_ERROR(308, "支付错误"),
+<<<<<<< Updated upstream
     MONEY_COUNT_WRONG(309, "金额不合法"),
     PRODUCT_COUNT_WRONG(310, "数量非法"),
     SHOP_INFO_ERROR(311, "收获地址错误"),
     NO_FOUND_ERROR(312, "未找到"),
     PASSWORD_ERROR(313, "密码错误");
+=======
+    MONEY_COUNT_WRONG(309,"金额不合法"),
+    PRODUCT_COUNT_WRONG(310,"数量非法"),
+    DELETE_WITH_WRONG_TOKEN(311,"非法的删除请求")
+    ;
+>>>>>>> Stashed changes
 
 
     private final int code;

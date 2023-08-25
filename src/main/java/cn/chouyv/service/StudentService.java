@@ -32,5 +32,9 @@ public interface StudentService extends IService<Student> {
      */
     AuthVO loginStudent(StudentLoginDTO loginRequest);
 
+<<<<<<< Updated upstream
     StudentInfoVO infoStudent(HttpServletRequest request);
+=======
+    void deleteStudentAddress(long id,HttpServletRequest request);
+>>>>>>> Stashed changes
 }
