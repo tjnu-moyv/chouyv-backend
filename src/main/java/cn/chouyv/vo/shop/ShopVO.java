@@ -1,6 +1,5 @@
 package cn.chouyv.vo.shop;
 
-import cn.chouyv.domain.Shop;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,14 +20,5 @@ public class ShopVO {
     private String nickname;
     private String address;
     private String phone;
-
-    public static ShopVO toShopResponse(Shop shop) {
-        return new ShopVO(
-                shop.getId(),
-                shop.getNickname(),
-                shop.getAddress(),
-                shop.getPhone()
-        );
-    }
 
 }
