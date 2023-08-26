@@ -6,6 +6,7 @@ import cn.chouyv.domain.Student;
 import cn.chouyv.exception.MoneyException;
 import cn.chouyv.exception.NoFoundException;
 import cn.chouyv.exception.PwdException;
+import cn.chouyv.exception.SelectWithoutPermissionException;
 import cn.chouyv.mapper.OrderMapper;
 import cn.chouyv.mapper.OrderShopProductsItemMapper;
 import cn.chouyv.mapper.ShopProductsMapper;
@@ -14,6 +15,7 @@ import cn.chouyv.service.OrderService;
 import cn.chouyv.utils.Pwd;
 import cn.chouyv.vo.pay.AcceptOrderVO;
 import cn.chouyv.vo.pay.OrderInfoVO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -96,6 +98,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
         if (update <= 0) {
             throw MoneyException.error("");
         }
+    }
+
+    @Override
+    public IPage<Order> orderListByStatus(int status, int pageNum, int pageSize, HttpServletRequest request) {
+        Student student = studentMapper.checkLogin(request);
+        if (student.getRole() != Student.ROLE_RUNNER) {
+            throw SelectWithoutPermissionException.error("你不是跑腿的!");
+        }
+        return this.getBaseMapper().selectByStatus(status, pageNum, pageSize);
     }
 }
 
