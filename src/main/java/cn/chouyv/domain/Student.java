@@ -1,13 +1,12 @@
 package cn.chouyv.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
-
-import java.io.Serializable;
-import java.util.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 用户信息表
@@ -68,6 +67,9 @@ public class Student implements Serializable {
      * 用户角色 0-学生(正常消费者) 1-消费者and跑腿
      */
     private Integer role;
+
+    public static final int ROLE_STUDENT = 0;
+    public static final int ROLE_RUNNER = 1;
 
     /**
      * 创建时间
