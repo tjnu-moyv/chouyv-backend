@@ -2,7 +2,7 @@ package cn.chouyv.service.impl;
 
 import cn.chouyv.domain.ShoppingInfo;
 import cn.chouyv.domain.Student;
-import cn.chouyv.exception.ShopInfoException;
+import cn.chouyv.dto.shoppinginfo.ShoppingInfoDTO;
 import cn.chouyv.mapper.ShoppingInfoMapper;
 import cn.chouyv.mapper.StudentMapper;
 import cn.chouyv.service.ShoppingInfoService;
@@ -31,42 +31,37 @@ public class ShoppingInfoServiceImpl extends ServiceImpl<ShoppingInfoMapper, Sho
     }
 
     @Override
-    public long addStudentShopInfo(ShoppingInfo shopInfoDTO, HttpServletRequest request) {
+    public long addStudentShopInfo(ShoppingInfoDTO dot, HttpServletRequest request) {
         Student student = studentMapper.checkLogin(request);
         long id = snowflake.newId();
-        shopInfoDTO.setUid(student.getId());
-        shopInfoDTO.setId(id);
-        shopInfoDTO.setCreatedAt(null);
-        shopInfoDTO.setUpdatedAt(null);
-        shopInfoDTO.setIsDeleted(null);
-        getBaseMapper().insert(shopInfoDTO);
+        ShoppingInfo add = ShoppingInfo.builder()
+                .id(id)
+                .uid(student.getId())
+                .name(dot.getName())
+                .phone(dot.getPhone())
+                .location(dot.getLocation())
+                .build();
+        getBaseMapper().insert(add);
         return id;
     }
 
     @Override
-    public void deleteStudentShopInfo(Long id, HttpServletRequest request) {
+    public boolean deleteStudentShopInfo(Long id, HttpServletRequest request) {
         Student student = studentMapper.checkLogin(request);
-        getBaseMapper().deleteByIdAndStudentId(id, student.getId());
+        int count = getBaseMapper().deleteByIdAndStudentId(id, student.getId());
+        return count > 0;
     }
 
     @Override
-    public void updateStudentShopInfo(ShoppingInfo shopInfoDTO, HttpServletRequest request) {
+    public boolean updateStudentShopInfo(ShoppingInfoDTO shopInfoDTO, HttpServletRequest request) {
         Student student = studentMapper.checkLogin(request);
-        if (student == null) {
-            throw ShopInfoException.errorWithNoLogin();
-        }
-        shopInfoDTO.setCreatedAt(null);
-        shopInfoDTO.setUpdatedAt(null);
-        shopInfoDTO.setIsDeleted(null);
-        getBaseMapper().updateById(shopInfoDTO);
+        int count = getBaseMapper().updateByIdAndStudentId(shopInfoDTO, student.getId());
+        return count > 0;
     }
 
     @Override
     public List<ShoppingInfo> getStudentShopInfo(HttpServletRequest request) {
         Student student = studentMapper.checkLogin(request);
-        if (student == null) {
-            throw ShopInfoException.errorWithNoLogin();
-        }
         return getBaseMapper().selectAllByUid(student.getId());
     }
 

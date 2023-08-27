@@ -1,6 +1,7 @@
 package cn.chouyv.controller;
 
 import cn.chouyv.domain.ShoppingInfo;
+import cn.chouyv.dto.shoppinginfo.ShoppingInfoDTO;
 import cn.chouyv.service.ShoppingInfoService;
 import cn.chouyv.utils.Result;
 import cn.chouyv.vo.BaseVO;
@@ -35,7 +36,7 @@ public class ShopInfoController {
      */
     @PostMapping
     public BaseVO<Long> addStudentShopInfo(
-            @RequestBody ShoppingInfo shopInfoDTO,
+            @RequestBody ShoppingInfoDTO shopInfoDTO,
             HttpServletRequest request
     ) {
         log.info("addStudentShopInfo: studentShopInfoDTO={}", shopInfoDTO);
@@ -51,29 +52,31 @@ public class ShopInfoController {
      * @return {@link BaseVO}<?>
      */
     @PutMapping
-    public BaseVO<?> updateStudentShopInfo(
-            @RequestBody ShoppingInfo shoppingInfoDTO,
+    public BaseVO<Boolean> updateStudentShopInfo(
+            @RequestBody ShoppingInfoDTO shoppingInfoDTO,
             HttpServletRequest request
     ) {
         log.info("updateStudentShopInfo: shoppingInfoDTO={}", shoppingInfoDTO);
-        shoppingInfoService.updateStudentShopInfo(shoppingInfoDTO, request);
-        return Result.success();
+        return Result.success(
+                shoppingInfoService.updateStudentShopInfo(shoppingInfoDTO, request)
+        );
     }
 
     /**
      * 删除学生收货地址
      *
-     * @param shopInfo id
+     * @param id id
      * @return {@link BaseVO}<?>
      */
-    @DeleteMapping
-    public BaseVO<?> deleteStudentShopInfo(
-            @RequestBody ShoppingInfo shopInfo,
+    @DeleteMapping("/{id}")
+    public BaseVO<Boolean> deleteStudentShopInfo(
+            @PathVariable long id,
             HttpServletRequest request
     ) {
-        log.info("deleteStudentShopInfo: id={}", shopInfo.getId());
-        shoppingInfoService.deleteStudentShopInfo(shopInfo.getId(), request);
-        return Result.success();
+        log.info("deleteStudentShopInfo: id={}", id);
+        return Result.success(
+                shoppingInfoService.deleteStudentShopInfo(id, request)
+        );
     }
 
     @GetMapping
