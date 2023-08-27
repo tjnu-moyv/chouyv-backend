@@ -1,6 +1,7 @@
 package cn.chouyv.service;
 
 import cn.chouyv.domain.ShoppingInfo;
+import cn.chouyv.dto.shoppinginfo.ShoppingInfoDTO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,11 +14,11 @@ import java.util.List;
  */
 public interface ShoppingInfoService extends IService<ShoppingInfo> {
 
-    long addStudentShopInfo(ShoppingInfo shopInfoDTO, HttpServletRequest request);
+    long addStudentShopInfo(ShoppingInfoDTO shopInfoDTO, HttpServletRequest request);
 
-    void deleteStudentShopInfo(Long id, HttpServletRequest request);
+    boolean deleteStudentShopInfo(Long id, HttpServletRequest request);
 
-    void updateStudentShopInfo(ShoppingInfo shoppingInfoDTO, HttpServletRequest request);
+    boolean updateStudentShopInfo(ShoppingInfoDTO shoppingInfoDTO, HttpServletRequest request);
 
     List<ShoppingInfo> getStudentShopInfo(HttpServletRequest request);
 }
