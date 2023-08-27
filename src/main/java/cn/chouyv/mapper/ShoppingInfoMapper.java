@@ -1,6 +1,7 @@
 package cn.chouyv.mapper;
 
 import cn.chouyv.domain.ShoppingInfo;
+import cn.chouyv.dto.shoppinginfo.ShoppingInfoDTO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -40,6 +41,18 @@ public interface ShoppingInfoMapper extends BaseMapper<ShoppingInfo> {
         lqw.eq(ShoppingInfo::getId, id);
         lqw.eq(ShoppingInfo::getUid, uid);
         return this.delete(lqw);
+    }
+
+    default int updateByIdAndStudentId(ShoppingInfoDTO dto, long uid) {
+        ShoppingInfo update = ShoppingInfo.builder()
+                .name(dto.getName())
+                .phone(dto.getPhone())
+                .location(dto.getLocation())
+                .build();
+        LambdaQueryWrapper<ShoppingInfo> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(ShoppingInfo::getId, dto.getId());
+        lqw.eq(ShoppingInfo::getUid, uid);
+        return this.update(update, lqw);
     }
 
 }
