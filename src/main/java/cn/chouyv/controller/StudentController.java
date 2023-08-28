@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
  * @author SurKaa
  */
 @Slf4j
-@CrossOrigin
 @RestController
 @RequestMapping("/students")
 public class StudentController {

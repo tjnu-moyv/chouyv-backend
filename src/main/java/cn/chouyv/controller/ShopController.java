@@ -27,7 +27,6 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@CrossOrigin
 @RequestMapping("/shops")
 public class ShopController {
 
