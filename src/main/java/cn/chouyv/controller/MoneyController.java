@@ -7,6 +7,7 @@ import cn.chouyv.service.MoneyService;
 import cn.chouyv.utils.Result;
 import cn.chouyv.vo.BaseVO;
 import cn.chouyv.vo.pay.PayOrderBillInfoVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author SurKaa
  */
+@Slf4j
 @RestController
 @RequestMapping("/money")
 public class MoneyController {
